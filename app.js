@@ -273,14 +273,14 @@ async function loadMonsterCatalog() {
 
     monsterCatalog = await response.json();
 
-    monsterByID = {};
-    monsterByName = {};
+    monsterLookup = {};
+    monsterNameLookup = {};
 
     monsterCatalog.forEach((monster) => {
-      monsterByID[monster.monsterId] = monster;
+      monsterLookup[monster.monsterId] = monster;
 
       const displayName = `${monster.name}${monster.variant ? ` (${monster.variant})` : ""}`;
-      monsterByName[displayName.toLowerCase()] = monster;
+      monsterNameLookup[displayName.toLowerCase()] = monster;
     });
 
     console.log(`Loaded ${monsterCatalog.length} monsters.`);
@@ -301,6 +301,8 @@ function populateMonsterSelect() {
     option.value = `${monster.name}${variantText}`;
     datalist.appendChild(option);
   });
+
+  console.log(`Populated datalist with ${monsterCatalog.length} monsters.`);
 }
 
 function switchTab(tabName) {
