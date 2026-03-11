@@ -290,6 +290,31 @@ function populateMonsterSelect() {
   });
 }
 
+function switchTab(tabName) {
+  const buttons = document.querySelectorAll(".tab-button");
+  const panels = document.querySelectorAll(".tab-panel");
+
+  buttons.forEach((button) => {
+    const isActive = button.dataset.tab === tabName;
+    button.classList.toggle("active", isActive);
+  });
+
+  panels.forEach((panel) => {
+    const isActive = panel.id === `tab-${tabName}`;
+    panel.classList.toggle("active", isActive);
+  });
+}
+
+function attachTabEventListeners() {
+  const buttons = document.querySelectorAll(".tab-button");
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      switchTab(button.dataset.tab);
+    });
+  });
+}
+
 function attachEventListeners() {
   document.getElementById("save-run-name-btn").addEventListener("click", handleSaveRunName);
   document.getElementById("new-run-btn").addEventListener("click", handleNewRun);
@@ -305,6 +330,7 @@ async function init() {
   await loadMonsterCatalog();
   populateMonsterSelect();
   attachEventListeners();
+  attachTabEventListeners();
   renderRun();
 }
 
