@@ -275,22 +275,25 @@ async function loadMonsterCatalog() {
     const response = await fetch("data/monsters.json");
 
     if (!response.ok) {
-      throw new Error(`HTTP error ${response.status} while loading monsters.json`);
+      throw new Error(`HTTP error ${response.status}`);
     }
 
     monsterCatalog = await response.json();
+
+    if (!Array.isArray(monsterCatalog)) {
+      throw new Error("monsters.json is not an array.");
+    }
 
     monsterByID = {};
 
     monsterCatalog.forEach((monster) => {
       monsterByID[monster.monsterId] = monster;
-
-      const displayName = `${monster.name}${monster.variant ? ` (${monster.variant})` : ""}`;
     });
 
     console.log(`Loaded ${monsterCatalog.length} monsters.`);
   } catch (error) {
     console.error("Failed to load monsters:", error);
+    alert("Monster database failed to load. Check console.");
   }
 }
 
