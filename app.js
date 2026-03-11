@@ -157,19 +157,21 @@ function handleLogAction(event) {
   event.preventDefault();
 
   const actionType = document.getElementById("action-type").value;
-  const speciesSelect = document.getElementById("pokemon-species");
-  const routeInput = document.getElementById("pokemon-route");
-
-  const monsterId = speciesSelect.value;
-  const route = routeInput.value.trim();
 
   if (actionType === "catch") {
+    const speciesSelect = document.getElementById("pokemon-species");
+    const routeInput = document.getElementById("pokemon-route");
+
+    const monsterId = speciesSelect?.value || "";
+    const route = routeInput?.value.trim() || "";
+
     if (!monsterId || !route) {
       alert("Catch actions need both a species and a route.");
       return;
     }
 
     const monster = monsterByID[monsterId];
+
     if (!monster) {
       alert("Selected monster could not be found in the catalog.");
       return;
@@ -181,63 +183,84 @@ function handleLogAction(event) {
       route
     });
 
-    speciesSelect.value = "";
-    routeInput.value = "";
     updateAndSave();
+    renderActionFields();
     return;
   }
 
   if (actionType === "death") {
-    const alivePokemon = runState.pokemon.filter((p) => p.status === "alive");
-    if (alivePokemon.length === 0) {
-      alert("There are no alive Pokémon to mark as dead.");
+    const deathTarget = document.getElementById("death-target");
+    const deathNote = document.getElementById("death-note");
+
+    const targetPokemonLogId = deathTarget?.value || "";
+    const note = deathNote?.value.trim() || "";
+
+    if (!targetPokemonLogId) {
+      alert("Please choose a Pokémon to mark as dead.");
       return;
     }
 
-    const target = alivePokemon[alivePokemon.length - 1];
-
     addAction({
       ...createBaseAction("death"),
-      targetPokemonLogId: target.id,
-      note: ""
+      targetPokemonLogId,
+      note
     });
 
     updateAndSave();
+    renderActionFields();
     return;
   }
 
   if (actionType === "fusion") {
-    const alivePokemon = runState.pokemon.filter((p) => p.status === "alive");
+    const fusionHead = document.getElementById("fusion-head");
+    const fusionBody = document.getElementById("fusion-body");
 
-    if (alivePokemon.length < 2) {
-      alert("You need at least two alive Pokémon to log a fusion.");
+    const headPokemonLogId = fusionHead?.value || "";
+    const bodyPokemonLogId = fusionBody?.value || "";
+
+    if (!headPokemonLogId || !bodyPokemonLogId) {
+      alert("Please choose both fusion components.");
       return;
     }
 
-    const head = alivePokemon[alivePokemon.length - 2];
-    const body = alivePokemon[alivePokemon.length - 1];
+    if (headPokemonLogId === bodyPokemonLogId) {
+      alert("A Pokémon cannot fuse with itself.");
+      return;
+    }
 
     addAction({
       ...createBaseAction("fusion"),
-      headPokemonLogId: head.id,
-      bodyPokemonLogId: body.id
+      headPokemonLogId,
+      bodyPokemonLogId
     });
 
     updateAndSave();
+    renderActionFields();
     return;
   }
 
   if (actionType === "gym") {
+    const gymLeaderInput = document.getElementById("gym-leader");
+    const gymResultSelect = document.getElementById("gym-result");
+    const gymUsedFusionCheckbox = document.getElementById("gym-used-fusion");
+
+    const gymLeader = gymLeaderInput?.value.trim() || "Unknown Gym";
+    const result = gymResultSelect?.value || "win";
+    const usedFusion = !!gymUsedFusionCheckbox?.checked;
+
     addAction({
       ...createBaseAction("gym"),
-      gymLeader: "Unknown Gym",
-      result: "win",
-      usedFusion: runState.fusions.length > 0
+      gymLeader,
+      result,
+      usedFusion
     });
 
     updateAndSave();
+    renderActionFields();
     return;
   }
+
+  alert("Unknown action type.");
 }
 
 function exportRun() {
@@ -553,6 +576,7 @@ function renderActionFields() {
 
   if (type === "death") {
     const alive = runState.pokemon.filter((p) => p.status === "alive");
+
     const options = alive.map((p) =>
       `<option value="${p.id}">${p.speciesName}${p.variant ? ` (${p.variant})` : ""}</option>`
     ).join("");
@@ -561,8 +585,14 @@ function renderActionFields() {
       <div class="field-row">
         <label for="death-target">Pokémon</label>
         <select id="death-target">
+          <option value="">Select a Pokémon</option>
           ${options}
         </select>
+      </div>
+
+      <div class="field-row">
+        <label for="death-note">Death Note (optional)</label>
+        <input id="death-note" type="text" placeholder="e.g. Crit from Brock's Onix" />
       </div>
     `;
   }
