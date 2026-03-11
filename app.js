@@ -5,14 +5,16 @@ const defaultRunState = {
     runName: "My Fusion Run",
     createdAt: "",
     updatedAt: "",
-    version: 1
+    version: 2
   },
   rp: {
     earned: 0,
     spent: 0
   },
+  actions: [],
   pokemon: [],
   fusions: [],
+  gyms: [],
   achievements: [],
   purchases: []
 };
@@ -46,7 +48,7 @@ function loadRunState() {
 
   try {
     const parsed = JSON.parse(raw);
-    return parsed;
+    return normalizeRunState(parsed);
   } catch (error) {
     console.error("Failed to parse saved run data:", error);
     const freshState = createNewRunState();
@@ -75,27 +77,24 @@ function renderRun() {
 }
 
 function renderPokemonList() {
-  const list = document.getElementById("pokemon-list");
+  const list = document.getElementById("action-list");
   list.innerHTML = "";
 
-  if (runState.pokemon.length === 0) {
+  if (runState.actions.length === 0) {
     const emptyItem = document.createElement("li");
-    emptyItem.textContent = "No Pokémon logged yet.";
+    emptyItem.textContent = "No actions logged yet.";
     list.appendChild(emptyItem);
     return;
   }
 
-  runState.pokemon.forEach((pokemon) => {
-    const monster = monsterByID[pokemon.monsterId];
-    const variantText = pokemon.variant ? ` (${pokemon.variant})` : "";
-    const typeText = monster
-      ? [monster.primaryType, monster.secondaryType].filter(Boolean).join(" / ")
-      : "Unknown Type";
-
-    const li = document.createElement("li");
-    li.textContent = `${pokemon.speciesName}${variantText} — ${routeLabel(pokemon.route)} — ${typeText} — ${pokemon.status}`;
-    list.appendChild(li);
-  });
+  [...runState.actions]
+    .slice()
+    .reverse()
+    .forEach((action) => {
+      const li = document.createElement("li");
+      li.textContent = formatActionText(action);
+      list.appendChild(li);
+    });
 }
 
 function routeLabel(route) {
@@ -103,6 +102,8 @@ function routeLabel(route) {
 }
 
 function updateAndSave() {
+  rebuildDerivedStateFromActions();
+  evaluateAchievements();
   saveRunState(runState);
   renderRun();
 }
@@ -131,42 +132,111 @@ function handleAddSpentRP() {
   updateAndSave();
 }
 
+function normalizeRunState(state) {
+  return {
+    meta: {
+      runName: state?.meta?.runName || "My Fusion Run",
+      createdAt: state?.meta?.createdAt || new Date().toISOString(),
+      updatedAt: state?.meta?.updatedAt || new Date().toISOString(),
+      version: 2
+    },
+    rp: {
+      earned: state?.rp?.earned || 0,
+      spent: state?.rp?.spent || 0
+    },
+    actions: Array.isArray(state?.actions) ? state.actions : [],
+    pokemon: Array.isArray(state?.pokemon) ? state.pokemon : [],
+    fusions: Array.isArray(state?.fusions) ? state.fusions : [],
+    gyms: Array.isArray(state?.gyms) ? state.gyms : [],
+    achievements: Array.isArray(state?.achievements) ? state.achievements : [],
+    purchases: Array.isArray(state?.purchases) ? state.purchases : []
+  };
+}
+
 function handleLogAction(event) {
   event.preventDefault();
 
-  const actionTypeSelect = document.getElementById("action-type");
+  const actionType = document.getElementById("action-type").value;
   const speciesSelect = document.getElementById("pokemon-species");
   const routeInput = document.getElementById("pokemon-route");
 
-  const actionType = actionTypeSelect.value;
   const monsterId = speciesSelect.value;
   const route = routeInput.value.trim();
 
   if (actionType === "catch") {
-    if (!monsterId || !route) return;
+    if (!monsterId || !route) {
+      alert("Catch actions need both a species and a route.");
+      return;
+    }
 
     const monster = monsterByID[monsterId];
-
     if (!monster) {
       alert("Selected monster could not be found in the catalog.");
       return;
     }
 
-    runState.pokemon.push({
-      id: crypto.randomUUID(),
-      monsterId: monster.monsterId,
-      speciesName: monster.name,
-      variant: monster.variant || "",
-      route,
-      status: "alive",
-      createdAt: new Date().toISOString()
+    addAction({
+      ...createBaseAction("catch"),
+      monsterId,
+      route
     });
 
     speciesSelect.value = "";
     routeInput.value = "";
-
-    evaluateAchievements();
     updateAndSave();
+    return;
+  }
+
+  if (actionType === "death") {
+    const alivePokemon = runState.pokemon.filter((p) => p.status === "alive");
+    if (alivePokemon.length === 0) {
+      alert("There are no alive Pokémon to mark as dead.");
+      return;
+    }
+
+    const target = alivePokemon[alivePokemon.length - 1];
+
+    addAction({
+      ...createBaseAction("death"),
+      targetPokemonLogId: target.id,
+      note: ""
+    });
+
+    updateAndSave();
+    return;
+  }
+
+  if (actionType === "fusion") {
+    const alivePokemon = runState.pokemon.filter((p) => p.status === "alive");
+
+    if (alivePokemon.length < 2) {
+      alert("You need at least two alive Pokémon to log a fusion.");
+      return;
+    }
+
+    const head = alivePokemon[alivePokemon.length - 2];
+    const body = alivePokemon[alivePokemon.length - 1];
+
+    addAction({
+      ...createBaseAction("fusion"),
+      headPokemonLogId: head.id,
+      bodyPokemonLogId: body.id
+    });
+
+    updateAndSave();
+    return;
+  }
+
+  if (actionType === "gym") {
+    addAction({
+      ...createBaseAction("gym"),
+      gymLeader: "Unknown Gym",
+      result: "win",
+      usedFusion: runState.fusions.length > 0
+    });
+
+    updateAndSave();
+    return;
   }
 }
 
@@ -341,12 +411,130 @@ function attachTabEventListeners() {
   });
 }
 
+function createBaseAction(type) {
+  return {
+    id: crypto.randomUUID(),
+    type,
+    createdAt: new Date().toISOString()
+  };
+}
+
+function addAction(action) {
+  runState.actions.push(action);
+}
+
+function rebuildDerivedStateFromActions() {
+  const pokemon = [];
+  const fusions = [];
+  const gyms = [];
+
+  for (const action of runState.actions) {
+    switch (action.type) {
+      case "catch": {
+        const monster = monsterByID[action.monsterId];
+        if (!monster) break;
+
+        pokemon.push({
+          id: action.id,
+          monsterId: action.monsterId,
+          speciesName: monster.name,
+          variant: monster.variant || "",
+          route: action.route || "",
+          status: "alive",
+          createdAt: action.createdAt
+        });
+        break;
+      }
+
+      case "death": {
+        const target = pokemon.find((p) => p.id === action.targetPokemonLogId);
+        if (target) {
+          target.status = "dead";
+          target.deathNote = action.note || "";
+        }
+        break;
+      }
+
+      case "fusion": {
+        fusions.push({
+          id: action.id,
+          headPokemonLogId: action.headPokemonLogId,
+          bodyPokemonLogId: action.bodyPokemonLogId,
+          createdAt: action.createdAt,
+          status: "active"
+        });
+        break;
+      }
+
+      case "gym": {
+        gyms.push({
+          id: action.id,
+          gymLeader: action.gymLeader,
+          result: action.result,
+          usedFusion: !!action.usedFusion,
+          createdAt: action.createdAt
+        });
+        break;
+      }
+    }
+  }
+
+  runState.pokemon = pokemon;
+  runState.fusions = fusions;
+  runState.gyms = gyms;
+}
+
+function formatActionText(action) {
+  if (action.type === "catch") {
+    const monster = monsterByID[action.monsterId];
+    const monsterName = monster
+      ? `${monster.name}${monster.variant ? ` (${monster.variant})` : ""}`
+      : action.monsterId;
+
+    return `[CATCH] ${monsterName} — ${action.route}`;
+  }
+
+  if (action.type === "death") {
+    const target = runState.pokemon.find((p) => p.id === action.targetPokemonLogId);
+    const name = target
+      ? `${target.speciesName}${target.variant ? ` (${target.variant})` : ""}`
+      : "Unknown Pokémon";
+
+    return `[DEATH] ${name}`;
+  }
+
+  if (action.type === "fusion") {
+    const head = runState.pokemon.find((p) => p.id === action.headPokemonLogId);
+    const body = runState.pokemon.find((p) => p.id === action.bodyPokemonLogId);
+
+    const headName = head ? `${head.speciesName}${head.variant ? ` (${head.variant})` : ""}` : "Unknown";
+    const bodyName = body ? `${body.speciesName}${body.variant ? ` (${body.variant})` : ""}` : "Unknown";
+
+    return `[FUSION] ${headName} + ${bodyName}`;
+  }
+
+  if (action.type === "gym") {
+    return `[GYM] ${action.gymLeader} — ${action.result}${action.usedFusion ? " — used fusion" : ""}`;
+  }
+
+  return `[UNKNOWN ACTION]`;
+}
+
+
+
+
+
+
+
+
+
+
 function attachEventListeners() {
   document.getElementById("save-run-name-btn").addEventListener("click", handleSaveRunName);
   document.getElementById("new-run-btn").addEventListener("click", handleNewRun);
   document.getElementById("add-earned-rp-btn").addEventListener("click", handleAddEarnedRP);
   document.getElementById("add-spent-rp-btn").addEventListener("click", handleAddSpentRP);
-  document.getElementById("add-pokemon-form").addEventListener("submit", handleLogAction);
+  document.getElementById("action-form").addEventListener("submit", handleLogAction);
   document.getElementById("export-run-btn").addEventListener("click", exportRun);
   document.getElementById("import-run-input").addEventListener("change", importRun);
 }
