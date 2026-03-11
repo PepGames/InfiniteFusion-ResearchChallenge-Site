@@ -520,7 +520,91 @@ function formatActionText(action) {
   return `[UNKNOWN ACTION]`;
 }
 
+function renderActionFields() {
+  const type = document.getElementById("action-type").value;
+  const container = document.getElementById("action-fields");
 
+  container.innerHTML = "";
+
+  if (type === "catch") {
+    container.innerHTML = `
+      <div class="field-row">
+        <label>Species</label>
+        <select id="pokemon-species">
+          <option value="">Select a monster</option>
+        </select>
+      </div>
+
+      <div class="field-row">
+        <label>Route / Area</label>
+        <input id="pokemon-route" type="text" placeholder="e.g. Route 3">
+      </div>
+    `;
+
+    populateMonsterSelect();
+  }
+
+  if (type === "death") {
+    const alive = runState.pokemon.filter(p => p.status === "alive");
+
+    const options = alive.map(p =>
+      `<option value="${p.id}">${p.speciesName}</option>`
+    ).join("");
+
+    container.innerHTML = `
+      <div class="field-row">
+        <label>Pokémon</label>
+        <select id="death-target">
+          ${options}
+        </select>
+      </div>
+    `;
+  }
+
+  if (type === "fusion") {
+    const alive = runState.pokemon.filter(p => p.status === "alive");
+
+    const options = alive.map(p =>
+      `<option value="${p.id}">${p.speciesName}</option>`
+    ).join("");
+
+    container.innerHTML = `
+      <div class="field-row">
+        <label>Head Pokémon</label>
+        <select id="fusion-head">${options}</select>
+      </div>
+
+      <div class="field-row">
+        <label>Body Pokémon</label>
+        <select id="fusion-body">${options}</select>
+      </div>
+    `;
+  }
+
+  if (type === "gym") {
+    container.innerHTML = `
+      <div class="field-row">
+        <label>Gym Leader</label>
+        <input id="gym-leader" placeholder="Brock">
+      </div>
+
+      <div class="field-row">
+        <label>Result</label>
+        <select id="gym-result">
+          <option value="win">Win</option>
+          <option value="loss">Loss</option>
+        </select>
+      </div>
+
+      <div class="field-row">
+        <label>
+          <input type="checkbox" id="gym-used-fusion">
+          Used Fusion
+        </label>
+      </div>
+    `;
+  }
+}
 
 
 
@@ -535,6 +619,7 @@ function attachEventListeners() {
   document.getElementById("add-earned-rp-btn").addEventListener("click", handleAddEarnedRP);
   document.getElementById("add-spent-rp-btn").addEventListener("click", handleAddSpentRP);
   document.getElementById("action-form").addEventListener("submit", handleLogAction);
+  document.getElementById("action-type").addEventListener("change", renderActionFields);
   document.getElementById("export-run-btn").addEventListener("click", exportRun);
   document.getElementById("import-run-input").addEventListener("change", importRun);
 }
@@ -542,9 +627,9 @@ function attachEventListeners() {
 async function init() {
   await loadAchievementCatalog();
   await loadMonsterCatalog();
-  populateMonsterSelect();
   attachEventListeners();
   attachTabEventListeners();
+  renderActionFields();
   renderRun();
 }
 
