@@ -76,15 +76,9 @@
 
           <div class="field-row">
             <label for="pokemon-species">Species</label>
-            <input
-              id="pokemon-species"
-              type="text"
-              list="monster-options"
-              placeholder="Start typing a monster name..."
-              autocomplete="off"
-              required
-            />
-            <datalist id="monster-options"></datalist>
+            <select id="pokemon-species" required>
+              <option value="">Select a monster</option>
+            </select>
           </div>
 
           <div class="field-row">

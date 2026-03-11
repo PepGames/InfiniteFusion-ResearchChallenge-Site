@@ -21,7 +21,6 @@ let runState = loadRunState();
 let achievementCatalog = [];
 let monsterCatalog = [];
 let monsterByID = {};
-let monsterByName = {};
 
 function createNewRunState() {
   const now = new Date().toISOString();
@@ -135,36 +134,40 @@ function handleAddSpentRP() {
 function handleLogAction(event) {
   event.preventDefault();
 
-  const speciesInput = document.getElementById("pokemon-species");
+  const actionTypeSelect = document.getElementById("action-type");
+  const speciesSelect = document.getElementById("pokemon-species");
   const routeInput = document.getElementById("pokemon-route");
 
-  const speciesText = speciesInput.value.trim();
+  const actionType = actionTypeSelect.value;
+  const monsterId = speciesSelect.value;
   const route = routeInput.value.trim();
 
-  if (!speciesText || !route) return;
+  if (actionType === "catch") {
+    if (!monsterId || !route) return;
 
-  const monster = monsterByName[speciesText.toLowerCase()];
+    const monster = monsterByID[monsterId];
 
-  if (!monster) {
-    alert("Please choose a valid monster from the list.");
-    return;
+    if (!monster) {
+      alert("Selected monster could not be found in the catalog.");
+      return;
+    }
+
+    runState.pokemon.push({
+      id: crypto.randomUUID(),
+      monsterId: monster.monsterId,
+      speciesName: monster.name,
+      variant: monster.variant || "",
+      route,
+      status: "alive",
+      createdAt: new Date().toISOString()
+    });
+
+    speciesSelect.value = "";
+    routeInput.value = "";
+
+    evaluateAchievements();
+    updateAndSave();
   }
-
-  runState.pokemon.push({
-    id: crypto.randomUUID(),
-    monsterId: monster.monsterId,
-    speciesName: monster.name,
-    variant: monster.variant || "",
-    route,
-    status: "alive",
-    createdAt: new Date().toISOString()
-  });
-
-  speciesInput.value = "";
-  routeInput.value = "";
-
-  evaluateAchievements();
-  updateAndSave();
 }
 
 function exportRun() {
@@ -273,14 +276,12 @@ async function loadMonsterCatalog() {
 
     monsterCatalog = await response.json();
 
-    monsterLookup = {};
-    monsterNameLookup = {};
+    monsterByID = {};
 
     monsterCatalog.forEach((monster) => {
-      monsterLookup[monster.monsterId] = monster;
+      monsterByID[monster.monsterId] = monster;
 
       const displayName = `${monster.name}${monster.variant ? ` (${monster.variant})` : ""}`;
-      monsterNameLookup[displayName.toLowerCase()] = monster;
     });
 
     console.log(`Loaded ${monsterCatalog.length} monsters.`);
@@ -290,19 +291,22 @@ async function loadMonsterCatalog() {
 }
 
 function populateMonsterSelect() {
-  const datalist = document.getElementById("monster-options");
-  if (!datalist) return;
+  const select = document.getElementById("pokemon-species");
+  if (!select) return;
 
-  datalist.innerHTML = "";
+  select.innerHTML = `<option value="">Select a monster</option>`;
 
   monsterCatalog.forEach((monster) => {
     const option = document.createElement("option");
+    option.value = monster.monsterId;
+
     const variantText = monster.variant ? ` (${monster.variant})` : "";
-    option.value = `${monster.name}${variantText}`;
-    datalist.appendChild(option);
+    option.textContent = `${monster.name}${variantText}`;
+
+    select.appendChild(option);
   });
 
-  console.log(`Populated datalist with ${monsterCatalog.length} monsters.`);
+  console.log(`Populated select with ${monsterCatalog.length} monsters.`);
 }
 
 function switchTab(tabName) {
