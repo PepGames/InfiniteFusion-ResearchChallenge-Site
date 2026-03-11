@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fusion Research Tool</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <h1>Fusion Research Tool</h1>
+      <p class="subtitle">Local-first tracker for custom Pokémon Infinite Fusion challenge runs.</p>
+    </header>
+
+    <section class="panel">
+      <h2>Run Info</h2>
+      <div class="field-row">
+        <label for="run-name">Run Name</label>
+        <input id="run-name" type="text" placeholder="Enter run name" />
+      </div>
+      <div class="button-row">
+        <button id="save-run-name-btn">Save Run Name</button>
+        <button id="new-run-btn">New Run</button>
+        <button id="export-run-btn">Export Run</button>
+        <label class="import-label" for="import-run-input">Import Run</label>
+        <input id="import-run-input" type="file" accept=".json" />
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Research Points</h2>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <span class="stat-label">Earned</span>
+          <span id="rp-earned" class="stat-value">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Spent</span>
+          <span id="rp-spent" class="stat-value">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Available</span>
+          <span id="rp-available" class="stat-value">0</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Achievements</h2>
+      <div id="achievements-list" class="achievement-list"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Quick Test Actions</h2>
+      <div class="button-row">
+        <button id="add-earned-rp-btn">+1 Earned RP</button>
+        <button id="add-spent-rp-btn">+1 Spent RP</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Action Log</h2>
+      <form id="add-pokemon-form" class="pokemon-form">
+        <div class="field-row">
+          <label for="pokemon-species">Species</label>
+          <select id="pokemon-species" required>
+            <option value="">Select a monster</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <label for="pokemon-route">Route / Area</label>
+          <input id="pokemon-route" type="text" placeholder="e.g. Route 3" required />
+        </div>
+        <button type="submit">Add Pokémon</button>
+      </form>
+
+      <ul id="pokemon-list" class="pokemon-list"></ul>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

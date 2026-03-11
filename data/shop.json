@@ -1,0 +1,20 @@
+[
+  {
+    "id": "additional-encounter",
+    "name": "Additional Encounter",
+    "description": "Gain one extra encounter.",
+    "rpCost": 2
+  },
+  {
+    "id": "unfuse",
+    "name": "Unfuse",
+    "description": "Split one fusion back into its components.",
+    "rpCost": 3
+  },
+  {
+    "id": "revive-half",
+    "name": "Revive One Half",
+    "description": "Revive one half of a dead fusion.",
+    "rpCost": 6
+  }
+]

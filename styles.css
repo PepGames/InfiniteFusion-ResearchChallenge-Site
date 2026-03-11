@@ -1,0 +1,154 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #111827;
+  color: #f3f4f6;
+}
+
+.app {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.app-header {
+  margin-bottom: 24px;
+}
+
+h1, h2 {
+  margin-top: 0;
+}
+
+.subtitle {
+  color: #cbd5e1;
+}
+
+.panel {
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.field-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.field-row input,
+.field-row select {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #4b5563;
+  background: #111827;
+  color: #f3f4f6;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+button,
+.import-label {
+  padding: 10px 14px;
+  border: 1px solid #4b5563;
+  border-radius: 8px;
+  background: #374151;
+  color: #f9fafb;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+button:hover,
+.import-label:hover {
+  background: #4b5563;
+}
+
+#import-run-input {
+  display: none;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.stat-card {
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.9rem;
+  color: #9ca3af;
+  margin-bottom: 6px;
+}
+
+.stat-value {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.pokemon-form {
+  margin-bottom: 16px;
+}
+
+.pokemon-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pokemon-list li {
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.achievement-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.achievement-card {
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.achievement-title {
+  font-weight: bold;
+}
+
+.achievement-desc {
+  font-size: 0.9rem;
+  color: #9ca3af;
+  margin-top: 4px;
+}
+
+.achievement-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.achievement-complete {
+  opacity: 0.6;
+}

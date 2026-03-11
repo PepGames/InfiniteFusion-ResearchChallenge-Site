@@ -1,0 +1,19 @@
+[
+  {
+    "id": "create-1-fusion",
+    "name": "First Fusion",
+    "description": "Create your first fusion.",
+    "rpReward": 1,
+    "conditionType": "fusion_count",
+    "target": 1
+  },
+  {
+    "id": "water-specialist-10",
+    "name": "Water Specialist",
+    "description": "Create 10 fusions involving Water-type Pokémon.",
+    "rpReward": 3,
+    "conditionType": "fusion_type_count",
+    "type": "Water",
+    "target": 10
+  }
+]
