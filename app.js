@@ -521,23 +521,30 @@ function formatActionText(action) {
 }
 
 function renderActionFields() {
+  console.log("renderActionFields fired");
+
   const type = document.getElementById("action-type").value;
   const container = document.getElementById("action-fields");
+
+  console.log("action-fields container:", container);
+  console.log("action type:", type);
+
+  if (!container) return;
 
   container.innerHTML = "";
 
   if (type === "catch") {
     container.innerHTML = `
       <div class="field-row">
-        <label>Species</label>
-        <select id="pokemon-species">
+        <label for="pokemon-species">Species</label>
+        <select id="pokemon-species" required>
           <option value="">Select a monster</option>
         </select>
       </div>
 
       <div class="field-row">
-        <label>Route / Area</label>
-        <input id="pokemon-route" type="text" placeholder="e.g. Route 3">
+        <label for="pokemon-route">Route / Area</label>
+        <input id="pokemon-route" type="text" placeholder="e.g. Route 3" required />
       </div>
     `;
 
@@ -545,15 +552,14 @@ function renderActionFields() {
   }
 
   if (type === "death") {
-    const alive = runState.pokemon.filter(p => p.status === "alive");
-
-    const options = alive.map(p =>
-      `<option value="${p.id}">${p.speciesName}</option>`
+    const alive = runState.pokemon.filter((p) => p.status === "alive");
+    const options = alive.map((p) =>
+      `<option value="${p.id}">${p.speciesName}${p.variant ? ` (${p.variant})` : ""}</option>`
     ).join("");
 
     container.innerHTML = `
       <div class="field-row">
-        <label>Pokémon</label>
+        <label for="death-target">Pokémon</label>
         <select id="death-target">
           ${options}
         </select>
@@ -562,20 +568,19 @@ function renderActionFields() {
   }
 
   if (type === "fusion") {
-    const alive = runState.pokemon.filter(p => p.status === "alive");
-
-    const options = alive.map(p =>
-      `<option value="${p.id}">${p.speciesName}</option>`
+    const alive = runState.pokemon.filter((p) => p.status === "alive");
+    const options = alive.map((p) =>
+      `<option value="${p.id}">${p.speciesName}${p.variant ? ` (${p.variant})` : ""}</option>`
     ).join("");
 
     container.innerHTML = `
       <div class="field-row">
-        <label>Head Pokémon</label>
+        <label for="fusion-head">Head Pokémon</label>
         <select id="fusion-head">${options}</select>
       </div>
 
       <div class="field-row">
-        <label>Body Pokémon</label>
+        <label for="fusion-body">Body Pokémon</label>
         <select id="fusion-body">${options}</select>
       </div>
     `;
@@ -584,12 +589,12 @@ function renderActionFields() {
   if (type === "gym") {
     container.innerHTML = `
       <div class="field-row">
-        <label>Gym Leader</label>
-        <input id="gym-leader" placeholder="Brock">
+        <label for="gym-leader">Gym Leader</label>
+        <input id="gym-leader" type="text" placeholder="e.g. Brock" />
       </div>
 
       <div class="field-row">
-        <label>Result</label>
+        <label for="gym-result">Result</label>
         <select id="gym-result">
           <option value="win">Win</option>
           <option value="loss">Loss</option>
@@ -598,7 +603,7 @@ function renderActionFields() {
 
       <div class="field-row">
         <label>
-          <input type="checkbox" id="gym-used-fusion">
+          <input type="checkbox" id="gym-used-fusion" />
           Used Fusion
         </label>
       </div>
