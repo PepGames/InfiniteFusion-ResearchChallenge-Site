@@ -92,7 +92,19 @@ function renderPokemonList() {
     .reverse()
     .forEach((action) => {
       const li = document.createElement("li");
-      li.textContent = formatActionText(action);
+      li.className = "action-log-item";
+
+      const textSpan = document.createElement("span");
+      textSpan.className = "action-log-text";
+      textSpan.textContent = formatActionText(action);
+
+      const timeSpan = document.createElement("span");
+      timeSpan.className = "action-log-time";
+      timeSpan.textContent = formatActionTimestamp(action.createdAt);
+
+      li.appendChild(textSpan);
+      li.appendChild(timeSpan);
+
       list.appendChild(li);
     });
 }
@@ -641,7 +653,37 @@ function renderActionFields() {
   }
 }
 
+function formatActionTimestamp(isoString) {
+  if (!isoString) return "";
 
+  const date = new Date(isoString);
+  if (Number.isNaN(date.getTime())) return "";
+
+  const weekday = date.toLocaleDateString("en-US", { weekday: "long" });
+  const month = date.toLocaleDateString("en-US", { month: "long" });
+  const day = date.getDate();
+  const year = date.getFullYear();
+
+  let hours = date.getHours();
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const ampm = hours >= 12 ? "pm" : "am";
+
+  hours = hours % 12;
+  if (hours === 0) hours = 12;
+
+  return `${weekday}, ${month} ${day}${getOrdinalSuffix(day)}, ${year} @ ${hours}:${minutes}${ampm}`;
+}
+
+function getOrdinalSuffix(day) {
+  if (day >= 11 && day <= 13) return "th";
+
+  switch (day % 10) {
+    case 1: return "st";
+    case 2: return "nd";
+    case 3: return "rd";
+    default: return "th";
+  }
+}
 
 
 

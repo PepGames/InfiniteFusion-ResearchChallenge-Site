@@ -177,3 +177,25 @@ button:hover,
 .tab-panel.active {
   display: block;
 }
+
+.action-log-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.action-log-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.action-log-time {
+  flex-shrink: 0;
+  color: #9ca3af;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  margin-left: auto;
+}
