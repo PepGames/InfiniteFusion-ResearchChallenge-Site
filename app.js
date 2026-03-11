@@ -264,6 +264,10 @@ function renderAchievements() {
   });
 }
 
+function claimAchievement(id) {
+  console.log("claimAchievement placeholder:", id);
+}
+
 async function loadMonsterCatalog() {
   try {
     console.log("Loading monsters from data/monsters.json...");
@@ -342,7 +346,6 @@ function attachEventListeners() {
   document.getElementById("add-pokemon-form").addEventListener("submit", handleLogAction);
   document.getElementById("export-run-btn").addEventListener("click", exportRun);
   document.getElementById("import-run-input").addEventListener("change", importRun);
-  document.getElementById("add-pokemon-form").addEventListener("submit", handleLogAction);
 }
 
 async function init() {
