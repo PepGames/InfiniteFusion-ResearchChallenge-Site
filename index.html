@@ -65,16 +65,34 @@
         <h2>Action Log</h2>
         <form id="add-pokemon-form" class="pokemon-form">
           <div class="field-row">
-            <label for="pokemon-species">Species</label>
-            <select id="pokemon-species" required>
-              <option value="">Select a monster</option>
+            <label for="action-type">Action Type</label>
+            <select id="action-type">
+              <option value="catch">Catch Pokémon</option>
+              <option value="death">Pokémon Death</option>
+              <option value="fusion">Create Fusion</option>
+              <option value="gym">Gym Battle</option>
             </select>
           </div>
+
+          <div class="field-row">
+            <label for="pokemon-species">Species</label>
+            <input
+              id="pokemon-species"
+              type="text"
+              list="monster-options"
+              placeholder="Start typing a monster name..."
+              autocomplete="off"
+              required
+            />
+            <datalist id="monster-options"></datalist>
+          </div>
+
           <div class="field-row">
             <label for="pokemon-route">Route / Area</label>
             <input id="pokemon-route" type="text" placeholder="e.g. Route 3" required />
           </div>
-          <button type="submit">Add Pokémon</button>
+
+          <button type="submit">Log Action</button>
         </form>
 
         <ul id="pokemon-list" class="pokemon-list"></ul>

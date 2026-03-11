@@ -20,7 +20,8 @@ const defaultRunState = {
 let runState = loadRunState();
 let achievementCatalog = [];
 let monsterCatalog = [];
-let monsterLookup = {};
+let monsterByID = {};
+let monsterByName = {};
 
 function createNewRunState() {
   const now = new Date().toISOString();
@@ -86,7 +87,7 @@ function renderPokemonList() {
   }
 
   runState.pokemon.forEach((pokemon) => {
-    const monster = monsterLookup[pokemon.monsterId];
+    const monster = monsterByID[pokemon.monsterId];
     const variantText = pokemon.variant ? ` (${pokemon.variant})` : "";
     const typeText = monster
       ? [monster.primaryType, monster.secondaryType].filter(Boolean).join(" / ")
@@ -131,20 +132,21 @@ function handleAddSpentRP() {
   updateAndSave();
 }
 
-function handleAddPokemon(event) {
+function handleLogAction(event) {
   event.preventDefault();
 
-  const speciesSelect = document.getElementById("pokemon-species");
+  const speciesInput = document.getElementById("pokemon-species");
   const routeInput = document.getElementById("pokemon-route");
 
-  const monsterId = speciesSelect.value;
+  const speciesText = speciesInput.value.trim();
   const route = routeInput.value.trim();
 
-  if (!monsterId || !route) return;
+  if (!speciesText || !route) return;
 
-  const monster = monsterLookup[monsterId];
+  const monster = monsterByName[speciesText.toLowerCase()];
+
   if (!monster) {
-    alert("Selected monster could not be found in the catalog.");
+    alert("Please choose a valid monster from the list.");
     return;
   }
 
@@ -158,7 +160,7 @@ function handleAddPokemon(event) {
     createdAt: new Date().toISOString()
   });
 
-  speciesSelect.value = "";
+  speciesInput.value = "";
   routeInput.value = "";
 
   evaluateAchievements();
@@ -261,32 +263,43 @@ function renderAchievements() {
 
 async function loadMonsterCatalog() {
   try {
+    console.log("Loading monsters from data/monsters.json...");
+
     const response = await fetch("data/monsters.json");
+
+    if (!response.ok) {
+      throw new Error(`HTTP error ${response.status} while loading monsters.json`);
+    }
+
     monsterCatalog = await response.json();
 
-    monsterLookup = {};
+    monsterByID = {};
+    monsterByName = {};
+
     monsterCatalog.forEach((monster) => {
-      monsterLookup[monster.monsterId] = monster;
+      monsterByID[monster.monsterId] = monster;
+
+      const displayName = `${monster.name}${monster.variant ? ` (${monster.variant})` : ""}`;
+      monsterByName[displayName.toLowerCase()] = monster;
     });
+
+    console.log(`Loaded ${monsterCatalog.length} monsters.`);
   } catch (error) {
     console.error("Failed to load monsters:", error);
   }
 }
 
 function populateMonsterSelect() {
-  const select = document.getElementById("pokemon-species");
-  if (!select) return;
+  const datalist = document.getElementById("monster-options");
+  if (!datalist) return;
 
-  select.innerHTML = `<option value="">Select a monster</option>`;
+  datalist.innerHTML = "";
 
   monsterCatalog.forEach((monster) => {
     const option = document.createElement("option");
-    option.value = monster.monsterId;
-
     const variantText = monster.variant ? ` (${monster.variant})` : "";
-    option.textContent = `${monster.name}${variantText}`;
-
-    select.appendChild(option);
+    option.value = `${monster.name}${variantText}`;
+    datalist.appendChild(option);
   });
 }
 
@@ -320,9 +333,10 @@ function attachEventListeners() {
   document.getElementById("new-run-btn").addEventListener("click", handleNewRun);
   document.getElementById("add-earned-rp-btn").addEventListener("click", handleAddEarnedRP);
   document.getElementById("add-spent-rp-btn").addEventListener("click", handleAddSpentRP);
-  document.getElementById("add-pokemon-form").addEventListener("submit", handleAddPokemon);
+  document.getElementById("add-pokemon-form").addEventListener("submit", handleLogAction);
   document.getElementById("export-run-btn").addEventListener("click", exportRun);
   document.getElementById("import-run-input").addEventListener("change", importRun);
+  document.getElementById("add-pokemon-form").addEventListener("submit", handleLogAction);
 }
 
 async function init() {
