@@ -333,21 +333,64 @@ button:disabled {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 72px 46px;
+  padding: 90px 46px 60px;
   pointer-events: none;
 }
 
 .petal-label {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #111827;
-  line-height: 1.2;
-  margin-bottom: 8px;
+  font-family: "Permanent Marker", Georgia;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 0.9;
+  text-transform: uppercase;
+
+  -webkit-text-stroke: 1.2px rgba(0,0,0,0.45);
+
+  text-shadow:
+    0 1px 1px rgba(255,255,255,0.18),
+    0 2px 3px rgba(0,0,0,0.35);
 }
 
 .petal-value {
-  font-size: 2.2rem;
-  font-weight: 800;
-  color: #111827;
+  font-family: "Permanent Marker", Georgia;
+  font-size: 3.2rem;
+  font-weight: 700;
   line-height: 1;
+  color: #0f172a;
+  text-shadow:
+    0 2px 4px rgba(0,0,0,0.22);
+}
+
+.petal-top .petal-label {
+  color: #e3b21a;
+  -webkit-text-stroke: 1px rgba(103, 72, 4, 0.7);
+}
+
+.petal-left .petal-label {
+  color: #20c765;
+  -webkit-text-stroke: 1px rgba(9, 90, 46, 0.75);
+}
+
+.petal-right .petal-label {
+  color: #ef5350;
+  -webkit-text-stroke: 1px rgba(120, 28, 28, 0.75);
+}
+
+.petal-left .petal-label,
+.petal-right .petal-label {
+  order: 2;
+}
+
+.petal-left .petal-value,
+.petal-right .petal-value {
+  order: 1;
+}
+
+.petal-left .petal-content {
+  transform: translate(12px, -16px);
+}
+
+.petal-right .petal-content {
+  transform: translate(-10px, -14px);
 }
