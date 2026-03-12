@@ -721,7 +721,7 @@ function attachEventListeners() {
   document.getElementById("action-type").addEventListener("change", renderActionFields);
   document.getElementById("export-run-btn").addEventListener("click", exportRun);
   document.getElementById("import-run-input").addEventListener("change", importRun);
-  document.getElementById("undo-action-btn").getElementById("undo-action-btn");
+  document.getElementById("undo-action-btn").addEventListener("click", handleUndoAction);
   document.getElementById("redo-action-btn").addEventListener("click", handleRedoAction);
 }
 
