@@ -361,10 +361,12 @@ function evaluateAchievements() {
 
 function renderRun() {
   document.getElementById("run-name").value = runState.meta.runName;
-  document.getElementById("rp-earned").textContent = runState.rp.achievementEarned + runState.rp.bonusEarned;
+  document.getElementById("rp-earned").textContent =
+    runState.rp.achievementEarned + runState.rp.bonusEarned;
   document.getElementById("rp-spent").textContent = runState.rp.spent;
   document.getElementById("rp-available").textContent = getAvailableRP();
 
+  renderFusionFlowerWidget();
   renderPokemonList();
   renderAchievements();
 
@@ -605,9 +607,26 @@ function switchTab(tabName) {
   });
 }
 
+function renderFusionFlowerWidget() {
+  const fusionsEl = document.getElementById("fusions-discovered-value");
+  const catchesEl = document.getElementById("catches-available-value");
+  const splitsEl = document.getElementById("splits-available-value");
+
+  if (fusionsEl) {
+    fusionsEl.textContent = getFusionsDiscoveredCount();
+  }
+
+  if (catchesEl) {
+    catchesEl.textContent = runState.resources?.catchesAvailable ?? 0;
+  }
+
+  if (splitsEl) {
+    splitsEl.textContent = runState.resources?.splitsAvailable ?? 0;
+  }
+}
 
 // =========================
-// Formatting Helpers
+// Helpers
 // =========================
 
 function formatActionText(action) {
@@ -684,6 +703,22 @@ function debugLog(...args) {
   }
 }
 
+function getFusionsDiscoveredCount() {
+  const discovered = new Set();
+
+  runState.actions.forEach((action) => {
+    if (action.type !== "fusion") return;
+
+    const head = runState.pokemon.find((p) => p.id === action.headPokemonLogId);
+    const body = runState.pokemon.find((p) => p.id === action.bodyPokemonLogId);
+
+    if (!head || !body) return;
+
+    discovered.add(`${head.monsterId}__${body.monsterId}`);
+  });
+
+  return discovered.size;
+}
 
 // =========================
 // Event Handlers

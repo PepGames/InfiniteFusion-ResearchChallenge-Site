@@ -35,6 +35,224 @@
         </div>
       </section>
 
+<section class="panel fusion-flower-panel">
+  <div class="fusion-flower" aria-label="Run resource overview">
+
+    <!-- ================= TOP PETAL ================= -->
+
+    <div class="petal-card petal-top">
+      <svg class="petal-svg petal-fusions" viewBox="0 0 300 400" aria-hidden="true">
+
+        <defs>
+          <linearGradient id="petalGradientFusion" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="var(--petal-top)"></stop>
+            <stop offset="55%" stop-color="var(--petal-mid)"></stop>
+            <stop offset="100%" stop-color="var(--petal-bottom)"></stop>
+          </linearGradient>
+
+          <linearGradient id="petalHighlightFusion" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.55)"></stop>
+            <stop offset="100%" stop-color="rgba(255,255,255,0)"></stop>
+          </linearGradient>
+        </defs>
+
+        <!-- base fill -->
+        <path d="M150 350 Q50 300 30 200 Q30 110 80 50 Q120 10 150 40 Q180 10 220 50 Q270 110 270 200 Q250 300 150 350 Z"
+              fill="url(#petalGradientFusion)"></path>
+
+        <!-- highlight -->
+        <path d="M150 318 Q78 278 60 198 Q60 128 98 74 Q124 38 150 58 Q176 38 202 74 Q240 128 240 198 Q222 278 150 318 Z"
+              fill="url(#petalHighlightFusion)"
+              opacity="0.1"></path>
+
+        <!-- veins -->
+        <path d="M88 112 Q150 72 212 112"
+              fill="none"
+              stroke="rgba(0,0,0,0.10)"
+              stroke-width="4"
+              stroke-linecap="round"></path>
+
+        <path d="M74 170 Q150 128 226 170"
+              fill="none"
+              stroke="rgba(0,0,0,0.08)"
+              stroke-width="3"
+              stroke-linecap="round"></path>
+
+        <!-- center highlight -->
+        <path d="M150 62 L150 292"
+              fill="none"
+              stroke="rgba(255,255,255,0.12)"
+              stroke-width="2"
+              stroke-linecap="round"></path>
+
+        <!-- main outline -->
+        <path class="petal-outline"
+              d="M150 350 Q50 300 30 200 Q30 110 80 50 Q120 10 150 40 Q180 10 220 50 Q270 110 270 200 Q250 300 150 350 Z"
+              fill="none"
+              stroke-width="10"
+              stroke-linejoin="round"
+              stroke-linecap="round"></path>
+
+        <!-- inner shadow -->
+        <path
+          d="M150 350 Q50 300 30 200 Q30 110 80 50 Q120 10 150 40 Q180 10 220 50 Q270 110 270 200 Q250 300 150 350 Z"
+          fill="none"
+          stroke="rgba(0,0,0,0.06)"
+          stroke-width="6"
+          stroke-linejoin="round"
+          stroke-linecap="round"
+          transform="translate(150 200) scale(0.94) translate(-150 -200)"
+        ></path>
+
+      </svg>
+
+      <div class="petal-content">
+        <div class="petal-label">Fusions Discovered</div>
+        <div class="petal-value" id="fusions-discovered-value">0</div>
+      </div>
+    </div>
+
+
+    <!-- ================= LEFT PETAL ================= -->
+
+    <div class="petal-card petal-left">
+      <svg class="petal-svg petal-catches" viewBox="0 0 300 400" aria-hidden="true">
+
+        <defs>
+          <linearGradient id="petalGradientCatch" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="var(--petal-top)"></stop>
+            <stop offset="55%" stop-color="var(--petal-mid)"></stop>
+            <stop offset="100%" stop-color="var(--petal-bottom)"></stop>
+          </linearGradient>
+
+          <linearGradient id="petalHighlightCatch" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.55)"></stop>
+            <stop offset="100%" stop-color="rgba(255,255,255,0)"></stop>
+          </linearGradient>
+        </defs>
+
+        <path d="M150 350 Q50 300 30 200 Q30 110 80 50 Q120 10 150 40 Q180 10 220 50 Q270 110 270 200 Q250 300 150 350 Z"
+              fill="url(#petalGradientCatch)"></path>
+
+        <path d="M150 318 Q78 278 60 198 Q60 128 98 74 Q124 38 150 58 Q176 38 202 74 Q240 128 240 198 Q222 278 150 318 Z"
+              fill="url(#petalHighlightCatch)"
+              opacity="0.1"></path>
+
+        <path d="M88 112 Q150 72 212 112"
+              fill="none"
+              stroke="rgba(0,0,0,0.10)"
+              stroke-width="4"
+              stroke-linecap="round"></path>
+
+        <path d="M74 170 Q150 128 226 170"
+              fill="none"
+              stroke="rgba(0,0,0,0.08)"
+              stroke-width="3"
+              stroke-linecap="round"></path>
+
+        <path d="M150 62 L150 292"
+              fill="none"
+              stroke="rgba(255,255,255,0.12)"
+              stroke-width="2"
+              stroke-linecap="round"></path>
+
+        <path class="petal-outline"
+              d="M150 350 Q50 300 30 200 Q30 110 80 50 Q120 10 150 40 Q180 10 220 50 Q270 110 270 200 Q250 300 150 350 Z"
+              fill="none"
+              stroke-width="10"
+              stroke-linejoin="round"
+              stroke-linecap="round"></path>
+
+        <path
+          d="M150 350 Q50 300 30 200 Q30 110 80 50 Q120 10 150 40 Q180 10 220 50 Q270 110 270 200 Q250 300 150 350 Z"
+          fill="none"
+          stroke="rgba(0,0,0,0.06)"
+          stroke-width="6"
+          stroke-linejoin="round"
+          stroke-linecap="round"
+          transform="translate(150 200) scale(0.94) translate(-150 -200)"
+        ></path>
+
+      </svg>
+
+      <div class="petal-content">
+        <div class="petal-label">Catches Available</div>
+        <div class="petal-value" id="catches-available-value">0</div>
+      </div>
+    </div>
+
+
+    <!-- ================= RIGHT PETAL ================= -->
+
+    <div class="petal-card petal-right">
+      <svg class="petal-svg petal-splits" viewBox="0 0 300 400" aria-hidden="true">
+
+        <defs>
+          <linearGradient id="petalGradientSplit" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="var(--petal-top)"></stop>
+            <stop offset="55%" stop-color="var(--petal-mid)"></stop>
+            <stop offset="100%" stop-color="var(--petal-bottom)"></stop>
+          </linearGradient>
+
+          <linearGradient id="petalHighlightSplit" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.55)"></stop>
+            <stop offset="100%" stop-color="rgba(255,255,255,0)"></stop>
+          </linearGradient>
+        </defs>
+
+        <path d="M150 350 Q50 300 30 200 Q30 110 80 50 Q120 10 150 40 Q180 10 220 50 Q270 110 270 200 Q250 300 150 350 Z"
+              fill="url(#petalGradientSplit)"></path>
+
+        <path d="M150 318 Q78 278 60 198 Q60 128 98 74 Q124 38 150 58 Q176 38 202 74 Q240 128 240 198 Q222 278 150 318 Z"
+              fill="url(#petalHighlightSplit)"
+              opacity="0.1"></path>
+
+        <path d="M88 112 Q150 72 212 112"
+              fill="none"
+              stroke="rgba(0,0,0,0.10)"
+              stroke-width="4"
+              stroke-linecap="round"></path>
+
+        <path d="M74 170 Q150 128 226 170"
+              fill="none"
+              stroke="rgba(0,0,0,0.08)"
+              stroke-width="3"
+              stroke-linecap="round"></path>
+
+        <path d="M150 62 L150 292"
+              fill="none"
+              stroke="rgba(255,255,255,0.12)"
+              stroke-width="2"
+              stroke-linecap="round"></path>
+
+        <path class="petal-outline"
+              d="M150 350 Q50 300 30 200 Q30 110 80 50 Q120 10 150 40 Q180 10 220 50 Q270 110 270 200 Q250 300 150 350 Z"
+              fill="none"
+              stroke-width="10"
+              stroke-linejoin="round"
+              stroke-linecap="round"></path>
+
+        <path
+          d="M150 350 Q50 300 30 200 Q30 110 80 50 Q120 10 150 40 Q180 10 220 50 Q270 110 270 200 Q250 300 150 350 Z"
+          fill="none"
+          stroke="rgba(0,0,0,0.06)"
+          stroke-width="6"
+          stroke-linejoin="round"
+          stroke-linecap="round"
+          transform="translate(150 200) scale(0.94) translate(-150 -200)"
+        ></path>
+
+      </svg>
+
+      <div class="petal-content">
+        <div class="petal-label">Splits Available</div>
+        <div class="petal-value" id="splits-available-value">0</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
       <section class="panel">
         <h2>Research Points</h2>
         <div class="stat-grid">
