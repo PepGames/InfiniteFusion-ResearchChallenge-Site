@@ -319,6 +319,14 @@ function getAvailableRP() {
 function updateAndSave() {
   rebuildDerivedStateFromActions();
   const achievementChanges = evaluateAchievements();
+  achievementChanges.newlyUnlocked.forEach((id) => {
+    const achievement = achievementCatalog.find((a) => a.id === id);
+    if (!achievement) return;
+
+    console.log("Achievement unlocked:", achievement.name);
+
+    popValue(document.getElementById("rp-earned"));
+  });
   saveRunState(runState);
   renderRun();
 
