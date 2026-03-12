@@ -199,3 +199,9 @@ button:hover,
   white-space: nowrap;
   margin-left: auto;
 }
+
+.action-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}

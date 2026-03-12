@@ -17,6 +17,7 @@ const defaultRunState = {
   gyms: [],
   achievements: [],
   purchases: []
+  redoStack: []
 };
 
 let runState = loadRunState();
@@ -71,7 +72,11 @@ function renderRun() {
   document.getElementById("rp-earned").textContent = runState.rp.earned;
   document.getElementById("rp-spent").textContent = runState.rp.spent;
   document.getElementById("rp-available").textContent = getAvailableRP();
+  const undoBtn = document.getElementById("undo-action-btn");
+  const redoBtn = document.getElementById("redo-action-btn");
 
+  if (undoBtn) undoBtn.disabled = runState.actions.length === 0;
+  if (redoBtn) redoBtn.disabled = runState.redoStack.length === 0;
   renderPokemonList();
   renderAchievements();
 }
@@ -456,6 +461,7 @@ function createBaseAction(type) {
 
 function addAction(action) {
   runState.actions.push(action);
+  runState.redoStack = [];
 }
 
 function rebuildDerivedStateFromActions() {
@@ -685,9 +691,25 @@ function getOrdinalSuffix(day) {
   }
 }
 
+function handleUndoAction() {
+  if (runState.actions.length === 0) return;
 
+  const action = runState.actions.pop();
+  runState.redoStack.push(action);
 
+  rebuildDerivedStateFromActions();
+  updateAndSave();
+}
 
+function handleRedoAction() {
+  if (runState.redoStack.length === 0) return;
+
+  const action = runState.redoStack.pop();
+  runState.actions.push(action);
+
+  rebuildDerivedStateFromActions();
+  updateAndSave();
+}
 
 
 function attachEventListeners() {
@@ -699,6 +721,8 @@ function attachEventListeners() {
   document.getElementById("action-type").addEventListener("change", renderActionFields);
   document.getElementById("export-run-btn").addEventListener("click", exportRun);
   document.getElementById("import-run-input").addEventListener("change", importRun);
+  document.getElementById("undo-action-btn").getElementById("undo-action-btn");
+  document.getElementById("redo-action-btn").addEventListener("click", handleRedoAction);
 }
 
 async function init() {
