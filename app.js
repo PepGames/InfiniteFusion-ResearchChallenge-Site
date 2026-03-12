@@ -135,6 +135,7 @@ async function loadAchievementCatalog() {
   try {
     const response = await fetch("data/achievements.json");
     achievementCatalog = await response.json();
+    validateAchievementCatalog();
   } catch (error) {
     console.error("Failed to load achievements:", error);
   }
@@ -169,6 +170,69 @@ async function loadMonsterCatalog() {
   }
 }
 
+function validateAchievementCatalog() {
+  const errors = [];
+  const achievementIds = new Set();
+  const achievementMap = {};
+
+  for (const achievement of achievementCatalog) {
+    if (!achievement?.id) {
+      errors.push("Achievement missing id.");
+      continue;
+    }
+
+    if (achievementIds.has(achievement.id)) {
+      errors.push(`Duplicate achievement id: ${achievement.id}`);
+    }
+
+    achievementIds.add(achievement.id);
+    achievementMap[achievement.id] = achievement;
+  }
+
+  for (const achievement of achievementCatalog) {
+    const prev = achievement.previousAchievement;
+
+    if (prev && !achievementMap[prev]) {
+      errors.push(
+        `Achievement "${achievement.id}" references missing previousAchievement "${prev}".`
+      );
+    }
+  }
+
+  function hasCycle(startId, visited = new Set(), stack = new Set()) {
+    if (stack.has(startId)) return true;
+    if (visited.has(startId)) return false;
+
+    visited.add(startId);
+    stack.add(startId);
+
+    const achievement = achievementMap[startId];
+    const prev = achievement?.previousAchievement;
+
+    if (prev && achievementMap[prev]) {
+      if (hasCycle(prev, visited, stack)) {
+        return true;
+      }
+    }
+
+    stack.delete(startId);
+    return false;
+  }
+
+  for (const achievement of achievementCatalog) {
+    if (hasCycle(achievement.id)) {
+      errors.push(`Circular dependency detected involving "${achievement.id}".`);
+    }
+  }
+
+  if (errors.length > 0) {
+    console.error("Achievement catalog validation failed:");
+    errors.forEach((error) => console.error(" -", error));
+    alert("Achievement catalog has errors. Check console.");
+  } else {
+    debugLog("Achievement catalog validation passed.");
+  }
+}
 
 // =========================
 // Core State Logic
@@ -331,9 +395,17 @@ function evaluateAchievements() {
 
   const now = new Date().toISOString();
   let changed = true;
+  let safetyCounter = 0;
+  const maxPasses = achievementCatalog.length + 5;
 
   while (changed) {
     changed = false;
+    safetyCounter += 1;
+
+    if (safetyCounter > maxPasses) {
+      console.error("Achievement evaluation exceeded safe pass limit.");
+      break;
+    }
 
     achievementCatalog.forEach((achievement) => {
       const previouslyUnlocked = !!nextProgress[achievement.id]?.unlocked;
@@ -344,7 +416,6 @@ function evaluateAchievements() {
           unlocked: true,
           unlockedAt: previousProgress[achievement.id]?.unlockedAt || now
         };
-
         changed = true;
       }
 
