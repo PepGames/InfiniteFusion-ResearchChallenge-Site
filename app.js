@@ -16,7 +16,7 @@ const defaultRunState = {
   fusions: [],
   gyms: [],
   achievements: [],
-  purchases: []
+  purchases: [],
   redoStack: []
 };
 
