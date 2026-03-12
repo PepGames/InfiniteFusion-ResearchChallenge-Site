@@ -345,7 +345,7 @@ function evaluateAchievements() {
 
 function renderRun() {
   document.getElementById("run-name").value = runState.meta.runName;
-  document.getElementById("rp-earned").textContent = runState.rp.earned;
+  document.getElementById("rp-earned").textContent = runState.rp.achievementEarned + runState.rp.bonusEarned;
   document.getElementById("rp-spent").textContent = runState.rp.spent;
   document.getElementById("rp-available").textContent = getAvailableRP();
 
