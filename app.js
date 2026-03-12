@@ -17,6 +17,10 @@ const defaultRunState = {
     bonusEarned: 0,
     spent: 0
   },
+  resources: {
+    catchesAvailable: 0,
+    splitsAvailable: 0
+  },
   actions: [],
   redoStack: [],
   pokemon: [],
@@ -25,6 +29,14 @@ const defaultRunState = {
   achievementProgress: {},
   purchases: []
 };
+
+const actionHandlers = {
+  catch: handleCatchAction,
+  death: handleDeathAction,
+  fusion: handleFusionAction,
+  gym: handleGymAction
+};
+
 
 let runState = loadRunState();
 let achievementCatalog = [];
@@ -61,6 +73,10 @@ function normalizeRunState(state) {
       achievementEarned: state?.rp?.achievementEarned || 0,
       bonusEarned: state?.rp?.bonusEarned || 0,
       spent: state?.rp?.spent || 0
+    },
+    resources: {
+      catchesAvailable: state?.resources?.catchesAvailable ?? 0,
+      splitsAvailable: state?.resources?.splitsAvailable ?? 0
     },
     actions: Array.isArray(state?.actions) ? state.actions : [],
     redoStack: Array.isArray(state?.redoStack) ? state.redoStack : [],
@@ -697,114 +713,134 @@ function handleAddSpentRP() {
   updateAndSave();
 }
 
+function handleAddCatchToken() {
+  runState.resources.catchesAvailable += 1;
+  updateAndSave();
+  renderActionFields();
+}
+
+function handleAddSplitToken() {
+  runState.resources.splitsAvailable += 1;
+  updateAndSave();
+  renderActionFields();
+}
+
 function handleLogAction(event) {
   event.preventDefault();
 
   const actionType = document.getElementById("action-type").value;
+  const handler = actionHandlers[actionType];
 
-  if (actionType === "catch") {
-    const speciesSelect = document.getElementById("pokemon-species");
-    const routeInput = document.getElementById("pokemon-route");
-
-    const monsterId = speciesSelect?.value || "";
-    const route = routeInput?.value.trim() || "";
-
-    if (!monsterId || !route) {
-      alert("Catch actions need both a species and a route.");
-      return;
-    }
-
-    const monster = monsterByID[monsterId];
-
-    if (!monster) {
-      alert("Selected monster could not be found in the catalog.");
-      return;
-    }
-
-    addAction({
-      ...createBaseAction("catch"),
-      monsterId,
-      route
-    });
-
-    updateAndSave();
-    renderActionFields();
+  if (!handler) {
+    alert("Unknown action type.");
     return;
   }
 
-  if (actionType === "death") {
-    const deathTarget = document.getElementById("death-target");
-    const deathNote = document.getElementById("death-note");
+  handler();
+}
 
-    const targetPokemonLogId = deathTarget?.value || "";
-    const note = deathNote?.value.trim() || "";
-
-    if (!targetPokemonLogId) {
-      alert("Please choose a Pokémon to mark as dead.");
-      return;
-    }
-
-    addAction({
-      ...createBaseAction("death"),
-      targetPokemonLogId,
-      note
-    });
-
-    updateAndSave();
-    renderActionFields();
+function handleCatchAction() {
+  if (runState.resources.catchesAvailable <= 0) {
+    alert("You do not have any catches available.");
     return;
   }
 
-  if (actionType === "fusion") {
-    const fusionHead = document.getElementById("fusion-head");
-    const fusionBody = document.getElementById("fusion-body");
+  const speciesSelect = document.getElementById("pokemon-species");
+  const routeInput = document.getElementById("pokemon-route");
 
-    const headPokemonLogId = fusionHead?.value || "";
-    const bodyPokemonLogId = fusionBody?.value || "";
+  const monsterId = speciesSelect?.value || "";
+  const route = routeInput?.value.trim() || "";
 
-    if (!headPokemonLogId || !bodyPokemonLogId) {
-      alert("Please choose both fusion components.");
-      return;
-    }
-
-    if (headPokemonLogId === bodyPokemonLogId) {
-      alert("A Pokémon cannot fuse with itself.");
-      return;
-    }
-
-    addAction({
-      ...createBaseAction("fusion"),
-      headPokemonLogId,
-      bodyPokemonLogId
-    });
-
-    updateAndSave();
-    renderActionFields();
+  if (!monsterId || !route) {
+    alert("Catch actions need both a species and a route.");
     return;
   }
 
-  if (actionType === "gym") {
-    const gymLeaderInput = document.getElementById("gym-leader");
-    const gymResultSelect = document.getElementById("gym-result");
-    const gymUsedFusionCheckbox = document.getElementById("gym-used-fusion");
+  const monster = monsterByID[monsterId];
 
-    const gymLeader = gymLeaderInput?.value.trim() || "Unknown Gym";
-    const result = gymResultSelect?.value || "win";
-    const usedFusion = !!gymUsedFusionCheckbox?.checked;
-
-    addAction({
-      ...createBaseAction("gym"),
-      gymLeader,
-      result,
-      usedFusion
-    });
-
-    updateAndSave();
-    renderActionFields();
+  if (!monster) {
+    alert("Selected monster could not be found in the catalog.");
     return;
   }
 
-  alert("Unknown action type.");
+  addAction({
+    ...createBaseAction("catch"),
+    monsterId,
+    route
+  });
+
+  runState.resources.catchesAvailable -= 1;
+  updateAndSave();
+  renderActionFields();
+}
+
+function handleDeathAction() {
+  const deathTarget = document.getElementById("death-target");
+  const deathNote = document.getElementById("death-note");
+
+  const targetPokemonLogId = deathTarget?.value || "";
+  const note = deathNote?.value.trim() || "";
+
+  if (!targetPokemonLogId) {
+    alert("Please choose a Pokémon to mark as dead.");
+    return;
+  }
+
+  addAction({
+    ...createBaseAction("death"),
+    targetPokemonLogId,
+    note
+  });
+
+  updateAndSave();
+  renderActionFields();
+}
+
+function handleFusionAction() {
+  const fusionHead = document.getElementById("fusion-head");
+  const fusionBody = document.getElementById("fusion-body");
+
+  const headPokemonLogId = fusionHead?.value || "";
+  const bodyPokemonLogId = fusionBody?.value || "";
+
+  if (!headPokemonLogId || !bodyPokemonLogId) {
+    alert("Please choose both fusion components.");
+    return;
+  }
+
+  if (headPokemonLogId === bodyPokemonLogId) {
+    alert("A Pokémon cannot fuse with itself.");
+    return;
+  }
+
+  addAction({
+    ...createBaseAction("fusion"),
+    headPokemonLogId,
+    bodyPokemonLogId
+  });
+
+  updateAndSave();
+  renderActionFields();
+}
+
+function handleGymAction() {
+  const gymLeaderInput = document.getElementById("gym-leader");
+  const gymResultSelect = document.getElementById("gym-result");
+  const gymUsedFusionCheckbox = document.getElementById("gym-used-fusion");
+
+  const gymLeader = gymLeaderInput?.value.trim() || "Unknown Gym";
+  const result = gymResultSelect?.value || "win";
+  const usedFusion = !!gymUsedFusionCheckbox?.checked;
+
+  addAction({
+    ...createBaseAction("gym"),
+    gymLeader,
+    result,
+    usedFusion
+  });
+
+  updateAndSave();
+  renderActionFields();
 }
 
 function handleUndoAction() {
@@ -885,6 +921,7 @@ function importRun(event) {
 
 
 
+
 // =========================
 // Event Listener Wiring
 // =========================
@@ -894,6 +931,8 @@ function attachEventListeners() {
   document.getElementById("new-run-btn").addEventListener("click", handleNewRun);
   document.getElementById("add-earned-rp-btn").addEventListener("click", handleAddEarnedRP);
   document.getElementById("add-spent-rp-btn").addEventListener("click", handleAddSpentRP);
+  document.getElementById("add-catch-token-btn").addEventListener("click", handleAddCatchToken);
+  document.getElementById("add-split-token-btn").addEventListener("click", handleAddSplitToken);
   document.getElementById("action-form").addEventListener("submit", handleLogAction);
   document.getElementById("action-type").addEventListener("change", renderActionFields);
   document.getElementById("export-run-btn").addEventListener("click", exportRun);
