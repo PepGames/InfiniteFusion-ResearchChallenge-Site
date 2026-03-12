@@ -640,10 +640,11 @@ function renderFusionFlowerWidget() {
       popValue(el);
 
       const petalCard = el.closest(".petal-card");
+      const petalWrap = petalCard?.querySelector(".petal-anim-wrap");
       const petalSvg = petalCard?.querySelector(".petal-svg");
 
-      if (petalCard) {
-        pulsePetal(petalCard);
+      if (petalWrap) {
+        pulsePetal(petalWrap);
       }
 
       if (petalSvg) {
@@ -686,7 +687,7 @@ function attachAnimationCleanup() {
     });
   });
 
-  document.querySelectorAll(".petal-card").forEach((el) => {
+  document.querySelectorAll(".petal-anim-wrap").forEach((el) => {
     el.addEventListener("animationend", () => {
       el.classList.remove("pulse");
     });
