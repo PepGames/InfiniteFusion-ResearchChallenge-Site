@@ -12,12 +12,12 @@ const defaultRunState = {
     spent: 0
   },
   actions: [],
+  redoStack: [],
   pokemon: [],
   fusions: [],
   gyms: [],
   achievements: [],
-  purchases: [],
-  redoStack: []
+  purchases: []
 };
 
 let runState = loadRunState();
@@ -162,6 +162,7 @@ function normalizeRunState(state) {
       spent: state?.rp?.spent || 0
     },
     actions: Array.isArray(state?.actions) ? state.actions : [],
+    redoStack: Array.isArray(state?.redoStack) ? state.redoStack : [],
     pokemon: Array.isArray(state?.pokemon) ? state.pokemon : [],
     fusions: Array.isArray(state?.fusions) ? state.fusions : [],
     gyms: Array.isArray(state?.gyms) ? state.gyms : [],
