@@ -44,6 +44,12 @@ let monsterCatalog = [];
 let monsterByID = {};
 let hasRenderedFusionFlowerOnce = false;
 
+let lastRenderedFusionFlowerValues = {
+  fusions: null,
+  catches: null,
+  splits: null
+};
+
 document.fonts.load("1em 'Permanent Marker'").then(() => {
   document.body.classList.add("marker-font");
 });
@@ -616,19 +622,21 @@ function renderFusionFlowerWidget() {
   const catchesEl = document.getElementById("catches-available-value");
   const splitsEl = document.getElementById("splits-available-value");
 
-  const nextFusions = getFusionsDiscoveredCount();
-  const nextCatches = runState.resources?.catchesAvailable ?? 0;
-  const nextSplits = runState.resources?.splitsAvailable ?? 0;
+  const nextValues = {
+    fusions: getFusionsDiscoveredCount(),
+    catches: runState.resources?.catchesAvailable ?? 0,
+    splits: runState.resources?.splitsAvailable ?? 0
+  };
 
-  function updateValue(el, nextValue) {
+  function updateValue(el, key) {
     if (!el) return;
 
-    const next = String(nextValue);
-    const previous = el.textContent;
+    const next = String(nextValues[key]);
+    const previous = lastRenderedFusionFlowerValues[key];
 
     el.textContent = next;
 
-    if (hasRenderedFusionFlowerOnce && previous !== next) {
+    if (hasRenderedFusionFlowerOnce && previous !== null && String(previous) !== next) {
       popValue(el);
 
       const petalCard = el.closest(".petal-card");
@@ -642,11 +650,13 @@ function renderFusionFlowerWidget() {
         flashPetal(petalSvg);
       }
     }
+
+    lastRenderedFusionFlowerValues[key] = nextValues[key];
   }
 
-  updateValue(fusionsEl, nextFusions);
-  updateValue(catchesEl, nextCatches);
-  updateValue(splitsEl, nextSplits);
+  updateValue(fusionsEl, "fusions");
+  updateValue(catchesEl, "catches");
+  updateValue(splitsEl, "splits");
 
   hasRenderedFusionFlowerOnce = true;
 }
@@ -659,7 +669,7 @@ function popValue(el) {
 
 function flashPetal(el) {
   el.classList.remove("flash");
-  void el.offsetWidth;
+  el.getBoundingClientRect();
   el.classList.add("flash");
 }
 
@@ -668,6 +678,30 @@ function pulsePetal(el) {
   void el.offsetWidth;
   el.classList.add("pulse");
 }
+
+function attachAnimationCleanup() {
+  document.querySelectorAll(".petal-value").forEach((el) => {
+    el.addEventListener("animationend", () => {
+      el.classList.remove("pop");
+    });
+  });
+
+  document.querySelectorAll(".petal-card").forEach((el) => {
+    el.addEventListener("animationend", () => {
+      el.classList.remove("pulse");
+    });
+  });
+
+  document.querySelectorAll(".petal-svg").forEach((el) => {
+    el.addEventListener("animationend", (event) => {
+      if (event.animationName === "petalFlash") {
+        el.classList.remove("flash");
+      }
+    });
+  });
+
+}
+
 
 // =========================
 // Helpers
@@ -1049,6 +1083,7 @@ async function init() {
   await loadMonsterCatalog();
   attachEventListeners();
   attachTabEventListeners();
+  attachAnimationCleanup();
   initializeDebugMode();
   renderActionFields();
   renderRun();
