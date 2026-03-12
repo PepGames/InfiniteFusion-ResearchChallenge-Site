@@ -43,6 +43,9 @@ let achievementCatalog = [];
 let monsterCatalog = [];
 let monsterByID = {};
 
+document.fonts.load("1em 'Permanent Marker'").then(() => {
+  document.body.classList.add("marker-font");
+});
 
 // =========================
 // Persistence / Save State

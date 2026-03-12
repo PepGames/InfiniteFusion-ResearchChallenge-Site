@@ -338,7 +338,7 @@ button:disabled {
 }
 
 .petal-label {
-  font-family: "Permanent Marker", Georgia;
+  font-family: "Permanent Marker", Georgia, serif;
   font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: 0.03em;
@@ -350,6 +350,10 @@ button:disabled {
   text-shadow:
     0 1px 1px rgba(255,255,255,0.18),
     0 2px 3px rgba(0,0,0,0.35);
+}
+
+.marker-font .petal-label {
+  font-size: 1.35rem;
 }
 
 .petal-value {
@@ -364,17 +368,17 @@ button:disabled {
 
 .petal-top .petal-label {
   color: #e3b21a;
-  -webkit-text-stroke: 1px rgba(103, 72, 4, 0.7);
+  -webkit-text-stroke: .5px rgba(103, 72, 4, 0.7);
 }
 
 .petal-left .petal-label {
   color: #20c765;
-  -webkit-text-stroke: 1px rgba(9, 90, 46, 0.75);
+  -webkit-text-stroke: .5px rgba(9, 90, 46, 0.75);
 }
 
 .petal-right .petal-label {
   color: #ef5350;
-  -webkit-text-stroke: 1px rgba(120, 28, 28, 0.75);
+  -webkit-text-stroke: .5px rgba(120, 28, 28, 0.75);
 }
 
 .petal-left .petal-label,
