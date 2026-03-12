@@ -3,16 +3,18 @@
 // =========================
 
 const STORAGE_KEY = "fusion-research-tool-current-run";
+const DEBUG_MODE = new URLSearchParams(window.location.search).get("debug") === "true";
 
 const defaultRunState = {
   meta: {
     runName: "My Fusion Run",
     createdAt: "",
     updatedAt: "",
-    version: 3
+    version: 4
   },
   rp: {
-    earned: 0,
+    achievementEarned: 0,
+    bonusEarned: 0,
     spent: 0
   },
   actions: [],
@@ -53,10 +55,11 @@ function normalizeRunState(state) {
       runName: state?.meta?.runName || "My Fusion Run",
       createdAt: state?.meta?.createdAt || new Date().toISOString(),
       updatedAt: state?.meta?.updatedAt || new Date().toISOString(),
-      version: state?.meta?.version ?? 3
+      version: state?.meta?.version ?? 4
     },
     rp: {
-      earned: state?.rp?.earned || 0,
+      achievementEarned: state?.rp?.achievementEarned || 0,
+      bonusEarned: state?.rp?.bonusEarned || 0,
       spent: state?.rp?.spent || 0
     },
     actions: Array.isArray(state?.actions) ? state.actions : [],
@@ -113,7 +116,7 @@ async function loadAchievementCatalog() {
 
 async function loadMonsterCatalog() {
   try {
-    console.log("Loading monsters from data/monsters.json...");
+    debugLog("Loading monsters from data/monsters.json...");
 
     const response = await fetch("data/monsters.json");
 
@@ -133,7 +136,7 @@ async function loadMonsterCatalog() {
       monsterByID[monster.monsterId] = monster;
     });
 
-    console.log(`Loaded ${monsterCatalog.length} monsters.`);
+    debugLog(`Loaded ${monsterCatalog.length} monsters.`);
   } catch (error) {
     console.error("Failed to load monsters:", error);
     alert("Monster database failed to load. Check console.");
@@ -220,7 +223,7 @@ function rebuildDerivedStateFromActions() {
 }
 
 function getAvailableRP() {
-  return runState.rp.earned - runState.rp.spent;
+  return runState.rp.achievementEarned + runState.rp.bonusEarned - runState.rp.spent;
 }
 
 function updateAndSave() {
@@ -229,7 +232,7 @@ function updateAndSave() {
   saveRunState(runState);
   renderRun();
 
-  console.log("Achievement changes:", achievementChanges);
+  debugLog("Achievement changes:", achievementChanges);
 }
 
 
@@ -327,7 +330,7 @@ function evaluateAchievements() {
   });
 
   runState.achievementProgress = nextProgress;
-  runState.rp.earned = calculateAchievementEarnedRP(nextProgress);
+  runState.rp.achievementEarned = calculateAchievementEarnedRP(nextProgress);
 
   return {
     newlyUnlocked,
@@ -455,13 +458,13 @@ function renderAchievements() {
 }
 
 function renderActionFields() {
-  console.log("renderActionFields fired");
+  debugLog("renderActionFields fired");
 
   const type = document.getElementById("action-type").value;
   const container = document.getElementById("action-fields");
 
-  console.log("action-fields container:", container);
-  console.log("action type:", type);
+  debugLog("action-fields container:", container);
+  debugLog("action type:", type);
 
   if (!container) return;
 
@@ -568,7 +571,7 @@ function populateMonsterSelect() {
     select.appendChild(option);
   });
 
-  console.log(`Populated select with ${monsterCatalog.length} monsters.`);
+  debugLog(`Populated select with ${monsterCatalog.length} monsters.`);
 }
 
 function switchTab(tabName) {
@@ -659,8 +662,10 @@ function getOrdinalSuffix(day) {
   }
 }
 
-function routeLabel(route) {
-  return route || "Unknown Area";
+function debugLog(...args) {
+  if (DEBUG_MODE) {
+    console.log(...args);
+  }
 }
 
 
@@ -683,7 +688,7 @@ function handleNewRun() {
 }
 
 function handleAddEarnedRP() {
-  runState.rp.earned += 1;
+  runState.rp.bonusEarned += 1;
   updateAndSave();
 }
 
@@ -808,7 +813,6 @@ function handleUndoAction() {
   const action = runState.actions.pop();
   runState.redoStack.push(action);
 
-  rebuildDerivedStateFromActions();
   updateAndSave();
 }
 
@@ -818,7 +822,6 @@ function handleRedoAction() {
   const action = runState.redoStack.pop();
   runState.actions.push(action);
 
-  rebuildDerivedStateFromActions();
   updateAndSave();
 }
 
@@ -862,11 +865,11 @@ function importRun(event) {
     try {
       const parsed = JSON.parse(loadEvent.target.result);
 
-      if (!parsed.meta || !parsed.rp || !Array.isArray(parsed.pokemon)) {
+      if (!parsed.meta || !parsed.rp || !Array.isArray(parsed.actions)) {
         throw new Error("Invalid save file format.");
       }
-
-      runState = parsed;
+      
+      runState = normalizeRunState(parsed);
       updateAndSave();
       alert("Run imported successfully.");
     } catch (error) {
@@ -880,9 +883,6 @@ function importRun(event) {
   reader.readAsText(file);
 }
 
-function claimAchievement(id) {
-  console.log("claimAchievement placeholder:", id);
-}
 
 
 // =========================
@@ -917,11 +917,19 @@ function attachTabEventListeners() {
 // Initialization
 // =========================
 
+function initializeDebugMode() {
+  const debugPanel = document.getElementById("debug-panel");
+  if (debugPanel && !DEBUG_MODE) {
+    debugPanel.style.display = "none";
+  }
+}
+
 async function init() {
   await loadAchievementCatalog();
   await loadMonsterCatalog();
   attachEventListeners();
   attachTabEventListeners();
+  initializeDebugMode();
   renderActionFields();
   renderRun();
 }
