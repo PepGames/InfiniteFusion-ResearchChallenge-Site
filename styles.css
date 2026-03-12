@@ -211,3 +211,33 @@ button:disabled {
   cursor: not-allowed;
   filter: grayscale(40%);
 }
+
+.action-log-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.action-delete-btn {
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 2px 6px;
+  cursor: pointer;
+  opacity: 0.45;
+}
+
+.action-delete-btn:hover {
+  opacity: 1;
+  color: #d1d5db;
+  background: transparent;
+}
+
+.action-delete-btn:focus {
+  outline: 1px solid #6b7280;
+  outline-offset: 2px;
+}

@@ -103,12 +103,25 @@ function renderPokemonList() {
       textSpan.className = "action-log-text";
       textSpan.textContent = formatActionText(action);
 
+      const rightGroup = document.createElement("div");
+      rightGroup.className = "action-log-right";
+
       const timeSpan = document.createElement("span");
       timeSpan.className = "action-log-time";
       timeSpan.textContent = formatActionTimestamp(action.createdAt);
 
+      const deleteButton = document.createElement("button");
+      deleteButton.className = "action-delete-btn";
+      deleteButton.type = "button";
+      deleteButton.textContent = "×";
+      deleteButton.setAttribute("aria-label", "Delete action");
+      deleteButton.addEventListener("click", () => handleDeleteAction(action.id));
+
+      rightGroup.appendChild(timeSpan);
+      rightGroup.appendChild(deleteButton);
+
       li.appendChild(textSpan);
-      li.appendChild(timeSpan);
+      li.appendChild(rightGroup);
 
       list.appendChild(li);
     });
@@ -711,6 +724,23 @@ function handleRedoAction() {
   rebuildDerivedStateFromActions();
   updateAndSave();
 }
+
+function handleDeleteAction(actionId) {
+  const confirmed = window.confirm("Delete this action?");
+  if (!confirmed) return;
+
+  runState.actions = runState.actions.filter((action) => action.id !== actionId);
+  runState.redoStack = [];
+
+  updateAndSave();
+  renderActionFields();
+}
+
+
+
+
+
+
 
 
 function attachEventListeners() {
