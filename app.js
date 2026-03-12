@@ -327,31 +327,47 @@ function calculateAchievementEarnedRP(progressMap) {
 
 function evaluateAchievements() {
   const previousProgress = structuredClone(runState.achievementProgress);
-  const nextProgress = {};
+  let nextProgress = structuredClone(previousProgress);
 
   const now = new Date().toISOString();
+  let changed = true;
+
+  while (changed) {
+    changed = false;
+
+    achievementCatalog.forEach((achievement) => {
+      const previouslyUnlocked = !!nextProgress[achievement.id]?.unlocked;
+      const meetsCondition = doesAchievementMeetCondition(achievement, nextProgress);
+
+      if (meetsCondition && !previouslyUnlocked) {
+        nextProgress[achievement.id] = {
+          unlocked: true,
+          unlockedAt: previousProgress[achievement.id]?.unlockedAt || now
+        };
+
+        changed = true;
+      }
+
+      if (!meetsCondition && previouslyUnlocked) {
+        delete nextProgress[achievement.id];
+        changed = true;
+      }
+    });
+  }
+
   const newlyUnlocked = [];
   const newlyRemoved = [];
 
   achievementCatalog.forEach((achievement) => {
-    const previouslyUnlocked = !!previousProgress[achievement.id]?.unlocked;
-    const meetsCondition = doesAchievementMeetCondition(achievement, previousProgress);
+    const wasUnlocked = !!previousProgress[achievement.id]?.unlocked;
+    const isUnlocked = !!nextProgress[achievement.id]?.unlocked;
 
-    if (meetsCondition) {
-      nextProgress[achievement.id] = {
-        unlocked: true,
-        unlockedAt: previouslyUnlocked
-          ? previousProgress[achievement.id]?.unlockedAt || now
-          : now
-      };
+    if (!wasUnlocked && isUnlocked) {
+      newlyUnlocked.push(achievement.id);
+    }
 
-      if (!previouslyUnlocked) {
-        newlyUnlocked.push(achievement.id);
-      }
-    } else {
-      if (previouslyUnlocked) {
-        newlyRemoved.push(achievement.id);
-      }
+    if (wasUnlocked && !isUnlocked) {
+      newlyRemoved.push(achievement.id);
     }
   });
 
