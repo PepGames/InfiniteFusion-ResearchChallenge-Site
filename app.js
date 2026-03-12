@@ -5,7 +5,7 @@ const defaultRunState = {
     runName: "My Fusion Run",
     createdAt: "",
     updatedAt: "",
-    version: 2
+    version: 3
   },
   rp: {
     earned: 0,
@@ -16,7 +16,7 @@ const defaultRunState = {
   pokemon: [],
   fusions: [],
   gyms: [],
-  achievements: [],
+  achievementProgress: {},
   purchases: []
 };
 
@@ -72,13 +72,15 @@ function renderRun() {
   document.getElementById("rp-earned").textContent = runState.rp.earned;
   document.getElementById("rp-spent").textContent = runState.rp.spent;
   document.getElementById("rp-available").textContent = getAvailableRP();
+
+  renderPokemonList();
+  renderAchievements();
+
   const undoBtn = document.getElementById("undo-action-btn");
   const redoBtn = document.getElementById("redo-action-btn");
 
-  if (undoBtn) undoBtn.disabled = runState.actions.length === 0;
-  if (redoBtn) redoBtn.disabled = runState.redoStack.length === 0;
-  renderPokemonList();
-  renderAchievements();
+  if (undoBtn) undoBtn.disabled = !Array.isArray(runState.actions) || runState.actions.length === 0;
+  if (redoBtn) redoBtn.disabled = !Array.isArray(runState.redoStack) || runState.redoStack.length === 0;
 }
 
 function renderPokemonList() {
@@ -133,9 +135,11 @@ function routeLabel(route) {
 
 function updateAndSave() {
   rebuildDerivedStateFromActions();
-  evaluateAchievements();
+  const achievementChanges = evaluateAchievements();
   saveRunState(runState);
   renderRun();
+
+  console.log("Achievement changes:", achievementChanges);
 }
 
 function handleSaveRunName() {
@@ -168,7 +172,7 @@ function normalizeRunState(state) {
       runName: state?.meta?.runName || "My Fusion Run",
       createdAt: state?.meta?.createdAt || new Date().toISOString(),
       updatedAt: state?.meta?.updatedAt || new Date().toISOString(),
-      version: 2
+      version: state?.meta?.version ?? 3
     },
     rp: {
       earned: state?.rp?.earned || 0,
@@ -179,11 +183,13 @@ function normalizeRunState(state) {
     pokemon: Array.isArray(state?.pokemon) ? state.pokemon : [],
     fusions: Array.isArray(state?.fusions) ? state.fusions : [],
     gyms: Array.isArray(state?.gyms) ? state.gyms : [],
-    achievements: Array.isArray(state?.achievements) ? state.achievements : [],
+    achievementProgress:
+      state?.achievementProgress && !Array.isArray(state.achievementProgress)
+        ? state.achievementProgress
+        : {},
     purchases: Array.isArray(state?.purchases) ? state.purchases : []
   };
 }
-
 function handleLogAction(event) {
   event.preventDefault();
 
@@ -350,39 +356,151 @@ async function loadAchievementCatalog() {
   }
 }
 
+function isPreviousAchievementUnlocked(achievement, progressMap) {
+  if (!achievement.previousAchievement) {
+    return true;
+  }
+
+  return !!progressMap[achievement.previousAchievement]?.unlocked;
+}
+
+function countActionsByType(actionType) {
+  return runState.actions.filter((action) => action.type === actionType).length;
+}
+
+function countGymResults(result) {
+  return runState.actions.filter(
+    (action) => action.type === "gym" && action.result === result
+  ).length;
+}
+
+function countGymFusionWins() {
+  return runState.actions.filter(
+    (action) => action.type === "gym" && action.result === "win" && action.usedFusion
+  ).length;
+}
+
+function doesAchievementMeetCondition(achievement, progressMap) {
+  if (!isPreviousAchievementUnlocked(achievement, progressMap)) {
+    return false;
+  }
+
+  if (achievement.conditionType === "action_count") {
+    const count = countActionsByType(achievement.actionType);
+    return count >= (achievement.target || 1);
+  }
+
+  if (achievement.conditionType === "gym_result") {
+    const count = countGymResults(achievement.result);
+    return count >= (achievement.target || 1);
+  }
+
+  if (achievement.conditionType === "gym_used_fusion_win") {
+    const count = countGymFusionWins();
+    return count >= (achievement.target || 1);
+  }
+
+  return false;
+}
+
+function calculateAchievementEarnedRP(progressMap) {
+  return achievementCatalog.reduce((total, achievement) => {
+    const progress = progressMap[achievement.id];
+
+    if (progress?.unlocked) {
+      return total + (achievement.rpReward || 0);
+    }
+
+    return total;
+  }, 0);
+}
+
 function evaluateAchievements() {
-  // placeholder for automatic achievement logic
+  const previousProgress = structuredClone(runState.achievementProgress);
+  const nextProgress = {};
+
+  const now = new Date().toISOString();
+  const newlyUnlocked = [];
+  const newlyRemoved = [];
+
+  achievementCatalog.forEach((achievement) => {
+    const previouslyUnlocked = !!previousProgress[achievement.id]?.unlocked;
+    const meetsCondition = doesAchievementMeetCondition(achievement, previousProgress);
+
+    if (meetsCondition) {
+      nextProgress[achievement.id] = {
+        unlocked: true,
+        unlockedAt: previouslyUnlocked
+          ? previousProgress[achievement.id]?.unlockedAt || now
+          : now
+      };
+
+      if (!previouslyUnlocked) {
+        newlyUnlocked.push(achievement.id);
+      }
+    } else {
+      if (previouslyUnlocked) {
+        newlyRemoved.push(achievement.id);
+      }
+    }
+  });
+
+  runState.achievementProgress = nextProgress;
+  runState.rp.earned = calculateAchievementEarnedRP(nextProgress);
+
+  return {
+    newlyUnlocked,
+    newlyRemoved
+  };
 }
 
 function renderAchievements() {
   const container = document.getElementById("achievements-list");
   container.innerHTML = "";
 
-  achievementCatalog.forEach((achievement) => {
-    const completed = runState.achievements.includes(achievement.id);
+  const sortedAchievements = [...achievementCatalog].sort((a, b) => {
+    const progressA = runState.achievementProgress[a.id];
+    const progressB = runState.achievementProgress[b.id];
+
+    const unlockedA = !!progressA?.unlocked;
+    const unlockedB = !!progressB?.unlocked;
+
+    if (unlockedA && unlockedB) {
+      const timeA = progressA.unlockedAt || "";
+      const timeB = progressB.unlockedAt || "";
+      return timeB.localeCompare(timeA);
+    }
+
+    if (unlockedA) return -1;
+    if (unlockedB) return 1;
+
+    return a.name.localeCompare(b.name);
+  });
+
+  sortedAchievements.forEach((achievement) => {
+    const progress = runState.achievementProgress[achievement.id];
+    const unlocked = !!progress?.unlocked;
 
     const card = document.createElement("div");
     card.className = "achievement-card";
 
-    if (completed) card.classList.add("achievement-complete");
+    if (unlocked) {
+      card.classList.add("achievement-complete");
+    }
+
+    const statusText = unlocked
+      ? `Completed • ${formatActionTimestamp(progress.unlockedAt)}`
+      : "Locked";
 
     card.innerHTML = `
       <div class="achievement-row">
         <div>
           <div class="achievement-title">${achievement.name} (+${achievement.rpReward} RP)</div>
           <div class="achievement-desc">${achievement.description}</div>
+          <div class="achievement-desc">${statusText}</div>
         </div>
-        <button ${completed ? "disabled" : ""} data-id="${achievement.id}">
-          ${completed ? "Completed" : "Claim"}
-        </button>
       </div>
     `;
-
-    const button = card.querySelector("button");
-
-    if (!completed) {
-      button.addEventListener("click", () => claimAchievement(achievement.id));
-    }
 
     container.appendChild(card);
   });
