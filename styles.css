@@ -398,3 +398,58 @@ button:disabled {
 .petal-right .petal-content {
   transform: translate(-10px, -14px);
 }
+
+.petal-value.pop {
+  animation: petalValuePop 0.28s ease;
+}
+
+@keyframes petalValuePop {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.petal-card.pulse {
+  animation: petalPulse 0.35s ease;
+}
+
+@keyframes petalPulse {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.04);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.petal-svg.flash {
+  animation: petalFlash 0.4s ease;
+}
+
+@keyframes petalFlash {
+  0% {
+    filter:
+      drop-shadow(0 12px 18px rgba(0,0,0,0.35))
+      drop-shadow(0 2px 6px rgba(0,0,0,0.25));
+  }
+  50% {
+    filter:
+      drop-shadow(0 12px 18px rgba(0,0,0,0.35))
+      drop-shadow(0 2px 6px rgba(0,0,0,0.25))
+      drop-shadow(0 0 12px rgba(255,255,255,0.25));
+  }
+  100% {
+    filter:
+      drop-shadow(0 12px 18px rgba(0,0,0,0.35))
+      drop-shadow(0 2px 6px rgba(0,0,0,0.25));
+  }
+}

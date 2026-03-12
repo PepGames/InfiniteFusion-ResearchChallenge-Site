@@ -42,6 +42,7 @@ let runState = loadRunState();
 let achievementCatalog = [];
 let monsterCatalog = [];
 let monsterByID = {};
+let hasRenderedFusionFlowerOnce = false;
 
 document.fonts.load("1em 'Permanent Marker'").then(() => {
   document.body.classList.add("marker-font");
@@ -615,17 +616,57 @@ function renderFusionFlowerWidget() {
   const catchesEl = document.getElementById("catches-available-value");
   const splitsEl = document.getElementById("splits-available-value");
 
-  if (fusionsEl) {
-    fusionsEl.textContent = getFusionsDiscoveredCount();
+  const nextFusions = getFusionsDiscoveredCount();
+  const nextCatches = runState.resources?.catchesAvailable ?? 0;
+  const nextSplits = runState.resources?.splitsAvailable ?? 0;
+
+  function updateValue(el, nextValue) {
+    if (!el) return;
+
+    const next = String(nextValue);
+    const previous = el.textContent;
+
+    el.textContent = next;
+
+    if (hasRenderedFusionFlowerOnce && previous !== next) {
+      popValue(el);
+
+      const petalCard = el.closest(".petal-card");
+      const petalSvg = petalCard?.querySelector(".petal-svg");
+
+      if (petalCard) {
+        pulsePetal(petalCard);
+      }
+
+      if (petalSvg) {
+        flashPetal(petalSvg);
+      }
+    }
   }
 
-  if (catchesEl) {
-    catchesEl.textContent = runState.resources?.catchesAvailable ?? 0;
-  }
+  updateValue(fusionsEl, nextFusions);
+  updateValue(catchesEl, nextCatches);
+  updateValue(splitsEl, nextSplits);
 
-  if (splitsEl) {
-    splitsEl.textContent = runState.resources?.splitsAvailable ?? 0;
-  }
+  hasRenderedFusionFlowerOnce = true;
+}
+
+function popValue(el) {
+  el.classList.remove("pop");
+  void el.offsetWidth;
+  el.classList.add("pop");
+}
+
+function flashPetal(el) {
+  el.classList.remove("flash");
+  void el.offsetWidth;
+  el.classList.add("flash");
+}
+
+function pulsePetal(el) {
+  el.classList.remove("pulse");
+  void el.offsetWidth;
+  el.classList.add("pulse");
 }
 
 // =========================
@@ -722,6 +763,8 @@ function getFusionsDiscoveredCount() {
 
   return discovered.size;
 }
+
+
 
 // =========================
 // Event Handlers
