@@ -829,12 +829,28 @@ function renderActionFields() {
       const fusionCheckbox = document.getElementById("catch-is-fusion");
       const normalFields = document.getElementById("catch-normal-fields");
       const fusionFields = document.getElementById("catch-fusion-fields");
+      const catchSpeciesSelect = document.getElementById("catch-species");
+      const catchHeadSpeciesSelect = document.getElementById("catch-head-species");
+      const catchBodySpeciesSelect = document.getElementById("catch-body-species");
 
-      fusionCheckbox.addEventListener("change", () => {
+      function updateCatchFusionMode() {
         const isFusion = fusionCheckbox.checked;
+
         normalFields.style.display = isFusion ? "none" : "";
         fusionFields.style.display = isFusion ? "" : "none";
-      });
+
+        catchSpeciesSelect.required = !isFusion;
+        catchSpeciesSelect.disabled = isFusion;
+
+        catchHeadSpeciesSelect.required = isFusion;
+        catchHeadSpeciesSelect.disabled = !isFusion;
+
+        catchBodySpeciesSelect.required = isFusion;
+        catchBodySpeciesSelect.disabled = !isFusion;
+      }
+
+      fusionCheckbox.addEventListener("change", updateCatchFusionMode);
+      updateCatchFusionMode();
     }
 
   if (type === "death") {
