@@ -677,7 +677,7 @@ function renderActionLog() {
 
       const textSpan = document.createElement("span");
       textSpan.className = "action-log-text";
-      textSpan.textContent = formatActionText(action);
+      textSpan.appendChild(renderActionCard(action));
 
       const rightGroup = document.createElement("div");
       rightGroup.className = "action-log-right";
@@ -1365,6 +1365,108 @@ function populateBattleTrainerSelect(selectId, battleType) {
   });
 
   debugLog(`Populated trainer select "${selectId}" with ${filteredTrainers.length} trainers for battleType "${battleType}".`);
+}
+
+function renderActionCard(action) {
+  const container = document.createElement("span");
+
+  if (action.actionType === "catch") {
+    if (!action.isFusion) {
+      const species = speciesById[action.speciesId];
+      const speciesName = species
+        ? `${species.name}${species.variant ? ` (${species.variant})` : ""}`
+        : action.speciesId;
+
+      const location = locationById[action.locationId]?.name || action.locationId;
+
+      container.textContent = `[CATCH] ${action.catchType} — ${speciesName} — ${location}`;
+      return container;
+    }
+
+    const head = speciesById[action.headSpeciesId];
+    const body = speciesById[action.bodySpeciesId];
+
+    const headName = head ? `${head.name}${head.variant ? ` (${head.variant})` : ""}` : "Unknown";
+    const bodyName = body ? `${body.name}${body.variant ? ` (${body.variant})` : ""}` : "Unknown";
+
+    const location = locationById[action.locationId]?.name || action.locationId;
+
+    container.textContent = `[CATCH] ${action.catchType} fusion — ${headName} + ${bodyName} — ${location}`;
+    return container;
+  }
+
+  if (action.actionType === "fusion") {
+    const head = runState.pokemon.find(p => p.pokemonId === action.headPokemonId);
+    const body = runState.pokemon.find(p => p.pokemonId === action.bodyPokemonId);
+
+    const headName = head ? `${head.speciesName}${head.variant ? ` (${head.variant})` : ""}` : "Unknown";
+    const bodyName = body ? `${body.speciesName}${body.variant ? ` (${body.variant})` : ""}` : "Unknown";
+
+    container.textContent = `[FUSION] ${headName} + ${bodyName}`;
+    return container;
+  }
+
+  if (action.actionType === "death") {
+    if (action.targetType === "pokemon") {
+      const target = runState.pokemon.find(p => p.pokemonId === action.targetId);
+      const name = target
+        ? `${target.speciesName}${target.variant ? ` (${target.variant})` : ""}`
+        : "Unknown Pokémon";
+
+      container.textContent = `[DEATH] ${name}`;
+      return container;
+    }
+
+    if (action.targetType === "fusion") {
+      const fusion = runState.fusions.find(f => f.fusionId === action.targetId);
+      if (!fusion) {
+        container.textContent = `[DEATH] Unknown Fusion`;
+        return container;
+      }
+
+      const head = runState.pokemon.find(p => p.pokemonId === fusion.headPokemonId);
+      const body = runState.pokemon.find(p => p.pokemonId === fusion.bodyPokemonId);
+
+      const headName = head ? head.speciesName : "Unknown";
+      const bodyName = body ? body.speciesName : "Unknown";
+
+      container.textContent = `[DEATH] Fusion — ${headName} + ${bodyName}`;
+      return container;
+    }
+  }
+
+  if (action.actionType === "battle") {
+    const trainer = trainerById[action.trainerId];
+    const trainerName = trainer ? trainer.name : "Unknown Trainer";
+
+    const partySummary = Array.isArray(action.party)
+      ? action.party.map(member => {
+          if (member.entityType === "pokemon") {
+            const p = runState.pokemon.find(p => p.pokemonId === member.entityId);
+            return p ? p.speciesName : "Unknown Pokémon";
+          }
+
+          if (member.entityType === "fusion") {
+            const f = runState.fusions.find(f => f.fusionId === member.entityId);
+            if (!f) return "Unknown Fusion";
+
+            const head = runState.pokemon.find(p => p.pokemonId === f.headPokemonId);
+            const body = runState.pokemon.find(p => p.pokemonId === f.bodyPokemonId);
+
+            return `${head?.speciesName || "?"} + ${body?.speciesName || "?"}`;
+          }
+        }).join(", ")
+      : "";
+
+    container.textContent =
+      `[BATTLE] ${action.battleType} — ${trainerName} — ${action.result}` +
+      (partySummary ? ` — Party: ${partySummary}` : "");
+
+    return container;
+  }
+
+  container.textContent = `[UNKNOWN ACTION]`;
+  return container;
 }
 
 // =========================
