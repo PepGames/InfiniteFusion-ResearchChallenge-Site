@@ -1,0 +1,14 @@
+[
+  {
+    "locationId": "route_1",
+    "name": "Route 1"
+  },
+  {
+    "locationId": "viridian_forest",
+    "name": "Viridian Forest"
+  },
+  {
+    "locationId": "pallet_town",
+    "name": "Pallet Town"
+  }
+]

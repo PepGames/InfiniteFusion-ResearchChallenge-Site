@@ -40,9 +40,11 @@ const actionHandlers = {
 
 let runState = loadRunState();
 let achievementCatalog = [];
-let monsterCatalog = [];
-let monsterByID = {};
+let speciesCatalog = [];
+let speciesById = {};
 let hasRenderedFusionFlowerOnce = false;
+let locationCatalog = [];
+let locationById = {};
 
 let lastRenderedFusionFlowerValues = {
   fusions: null,
@@ -141,32 +143,61 @@ async function loadAchievementCatalog() {
   }
 }
 
-async function loadMonsterCatalog() {
+async function loadSpeciesCatalog() {
   try {
-    debugLog("Loading monsters from data/monsters.json...");
+    debugLog("Loading species from data/species.json...");
 
-    const response = await fetch("data/monsters.json");
+    const response = await fetch("data/species.json");
 
     if (!response.ok) {
       throw new Error(`HTTP error ${response.status}`);
     }
 
-    monsterCatalog = await response.json();
+    speciesCatalog = await response.json();
 
-    if (!Array.isArray(monsterCatalog)) {
-      throw new Error("monsters.json is not an array.");
+    if (!Array.isArray(speciesCatalog)) {
+      throw new Error("species.json is not an array.");
     }
 
-    monsterByID = {};
+    speciesById = {};
 
-    monsterCatalog.forEach((monster) => {
-      monsterByID[monster.monsterId] = monster;
+    speciesCatalog.forEach((species) => {
+      speciesById[species.speciesId] = species;
     });
 
-    debugLog(`Loaded ${monsterCatalog.length} monsters.`);
+    debugLog(`Loaded ${speciesCatalog.length} species.`);
   } catch (error) {
-    console.error("Failed to load monsters:", error);
-    alert("Monster database failed to load. Check console.");
+    console.error("Failed to load species:", error);
+    alert("Species database failed to load. Check console.");
+  }
+}
+
+async function loadLocationCatalog() {
+  try {
+    debugLog("Loading locations from data/locations.json...");
+
+    const response = await fetch("data/locations.json");
+
+    if (!response.ok) {
+      throw new Error(`HTTP error ${response.status}`);
+    }
+
+    locationCatalog = await response.json();
+
+    if (!Array.isArray(locationCatalog)) {
+      throw new Error("locations.json is not an array.");
+    }
+
+    locationById = {};
+
+    locationCatalog.forEach((location) => {
+      locationById[location.locationId] = location;
+    });
+
+    debugLog(`Loaded ${locationCatalog.length} locations.`);
+  } catch (error) {
+    console.error("Failed to load locations:", error);
+    alert("Location database failed to load. Check console.");
   }
 }
 
@@ -238,11 +269,11 @@ function validateAchievementCatalog() {
 // Core State Logic
 // =========================
 
-function createBaseAction(type) {
+function createBaseAction(actionType) {
   return {
-    id: crypto.randomUUID(),
-    type,
-    createdAt: new Date().toISOString()
+    actionId: crypto.randomUUID(),
+    actionType,
+    actionAt: new Date().toISOString()
   };
 }
 
@@ -257,50 +288,157 @@ function rebuildDerivedStateFromActions() {
   const gyms = [];
 
   for (const action of runState.actions) {
-    switch (action.type) {
+    switch (action.actionType) {
       case "catch": {
-        const monster = monsterByID[action.monsterId];
-        if (!monster) break;
+        if (!action.isFusion) {
+          const species = speciesById[action.speciesId];
+          if (!species) break;
 
-        pokemon.push({
-          id: action.id,
-          monsterId: action.monsterId,
-          speciesName: monster.name,
-          variant: monster.variant || "",
-          route: action.route || "",
-          status: "alive",
-          createdAt: action.createdAt
-        });
-        break;
-      }
+          pokemon.push({
+            pokemonId: action.caughtPokemonId,
+            speciesId: action.speciesId,
+            speciesName: species.name,
+            variant: species.variant || "",
+            nickname: "",
+            locationId: action.locationId || "",
+            catchType: action.catchType || "",
+            status: "alive",
+            activeFusionId: null,
+            createdActionId: action.actionId,
+            createdAt: action.actionAt
+          });
+        } else {
+          const headSpecies = speciesById[action.headSpeciesId];
+          const bodySpecies = speciesById[action.bodySpeciesId];
+          if (!headSpecies || !bodySpecies) break;
 
-      case "death": {
-        const target = pokemon.find((p) => p.id === action.targetPokemonLogId);
-        if (target) {
-          target.status = "dead";
-          target.deathNote = action.note || "";
+          pokemon.push({
+            pokemonId: action.headPokemonId,
+            speciesId: action.headSpeciesId,
+            speciesName: headSpecies.name,
+            variant: headSpecies.variant || "",
+            nickname: "",
+            locationId: action.locationId || "",
+            catchType: action.catchType || "",
+            status: "alive",
+            activeFusionId: action.caughtFusionId,
+            createdActionId: action.actionId,
+            createdAt: action.actionAt
+          });
+
+          pokemon.push({
+            pokemonId: action.bodyPokemonId,
+            speciesId: action.bodySpeciesId,
+            speciesName: bodySpecies.name,
+            variant: bodySpecies.variant || "",
+            nickname: "",
+            locationId: action.locationId || "",
+            catchType: action.catchType || "",
+            status: "alive",
+            activeFusionId: action.caughtFusionId,
+            createdActionId: action.actionId,
+            createdAt: action.actionAt
+          });
+
+          fusions.push({
+            fusionId: action.caughtFusionId,
+            headPokemonId: action.headPokemonId,
+            bodyPokemonId: action.bodyPokemonId,
+            createdActionId: action.actionId,
+            createdAt: action.actionAt,
+            status: "active",
+            deathNote: ""
+          });
         }
         break;
       }
 
+      case "death": {
+        if (action.targetType === "pokemon") {
+          const targetPokemon = pokemon.find((p) => p.pokemonId === action.targetId);
+          if (!targetPokemon) break;
+
+          targetPokemon.status = "dead";
+          targetPokemon.deathNote = action.note || "";
+
+          if (targetPokemon.activeFusionId) {
+            const linkedFusion = fusions.find((f) => f.fusionId === targetPokemon.activeFusionId);
+            if (linkedFusion && linkedFusion.status !== "dead") {
+              linkedFusion.status = "dead";
+              linkedFusion.deathNote = action.note || "";
+
+              const head = pokemon.find((p) => p.pokemonId === linkedFusion.headPokemonId);
+              const body = pokemon.find((p) => p.pokemonId === linkedFusion.bodyPokemonId);
+
+              if (head) {
+                head.status = "dead";
+                head.deathNote = action.note || "";
+              }
+
+              if (body) {
+                body.status = "dead";
+                body.deathNote = action.note || "";
+              }
+            }
+          }
+
+          break;
+        }
+
+        if (action.targetType === "fusion") {
+          const targetFusion = fusions.find((f) => f.fusionId === action.targetId);
+          if (!targetFusion) break;
+
+          targetFusion.status = "dead";
+          targetFusion.deathNote = action.note || "";
+
+          const head = pokemon.find((p) => p.pokemonId === targetFusion.headPokemonId);
+          const body = pokemon.find((p) => p.pokemonId === targetFusion.bodyPokemonId);
+
+          if (head) {
+            head.status = "dead";
+            head.deathNote = action.note || "";
+          }
+
+          if (body) {
+            body.status = "dead";
+            body.deathNote = action.note || "";
+          }
+        }
+
+        break;
+      }
+
       case "fusion": {
+        const head = pokemon.find((p) => p.pokemonId === action.headPokemonId);
+        const body = pokemon.find((p) => p.pokemonId === action.bodyPokemonId);
+
+        if (!head || !body) break;
+        if (head.status !== "alive" || body.status !== "alive") break;
+        if (head.activeFusionId || body.activeFusionId) break;
+
         fusions.push({
-          id: action.id,
-          headPokemonLogId: action.headPokemonLogId,
-          bodyPokemonLogId: action.bodyPokemonLogId,
-          createdAt: action.createdAt,
-          status: "active"
+          fusionId: action.fusionId,
+          headPokemonId: action.headPokemonId,
+          bodyPokemonId: action.bodyPokemonId,
+          createdActionId: action.actionId,
+          createdAt: action.actionAt,
+          status: "active",
+          deathNote: ""
         });
+
+        head.activeFusionId = action.fusionId;
+        body.activeFusionId = action.fusionId;
         break;
       }
 
       case "gym": {
         gyms.push({
-          id: action.id,
+          gymId: action.actionId,
           gymLeader: action.gymLeader,
           result: action.result,
           usedFusion: !!action.usedFusion,
-          createdAt: action.createdAt
+          createdAt: action.actionAt
         });
         break;
       }
@@ -347,18 +485,18 @@ function isPreviousAchievementUnlocked(achievement, progressMap) {
 }
 
 function countActionsByType(actionType) {
-  return runState.actions.filter((action) => action.type === actionType).length;
+  return runState.actions.filter((action) => action.actionType === actionType).length;
 }
 
 function countGymResults(result) {
   return runState.actions.filter(
-    (action) => action.type === "gym" && action.result === result
+    (action) => action.actionType === "gym" && action.result === result
   ).length;
 }
 
 function countGymFusionWins() {
   return runState.actions.filter(
-    (action) => action.type === "gym" && action.result === "win" && action.usedFusion
+    (action) => action.actionType === "gym" && action.result === "win" && action.usedFusion
   ).length;
 }
 
@@ -472,7 +610,7 @@ function renderRun() {
   document.getElementById("rp-available").textContent = getAvailableRP();
 
   renderFusionFlowerWidget();
-  renderPokemonList();
+  renderActionLog();
   renderAchievements();
 
   const undoBtn = document.getElementById("undo-action-btn");
@@ -482,7 +620,7 @@ function renderRun() {
   if (redoBtn) redoBtn.disabled = !Array.isArray(runState.redoStack) || runState.redoStack.length === 0;
 }
 
-function renderPokemonList() {
+function renderActionLog() {
   const list = document.getElementById("action-list");
   list.innerHTML = "";
 
@@ -509,14 +647,14 @@ function renderPokemonList() {
 
       const timeSpan = document.createElement("span");
       timeSpan.className = "action-log-time";
-      timeSpan.textContent = formatActionTimestamp(action.createdAt);
+      timeSpan.textContent = formatActionTimestamp(action.actionAt);
 
       const deleteButton = document.createElement("button");
       deleteButton.className = "action-delete-btn";
       deleteButton.type = "button";
       deleteButton.textContent = "×";
       deleteButton.setAttribute("aria-label", "Delete action");
-      deleteButton.addEventListener("click", () => handleDeleteAction(action.id));
+      deleteButton.addEventListener("click", () => handleDeleteAction(action.actionId));
 
       rightGroup.appendChild(timeSpan);
       rightGroup.appendChild(deleteButton);
@@ -593,37 +731,102 @@ function renderActionFields() {
 
   container.innerHTML = "";
 
-  if (type === "catch") {
-    container.innerHTML = `
-      <div class="field-row">
-        <label for="pokemon-species">Species</label>
-        <select id="pokemon-species" required>
-          <option value="">Select a monster</option>
-        </select>
-      </div>
+    if (type === "catch") {
+      container.innerHTML = `
+        <div class="field-row">
+          <label for="catch-type">Catch Type</label>
+          <select id="catch-type" required>
+            <option value="">Select catch type</option>
+            <option value="wild">Wild</option>
+            <option value="starter">Starter</option>
+            <option value="gift">Gift</option>
+            <option value="trade">Trade</option>
+          </select>
+        </div>
 
-      <div class="field-row">
-        <label for="pokemon-route">Route / Area</label>
-        <input id="pokemon-route" type="text" placeholder="e.g. Route 3" required />
-      </div>
-    `;
+        <div class="field-row">
+          <label for="catch-location">Location</label>
+          <select id="catch-location" required>
+            <option value="">Select a location</option>
+          </select>
+        </div>
 
-    populateMonsterSelect();
-  }
+        <div class="field-row">
+          <label>
+            <input type="checkbox" id="catch-is-fusion" />
+            Wild / caught fusion
+          </label>
+        </div>
+
+        <div id="catch-normal-fields">
+          <div class="field-row">
+            <label for="catch-species">Species</label>
+            <select id="catch-species" required>
+              <option value="">Select a species</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="catch-fusion-fields" style="display:none;">
+          <div class="field-row">
+            <label for="catch-head-species">Head Species</label>
+            <select id="catch-head-species">
+              <option value="">Select head species</option>
+            </select>
+          </div>
+
+          <div class="field-row">
+            <label for="catch-body-species">Body Species</label>
+            <select id="catch-body-species">
+              <option value="">Select body species</option>
+            </select>
+          </div>
+        </div>
+      `;
+
+      populateSpeciesSelect("catch-species");
+      populateSpeciesSelect("catch-head-species");
+      populateSpeciesSelect("catch-body-species");
+      populateLocationSelect("catch-location");
+
+      const fusionCheckbox = document.getElementById("catch-is-fusion");
+      const normalFields = document.getElementById("catch-normal-fields");
+      const fusionFields = document.getElementById("catch-fusion-fields");
+
+      fusionCheckbox.addEventListener("change", () => {
+        const isFusion = fusionCheckbox.checked;
+        normalFields.style.display = isFusion ? "none" : "";
+        fusionFields.style.display = isFusion ? "" : "none";
+      });
+    }
 
   if (type === "death") {
-    const alive = runState.pokemon.filter((p) => p.status === "alive");
+    const alivePokemon = runState.pokemon.filter(
+      (p) => p.status === "alive" && !p.activeFusionId
+    );
+    const activeFusions = runState.fusions.filter((f) => f.status === "active");
 
-    const options = alive.map((p) =>
-      `<option value="${p.id}">${p.speciesName}${p.variant ? ` (${p.variant})` : ""}</option>`
+    const pokemonOptions = alivePokemon.map((p) =>
+      `<option value="pokemon:${p.pokemonId}">Pokémon — ${p.speciesName}${p.variant ? ` (${p.variant})` : ""}</option>`
     ).join("");
+
+    const fusionOptions = activeFusions.map((f) => {
+      const head = runState.pokemon.find((p) => p.pokemonId === f.headPokemonId);
+      const body = runState.pokemon.find((p) => p.pokemonId === f.bodyPokemonId);
+
+      const headName = head ? `${head.speciesName}${head.variant ? ` (${head.variant})` : ""}` : "Unknown";
+      const bodyName = body ? `${body.speciesName}${body.variant ? ` (${body.variant})` : ""}` : "Unknown";
+
+      return `<option value="fusion:${f.fusionId}">Fusion — ${headName} + ${bodyName}</option>`;
+    }).join("");
 
     container.innerHTML = `
       <div class="field-row">
-        <label for="death-target">Pokémon</label>
+        <label for="death-target">Target</label>
         <select id="death-target">
-          <option value="">Select a Pokémon</option>
-          ${options}
+          <option value="">Select a target</option>
+          ${fusionOptions}
+          ${pokemonOptions}
         </select>
       </div>
 
@@ -635,20 +838,29 @@ function renderActionFields() {
   }
 
   if (type === "fusion") {
-    const alive = runState.pokemon.filter((p) => p.status === "alive");
-    const options = alive.map((p) =>
-      `<option value="${p.id}">${p.speciesName}${p.variant ? ` (${p.variant})` : ""}</option>`
+    const available = runState.pokemon.filter(
+      (p) => p.status === "alive" && !p.activeFusionId
+    );
+
+    const options = available.map((p) =>
+      `<option value="${p.pokemonId}">${p.speciesName}${p.variant ? ` (${p.variant})` : ""}</option>`
     ).join("");
 
     container.innerHTML = `
       <div class="field-row">
         <label for="fusion-head">Head Pokémon</label>
-        <select id="fusion-head">${options}</select>
+        <select id="fusion-head">
+          <option value="">Select a Pokémon</option>
+          ${options}
+        </select>
       </div>
 
       <div class="field-row">
         <label for="fusion-body">Body Pokémon</label>
-        <select id="fusion-body">${options}</select>
+        <select id="fusion-body">
+          <option value="">Select a Pokémon</option>
+          ${options}
+        </select>
       </div>
     `;
   }
@@ -678,23 +890,26 @@ function renderActionFields() {
   }
 }
 
-function populateMonsterSelect() {
-  const select = document.getElementById("pokemon-species");
+function populateSpeciesSelect(selectId) {
+  const select = document.getElementById(selectId);
   if (!select) return;
 
-  select.innerHTML = `<option value="">Select a monster</option>`;
+  const currentFirstOption = select.querySelector("option");
+  const firstOptionText = currentFirstOption?.textContent || "Select a species";
 
-  monsterCatalog.forEach((monster) => {
+  select.innerHTML = `<option value="">${firstOptionText}</option>`;
+
+  speciesCatalog.forEach((species) => {
     const option = document.createElement("option");
-    option.value = monster.monsterId;
+    option.value = species.speciesId;
 
-    const variantText = monster.variant ? ` (${monster.variant})` : "";
-    option.textContent = `${monster.name}${variantText}`;
+    const variantText = species.variant ? ` (${species.variant})` : "";
+    option.textContent = `${species.name}${variantText}`;
 
     select.appendChild(option);
   });
 
-  debugLog(`Populated select with ${monsterCatalog.length} monsters.`);
+  debugLog(`Populated select "${selectId}" with ${speciesCatalog.length} species.`);
 }
 
 function switchTab(tabName) {
@@ -804,27 +1019,61 @@ function attachAnimationCleanup() {
 // =========================
 
 function formatActionText(action) {
-  if (action.type === "catch") {
-    const monster = monsterByID[action.monsterId];
-    const monsterName = monster
-      ? `${monster.name}${monster.variant ? ` (${monster.variant})` : ""}`
-      : action.monsterId;
+  if (action.actionType === "catch") {
+    if (!action.isFusion) {
+      const species = speciesById[action.speciesId];
+      const speciesName = species
+        ? `${species.name}${species.variant ? ` (${species.variant})` : ""}`
+        : action.speciesId;
 
-    return `[CATCH] ${monsterName} — ${action.route}`;
+      return `[CATCH] ${action.catchType} — ${speciesName} — ${action.locationId}`;
+    }
+
+    const headSpecies = speciesById[action.headSpeciesId];
+    const bodySpecies = speciesById[action.bodySpeciesId];
+
+    const headName = headSpecies
+      ? `${headSpecies.name}${headSpecies.variant ? ` (${headSpecies.variant})` : ""}`
+      : action.headSpeciesId;
+
+    const bodyName = bodySpecies
+      ? `${bodySpecies.name}${bodySpecies.variant ? ` (${bodySpecies.variant})` : ""}`
+      : action.bodySpeciesId;
+
+    return `[CATCH] ${action.catchType} fusion — ${headName} + ${bodyName} — ${action.locationId}`;
   }
 
-  if (action.type === "death") {
-    const target = runState.pokemon.find((p) => p.id === action.targetPokemonLogId);
-    const name = target
-      ? `${target.speciesName}${target.variant ? ` (${target.variant})` : ""}`
-      : "Unknown Pokémon";
+  if (action.actionType === "death") {
+    if (action.targetType === "pokemon") {
+      const target = runState.pokemon.find((p) => p.pokemonId === action.targetId);
+      const name = target
+        ? `${target.speciesName}${target.variant ? ` (${target.variant})` : ""}`
+        : "Unknown Pokémon";
 
-    return `[DEATH] ${name}`;
+      return `[DEATH] ${name}`;
+    }
+
+    if (action.targetType === "fusion") {
+      const fusion = runState.fusions.find((f) => f.fusionId === action.targetId);
+      if (!fusion) {
+        return `[DEATH] Unknown Fusion`;
+      }
+
+      const head = runState.pokemon.find((p) => p.pokemonId === fusion.headPokemonId);
+      const body = runState.pokemon.find((p) => p.pokemonId === fusion.bodyPokemonId);
+
+      const headName = head ? `${head.speciesName}${head.variant ? ` (${head.variant})` : ""}` : "Unknown";
+      const bodyName = body ? `${body.speciesName}${body.variant ? ` (${body.variant})` : ""}` : "Unknown";
+
+      return `[DEATH] Fusion — ${headName} + ${bodyName}`;
+    }
+
+    return `[DEATH] Unknown Target`;
   }
 
-  if (action.type === "fusion") {
-    const head = runState.pokemon.find((p) => p.id === action.headPokemonLogId);
-    const body = runState.pokemon.find((p) => p.id === action.bodyPokemonLogId);
+  if (action.actionType === "fusion") {
+    const head = runState.pokemon.find((p) => p.pokemonId === action.headPokemonId);
+    const body = runState.pokemon.find((p) => p.pokemonId === action.bodyPokemonId);
 
     const headName = head ? `${head.speciesName}${head.variant ? ` (${head.variant})` : ""}` : "Unknown";
     const bodyName = body ? `${body.speciesName}${body.variant ? ` (${body.variant})` : ""}` : "Unknown";
@@ -832,7 +1081,7 @@ function formatActionText(action) {
     return `[FUSION] ${headName} + ${bodyName}`;
   }
 
-  if (action.type === "gym") {
+  if (action.actionType === "gym") {
     return `[GYM] ${action.gymLeader} — ${action.result}${action.usedFusion ? " — used fusion" : ""}`;
   }
 
@@ -881,20 +1130,42 @@ function getFusionsDiscoveredCount() {
   const discovered = new Set();
 
   runState.actions.forEach((action) => {
-    if (action.type !== "fusion") return;
+    if (action.actionType === "fusion") {
+      const head = runState.pokemon.find((p) => p.pokemonId === action.headPokemonId);
+      const body = runState.pokemon.find((p) => p.pokemonId === action.bodyPokemonId);
 
-    const head = runState.pokemon.find((p) => p.id === action.headPokemonLogId);
-    const body = runState.pokemon.find((p) => p.id === action.bodyPokemonLogId);
+      if (!head || !body) return;
 
-    if (!head || !body) return;
+      discovered.add(`${head.speciesId}__${body.speciesId}`);
+      return;
+    }
 
-    discovered.add(`${head.monsterId}__${body.monsterId}`);
+    if (action.actionType === "catch" && action.isFusion) {
+      discovered.add(`${action.headSpeciesId}__${action.bodySpeciesId}`);
+    }
   });
 
   return discovered.size;
 }
 
+function populateLocationSelect(selectId) {
+  const select = document.getElementById(selectId);
+  if (!select) return;
 
+  const currentFirstOption = select.querySelector("option");
+  const firstOptionText = currentFirstOption?.textContent || "Select a location";
+
+  select.innerHTML = `<option value="">${firstOptionText}</option>`;
+
+  locationCatalog.forEach((location) => {
+    const option = document.createElement("option");
+    option.value = location.locationId;
+    option.textContent = location.name;
+    select.appendChild(option);
+  });
+
+  debugLog(`Populated select "${selectId}" with ${locationCatalog.length} locations.`);
+}
 
 // =========================
 // Event Handlers
@@ -956,29 +1227,80 @@ function handleCatchAction() {
     return;
   }
 
-  const speciesSelect = document.getElementById("pokemon-species");
-  const routeInput = document.getElementById("pokemon-route");
+  const catchTypeSelect = document.getElementById("catch-type");
+  const locationInput = document.getElementById("catch-location");
+  const fusionCheckbox = document.getElementById("catch-is-fusion");
 
-  const monsterId = speciesSelect?.value || "";
-  const route = routeInput?.value.trim() || "";
+  const catchType = catchTypeSelect?.value || "";
+  const locationId = locationInput?.value.trim() || "";
+  const isFusion = !!fusionCheckbox?.checked;
 
-  if (!monsterId || !route) {
-    alert("Catch actions need both a species and a route.");
+  if (!catchType || !locationId) {
+    alert("Catch actions need both a catch type and a location.");
     return;
   }
 
-  const monster = monsterByID[monsterId];
+  if (!isFusion) {
+    const speciesSelect = document.getElementById("catch-species");
+    const speciesId = speciesSelect?.value || "";
 
-  if (!monster) {
-    alert("Selected monster could not be found in the catalog.");
-    return;
+    if (!speciesId) {
+      alert("Please choose a species.");
+      return;
+    }
+
+    const species = speciesById[speciesId];
+    if (!species) {
+      alert("Selected species could not be found in the catalog.");
+      return;
+    }
+
+    const caughtPokemonId = crypto.randomUUID();
+
+    addAction({
+      ...createBaseAction("catch"),
+      catchType,
+      locationId,
+      isFusion: false,
+      caughtPokemonId,
+      speciesId
+    });
+  } else {
+    const headSpeciesSelect = document.getElementById("catch-head-species");
+    const bodySpeciesSelect = document.getElementById("catch-body-species");
+
+    const headSpeciesId = headSpeciesSelect?.value || "";
+    const bodySpeciesId = bodySpeciesSelect?.value || "";
+
+    if (!headSpeciesId || !bodySpeciesId) {
+      alert("Please choose both fusion species.");
+      return;
+    }
+
+    const headSpecies = speciesById[headSpeciesId];
+    const bodySpecies = speciesById[bodySpeciesId];
+
+    if (!headSpecies || !bodySpecies) {
+      alert("One or both selected fusion species could not be found in the catalog.");
+      return;
+    }
+
+    const caughtFusionId = crypto.randomUUID();
+    const headPokemonId = crypto.randomUUID();
+    const bodyPokemonId = crypto.randomUUID();
+
+    addAction({
+      ...createBaseAction("catch"),
+      catchType,
+      locationId,
+      isFusion: true,
+      caughtFusionId,
+      headPokemonId,
+      bodyPokemonId,
+      headSpeciesId,
+      bodySpeciesId
+    });
   }
-
-  addAction({
-    ...createBaseAction("catch"),
-    monsterId,
-    route
-  });
 
   runState.resources.catchesAvailable -= 1;
   updateAndSave();
@@ -989,17 +1311,25 @@ function handleDeathAction() {
   const deathTarget = document.getElementById("death-target");
   const deathNote = document.getElementById("death-note");
 
-  const targetPokemonLogId = deathTarget?.value || "";
+  const rawTarget = deathTarget?.value || "";
   const note = deathNote?.value.trim() || "";
 
-  if (!targetPokemonLogId) {
-    alert("Please choose a Pokémon to mark as dead.");
+  if (!rawTarget) {
+    alert("Please choose a target to mark as dead.");
+    return;
+  }
+
+  const [targetType, targetId] = rawTarget.split(":");
+
+  if (!targetType || !targetId) {
+    alert("Invalid death target selected.");
     return;
   }
 
   addAction({
     ...createBaseAction("death"),
-    targetPokemonLogId,
+    targetType,
+    targetId,
     note
   });
 
@@ -1011,23 +1341,44 @@ function handleFusionAction() {
   const fusionHead = document.getElementById("fusion-head");
   const fusionBody = document.getElementById("fusion-body");
 
-  const headPokemonLogId = fusionHead?.value || "";
-  const bodyPokemonLogId = fusionBody?.value || "";
+  const headPokemonId = fusionHead?.value || "";
+  const bodyPokemonId = fusionBody?.value || "";
 
-  if (!headPokemonLogId || !bodyPokemonLogId) {
+  if (!headPokemonId || !bodyPokemonId) {
     alert("Please choose both fusion components.");
     return;
   }
 
-  if (headPokemonLogId === bodyPokemonLogId) {
+  if (headPokemonId === bodyPokemonId) {
     alert("A Pokémon cannot fuse with itself.");
     return;
   }
 
+  const headPokemon = runState.pokemon.find((p) => p.pokemonId === headPokemonId);
+  const bodyPokemon = runState.pokemon.find((p) => p.pokemonId === bodyPokemonId);
+
+  if (!headPokemon || !bodyPokemon) {
+    alert("One or both selected Pokémon could not be found.");
+    return;
+  }
+
+  if (headPokemon.status !== "alive" || bodyPokemon.status !== "alive") {
+    alert("Only living Pokémon can be fused.");
+    return;
+  }
+
+  if (headPokemon.activeFusionId || bodyPokemon.activeFusionId) {
+    alert("One or both selected Pokémon are already part of an active fusion.");
+    return;
+  }
+
+  const fusionId = crypto.randomUUID();
+
   addAction({
     ...createBaseAction("fusion"),
-    headPokemonLogId,
-    bodyPokemonLogId
+    fusionId,
+    headPokemonId,
+    bodyPokemonId
   });
 
   updateAndSave();
@@ -1076,7 +1427,7 @@ function handleDeleteAction(actionId) {
   const confirmed = window.confirm("Delete this action?");
   if (!confirmed) return;
 
-  runState.actions = runState.actions.filter((action) => action.id !== actionId);
+  runState.actions = runState.actions.filter((action) => action.actionId !== actionId);
   runState.redoStack = [];
 
   updateAndSave();
@@ -1176,7 +1527,8 @@ function initializeDebugMode() {
 
 async function init() {
   await loadAchievementCatalog();
-  await loadMonsterCatalog();
+  await loadSpeciesCatalog();
+  await loadLocationCatalog();
   attachEventListeners();
   attachTabEventListeners();
   attachAnimationCleanup();
