@@ -1,0 +1,22 @@
+[
+  {
+    "trainerId": "brock",
+    "name": "Brock",
+    "battleType": "gym"
+  },
+  {
+    "trainerId": "blue-route-22-1",
+    "name": "Blue",
+    "battleType": "rival"
+  },
+  {
+    "trainerId": "lorelei",
+    "name": "Lorelei",
+    "battleType": "elite_four"
+  },
+  {
+    "trainerId": "lance",
+    "name": "Lance",
+    "battleType": "champion"
+  }
+]

@@ -25,7 +25,7 @@ const defaultRunState = {
   redoStack: [],
   pokemon: [],
   fusions: [],
-  gyms: [],
+  battles: [],
   achievementProgress: {},
   purchases: []
 };
@@ -34,7 +34,7 @@ const actionHandlers = {
   catch: handleCatchAction,
   death: handleDeathAction,
   fusion: handleFusionAction,
-  gym: handleGymAction
+  battle: handleBattleAction
 };
 
 
@@ -45,6 +45,8 @@ let speciesById = {};
 let hasRenderedFusionFlowerOnce = false;
 let locationCatalog = [];
 let locationById = {};
+let trainerCatalog = [];
+let trainerById = {};
 
 let lastRenderedFusionFlowerValues = {
   fusions: null,
@@ -94,7 +96,7 @@ function normalizeRunState(state) {
     redoStack: Array.isArray(state?.redoStack) ? state.redoStack : [],
     pokemon: Array.isArray(state?.pokemon) ? state.pokemon : [],
     fusions: Array.isArray(state?.fusions) ? state.fusions : [],
-    gyms: Array.isArray(state?.gyms) ? state.gyms : [],
+    battles: Array.isArray(state?.battles) ? state.battles : [],
     achievementProgress:
       state?.achievementProgress && !Array.isArray(state.achievementProgress)
         ? state.achievementProgress
@@ -201,6 +203,35 @@ async function loadLocationCatalog() {
   }
 }
 
+async function loadTrainerCatalog() {
+  try {
+    debugLog("Loading trainers from data/trainers.json...");
+
+    const response = await fetch("data/trainers.json");
+
+    if (!response.ok) {
+      throw new Error(`HTTP error ${response.status}`);
+    }
+
+    trainerCatalog = await response.json();
+
+    if (!Array.isArray(trainerCatalog)) {
+      throw new Error("trainers.json is not an array.");
+    }
+
+    trainerById = {};
+
+    trainerCatalog.forEach((trainer) => {
+      trainerById[trainer.trainerId] = trainer;
+    });
+
+    debugLog(`Loaded ${trainerCatalog.length} trainers.`);
+  } catch (error) {
+    console.error("Failed to load trainers:", error);
+    alert("Trainer database failed to load. Check console.");
+  }
+}
+
 function validateAchievementCatalog() {
   const errors = [];
   const achievementIds = new Set();
@@ -285,7 +316,7 @@ function addAction(action) {
 function rebuildDerivedStateFromActions() {
   const pokemon = [];
   const fusions = [];
-  const gyms = [];
+  const battles = [];
 
   for (const action of runState.actions) {
     switch (action.actionType) {
@@ -432,12 +463,13 @@ function rebuildDerivedStateFromActions() {
         break;
       }
 
-      case "gym": {
-        gyms.push({
-          gymId: action.actionId,
-          gymLeader: action.gymLeader,
+      case "battle": {
+        battles.push({
+          battleId: action.actionId,
+          battleType: action.battleType || "",
+          trainerId: action.trainerId || "",
           result: action.result,
-          usedFusion: !!action.usedFusion,
+          party: Array.isArray(action.party) ? action.party : [],
           createdAt: action.actionAt
         });
         break;
@@ -447,7 +479,7 @@ function rebuildDerivedStateFromActions() {
 
   runState.pokemon = pokemon;
   runState.fusions = fusions;
-  runState.gyms = gyms;
+  runState.battles = battles;
 }
 
 function getAvailableRP() {
@@ -488,16 +520,21 @@ function countActionsByType(actionType) {
   return runState.actions.filter((action) => action.actionType === actionType).length;
 }
 
-function countGymResults(result) {
+function countBattleResults(result) {
   return runState.actions.filter(
-    (action) => action.actionType === "gym" && action.result === result
+    (action) => action.actionType === "battle" && action.result === result
   ).length;
 }
 
-function countGymFusionWins() {
-  return runState.actions.filter(
-    (action) => action.actionType === "gym" && action.result === "win" && action.usedFusion
-  ).length;
+function countBattleFusionWins() {
+  return runState.actions.filter((action) => {
+    if (action.actionType !== "battle" || action.result !== "win") {
+      return false;
+    }
+
+    return Array.isArray(action.party) &&
+      action.party.some((member) => member.entityType === "fusion");
+  }).length;
 }
 
 function doesAchievementMeetCondition(achievement, progressMap) {
@@ -510,13 +547,13 @@ function doesAchievementMeetCondition(achievement, progressMap) {
     return count >= (achievement.target || 1);
   }
 
-  if (achievement.conditionType === "gym_result") {
-    const count = countGymResults(achievement.result);
+  if (achievement.conditionType === "battle_result") {
+    const count = countBattleResults(achievement.result);
     return count >= (achievement.target || 1);
   }
 
-  if (achievement.conditionType === "gym_used_fusion_win") {
-    const count = countGymFusionWins();
+  if (achievement.conditionType === "battle_used_fusion_win") {
+    const count = countBattleFusionWins();
     return count >= (achievement.target || 1);
   }
 
@@ -865,28 +902,97 @@ function renderActionFields() {
     `;
   }
 
-  if (type === "gym") {
+  if (type === "battle") {
+    const partyOptions = getBattleEligibleEntities()
+      .map((entry) => {
+        const prefix = entry.entityType === "fusion" ? "Fusion" : "Pokémon";
+        return `<option value="${entry.entityType}:${entry.entityId}">${prefix} — ${entry.label}</option>`;
+      })
+      .join("");
+
     container.innerHTML = `
       <div class="field-row">
-        <label for="gym-leader">Gym Leader</label>
-        <input id="gym-leader" type="text" placeholder="e.g. Brock" />
+        <label for="battle-type">Battle Type</label>
+        <select id="battle-type">
+          <option value="">Select a battle type</option>
+          <option value="gym">Gym</option>
+          <option value="rival">Rival</option>
+          <option value="elite_four">Elite Four</option>
+          <option value="champion">Champion</option>
+        </select>
       </div>
 
       <div class="field-row">
-        <label for="gym-result">Result</label>
-        <select id="gym-result">
+        <label for="battle-trainer">Trainer</label>
+        <select id="battle-trainer">
+          <option value="">Select a trainer</option>
+        </select>
+      </div>
+
+      <div class="field-row">
+        <label for="battle-result">Result</label>
+        <select id="battle-result">
           <option value="win">Win</option>
           <option value="loss">Loss</option>
         </select>
       </div>
 
       <div class="field-row">
-        <label>
-          <input type="checkbox" id="gym-used-fusion" />
-          Used Fusion
-        </label>
+        <label for="battle-party-1">Party Slot 1</label>
+        <select id="battle-party-1">
+          <option value="">Empty</option>
+          ${partyOptions}
+        </select>
+      </div>
+
+      <div class="field-row">
+        <label for="battle-party-2">Party Slot 2</label>
+        <select id="battle-party-2">
+          <option value="">Empty</option>
+          ${partyOptions}
+        </select>
+      </div>
+
+      <div class="field-row">
+        <label for="battle-party-3">Party Slot 3</label>
+        <select id="battle-party-3">
+          <option value="">Empty</option>
+          ${partyOptions}
+        </select>
+      </div>
+
+      <div class="field-row">
+        <label for="battle-party-4">Party Slot 4</label>
+        <select id="battle-party-4">
+          <option value="">Empty</option>
+          ${partyOptions}
+        </select>
+      </div>
+
+      <div class="field-row">
+        <label for="battle-party-5">Party Slot 5</label>
+        <select id="battle-party-5">
+          <option value="">Empty</option>
+          ${partyOptions}
+        </select>
+      </div>
+
+      <div class="field-row">
+        <label for="battle-party-6">Party Slot 6</label>
+        <select id="battle-party-6">
+          <option value="">Empty</option>
+          ${partyOptions}
+        </select>
       </div>
     `;
+
+    const battleTypeSelect = document.getElementById("battle-type");
+    const battleTrainerSelectId = "battle-trainer";
+
+    battleTypeSelect.addEventListener("change", () => {
+      const battleType = battleTypeSelect.value;
+      populateBattleTrainerSelect(battleTrainerSelectId, battleType);
+    });
   }
 }
 
@@ -1081,8 +1187,38 @@ function formatActionText(action) {
     return `[FUSION] ${headName} + ${bodyName}`;
   }
 
-  if (action.actionType === "gym") {
-    return `[GYM] ${action.gymLeader} — ${action.result}${action.usedFusion ? " — used fusion" : ""}`;
+  if (action.actionType === "battle") {
+    const trainer = trainerById[action.trainerId];
+    const trainerName = trainer ? trainer.name : action.trainerId || "Unknown Trainer";
+    const battleTypeLabel = action.battleType ? action.battleType.replace(/_/g, " ") : "battle";
+
+    const partySummary = Array.isArray(action.party)
+      ? action.party.map((member) => {
+          if (member.entityType === "pokemon") {
+            const pokemon = runState.pokemon.find((p) => p.pokemonId === member.entityId);
+            return pokemon
+              ? `${pokemon.speciesName}${pokemon.variant ? ` (${pokemon.variant})` : ""}`
+              : "Unknown Pokémon";
+          }
+
+          if (member.entityType === "fusion") {
+            const fusion = runState.fusions.find((f) => f.fusionId === member.entityId);
+            if (!fusion) return "Unknown Fusion";
+
+            const head = runState.pokemon.find((p) => p.pokemonId === fusion.headPokemonId);
+            const body = runState.pokemon.find((p) => p.pokemonId === fusion.bodyPokemonId);
+
+            const headName = head ? `${head.speciesName}${head.variant ? ` (${head.variant})` : ""}` : "Unknown";
+            const bodyName = body ? `${body.speciesName}${body.variant ? ` (${body.variant})` : ""}` : "Unknown";
+
+            return `${headName} + ${bodyName}`;
+          }
+
+          return "Unknown Member";
+        }).join(", ")
+      : "";
+
+    return `[BATTLE] ${battleTypeLabel} — ${trainerName} — ${action.result}${partySummary ? ` — Party: ${partySummary}` : ""}`;
   }
 
   return `[UNKNOWN ACTION]`;
@@ -1165,6 +1301,54 @@ function populateLocationSelect(selectId) {
   });
 
   debugLog(`Populated select "${selectId}" with ${locationCatalog.length} locations.`);
+}
+
+function getBattleEligibleEntities() {
+  const standalonePokemon = runState.pokemon
+    .filter((p) => p.status === "alive" && !p.activeFusionId)
+    .map((p) => ({
+      entityType: "pokemon",
+      entityId: p.pokemonId,
+      label: `${p.speciesName}${p.variant ? ` (${p.variant})` : ""}`
+    }));
+
+  const activeFusions = runState.fusions
+    .filter((f) => f.status === "active")
+    .map((f) => {
+      const head = runState.pokemon.find((p) => p.pokemonId === f.headPokemonId);
+      const body = runState.pokemon.find((p) => p.pokemonId === f.bodyPokemonId);
+
+      const headName = head ? `${head.speciesName}${head.variant ? ` (${head.variant})` : ""}` : "Unknown";
+      const bodyName = body ? `${body.speciesName}${body.variant ? ` (${body.variant})` : ""}` : "Unknown";
+
+      return {
+        entityType: "fusion",
+        entityId: f.fusionId,
+        label: `${headName} + ${bodyName}`
+      };
+    });
+
+  return [...standalonePokemon, ...activeFusions];
+}
+
+function populateBattleTrainerSelect(selectId, battleType) {
+  const select = document.getElementById(selectId);
+  if (!select) return;
+
+  const filteredTrainers = trainerCatalog.filter(
+    (trainer) => trainer.battleType === battleType
+  );
+
+  select.innerHTML = `<option value="">Select a trainer</option>`;
+
+  filteredTrainers.forEach((trainer) => {
+    const option = document.createElement("option");
+    option.value = trainer.trainerId;
+    option.textContent = trainer.name;
+    select.appendChild(option);
+  });
+
+  debugLog(`Populated trainer select "${selectId}" with ${filteredTrainers.length} trainers for battleType "${battleType}".`);
 }
 
 // =========================
@@ -1385,20 +1569,75 @@ function handleFusionAction() {
   renderActionFields();
 }
 
-function handleGymAction() {
-  const gymLeaderInput = document.getElementById("gym-leader");
-  const gymResultSelect = document.getElementById("gym-result");
-  const gymUsedFusionCheckbox = document.getElementById("gym-used-fusion");
+function handleBattleAction() {
+  const battleTypeSelect = document.getElementById("battle-type");
+  const battleTrainerSelect = document.getElementById("battle-trainer");
+  const battleResultSelect = document.getElementById("battle-result");
 
-  const gymLeader = gymLeaderInput?.value.trim() || "Unknown Gym";
-  const result = gymResultSelect?.value || "win";
-  const usedFusion = !!gymUsedFusionCheckbox?.checked;
+  const battleType = battleTypeSelect?.value || "";
+  const trainerId = battleTrainerSelect?.value || "";
+  const result = battleResultSelect?.value || "win";
+
+  if (!battleType) {
+    alert("Please choose a battle type.");
+    return;
+  }
+
+  if (!trainerId) {
+    alert("Please choose a trainer.");
+    return;
+  }
+
+  const trainer = trainerById[trainerId];
+  if (!trainer) {
+    alert("Selected trainer could not be found.");
+    return;
+  }
+
+  const rawPartyValues = [
+    document.getElementById("battle-party-1")?.value || "",
+    document.getElementById("battle-party-2")?.value || "",
+    document.getElementById("battle-party-3")?.value || "",
+    document.getElementById("battle-party-4")?.value || "",
+    document.getElementById("battle-party-5")?.value || "",
+    document.getElementById("battle-party-6")?.value || ""
+  ];
+
+  const nonEmptyPartyValues = rawPartyValues.filter(Boolean);
+
+  if (nonEmptyPartyValues.length === 0) {
+    alert("Please choose at least one party member.");
+    return;
+  }
+
+  const uniqueValues = new Set(nonEmptyPartyValues);
+  if (uniqueValues.size !== nonEmptyPartyValues.length) {
+    alert("The same party member cannot be selected more than once.");
+    return;
+  }
+
+  const eligibleEntities = getBattleEligibleEntities();
+  const eligibleSet = new Set(
+    eligibleEntities.map((entry) => `${entry.entityType}:${entry.entityId}`)
+  );
+
+  const hasInvalidSelection = nonEmptyPartyValues.some((value) => !eligibleSet.has(value));
+  if (hasInvalidSelection) {
+    alert("One or more selected party members are no longer eligible.");
+    return;
+  }
+
+  const party = nonEmptyPartyValues.map((value) => {
+    const [entityType, entityId] = value.split(":");
+    return { entityType, entityId };
+  });
 
   addAction({
-    ...createBaseAction("gym"),
-    gymLeader,
+    ...createBaseAction("battle"),
+    battleType,
+    trainerId,
     result,
-    usedFusion
+    party
   });
 
   updateAndSave();
@@ -1529,6 +1768,7 @@ async function init() {
   await loadAchievementCatalog();
   await loadSpeciesCatalog();
   await loadLocationCatalog();
+  await loadTrainerCatalog();
   attachEventListeners();
   attachTabEventListeners();
   attachAnimationCleanup();
