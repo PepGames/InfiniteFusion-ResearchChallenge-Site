@@ -1369,104 +1369,182 @@ function populateBattleTrainerSelect(selectId, battleType) {
 
 function renderActionCard(action) {
   const container = document.createElement("span");
+  container.className = "action-card-content";
+
+  function appendSpacer() {
+    const spacer = document.createElement("span");
+    spacer.className = "action-card-spacer";
+    spacer.textContent = " ";
+    container.appendChild(spacer);
+  }
+
+  function appendText(text, className = "") {
+    const span = document.createElement("span");
+    span.className = className;
+    span.textContent = text;
+    container.appendChild(span);
+  }
 
   if (action.actionType === "catch") {
+    container.appendChild(createActionChip("CATCH", "chip-catch"));
+    appendSpacer();
+
+    container.appendChild(createActionChip(action.catchType, "chip-subtype"));
+    appendSpacer();
+
     if (!action.isFusion) {
       const species = speciesById[action.speciesId];
       const speciesName = species
         ? `${species.name}${species.variant ? ` (${species.variant})` : ""}`
         : action.speciesId;
 
-      const location = locationById[action.locationId]?.name || action.locationId;
+      container.appendChild(createActionChip(speciesName, "chip-species"));
+    } else {
+      const headSpecies = speciesById[action.headSpeciesId];
+      const bodySpecies = speciesById[action.bodySpeciesId];
 
-      container.textContent = `[CATCH] ${action.catchType} — ${speciesName} — ${location}`;
-      return container;
+      const headName = headSpecies
+        ? `${headSpecies.name}${headSpecies.variant ? ` (${headSpecies.variant})` : ""}`
+        : action.headSpeciesId;
+
+      const bodyName = bodySpecies
+        ? `${bodySpecies.name}${bodySpecies.variant ? ` (${bodySpecies.variant})` : ""}`
+        : action.bodySpeciesId;
+
+      container.appendChild(createActionChip(headName, "chip-species"));
+      appendText(" + ", "action-inline-separator");
+      container.appendChild(createActionChip(bodyName, "chip-species"));
     }
 
-    const head = speciesById[action.headSpeciesId];
-    const body = speciesById[action.bodySpeciesId];
+    appendSpacer();
 
-    const headName = head ? `${head.name}${head.variant ? ` (${head.variant})` : ""}` : "Unknown";
-    const bodyName = body ? `${body.name}${body.variant ? ` (${body.variant})` : ""}` : "Unknown";
+    const locationName = locationById[action.locationId]?.name || action.locationId;
+    appendText("@ ", "action-inline-label");
+    container.appendChild(createActionChip(locationName, "chip-location"));
 
-    const location = locationById[action.locationId]?.name || action.locationId;
-
-    container.textContent = `[CATCH] ${action.catchType} fusion — ${headName} + ${bodyName} — ${location}`;
     return container;
   }
 
   if (action.actionType === "fusion") {
-    const head = runState.pokemon.find(p => p.pokemonId === action.headPokemonId);
-    const body = runState.pokemon.find(p => p.pokemonId === action.bodyPokemonId);
+    container.appendChild(createActionChip("FUSION", "chip-fusion"));
+    appendSpacer();
+
+    const head = runState.pokemon.find((p) => p.pokemonId === action.headPokemonId);
+    const body = runState.pokemon.find((p) => p.pokemonId === action.bodyPokemonId);
 
     const headName = head ? `${head.speciesName}${head.variant ? ` (${head.variant})` : ""}` : "Unknown";
     const bodyName = body ? `${body.speciesName}${body.variant ? ` (${body.variant})` : ""}` : "Unknown";
 
-    container.textContent = `[FUSION] ${headName} + ${bodyName}`;
+    container.appendChild(createActionChip(headName, "chip-species"));
+    appendText(" + ", "action-inline-separator");
+    container.appendChild(createActionChip(bodyName, "chip-species"));
+
     return container;
   }
 
   if (action.actionType === "death") {
+    container.appendChild(createActionChip("DEATH", "chip-death"));
+    appendSpacer();
+
     if (action.targetType === "pokemon") {
-      const target = runState.pokemon.find(p => p.pokemonId === action.targetId);
+      const target = runState.pokemon.find((p) => p.pokemonId === action.targetId);
       const name = target
         ? `${target.speciesName}${target.variant ? ` (${target.variant})` : ""}`
         : "Unknown Pokémon";
 
-      container.textContent = `[DEATH] ${name}`;
+      container.appendChild(createActionChip(name, "chip-species"));
       return container;
     }
 
     if (action.targetType === "fusion") {
-      const fusion = runState.fusions.find(f => f.fusionId === action.targetId);
+      const fusion = runState.fusions.find((f) => f.fusionId === action.targetId);
+
       if (!fusion) {
-        container.textContent = `[DEATH] Unknown Fusion`;
+        container.appendChild(createActionChip("Unknown Fusion", "chip-fusion"));
         return container;
       }
 
-      const head = runState.pokemon.find(p => p.pokemonId === fusion.headPokemonId);
-      const body = runState.pokemon.find(p => p.pokemonId === fusion.bodyPokemonId);
+      const head = runState.pokemon.find((p) => p.pokemonId === fusion.headPokemonId);
+      const body = runState.pokemon.find((p) => p.pokemonId === fusion.bodyPokemonId);
 
-      const headName = head ? head.speciesName : "Unknown";
-      const bodyName = body ? body.speciesName : "Unknown";
+      const headName = head ? `${head.speciesName}${head.variant ? ` (${head.variant})` : ""}` : "Unknown";
+      const bodyName = body ? `${body.speciesName}${body.variant ? ` (${body.variant})` : ""}` : "Unknown";
 
-      container.textContent = `[DEATH] Fusion — ${headName} + ${bodyName}`;
+      container.appendChild(createActionChip(headName, "chip-species"));
+      appendText(" + ", "action-inline-separator");
+      container.appendChild(createActionChip(bodyName, "chip-species"));
+
       return container;
     }
   }
 
   if (action.actionType === "battle") {
+    container.appendChild(createActionChip("BATTLE", "chip-battle"));
+    appendSpacer();
+
+    const battleTypeLabel = action.battleType
+      ? action.battleType.replace(/_/g, " ")
+      : "battle";
+
+    container.appendChild(createActionChip(battleTypeLabel, "chip-subtype"));
+    appendSpacer();
+
     const trainer = trainerById[action.trainerId];
-    const trainerName = trainer ? trainer.name : "Unknown Trainer";
+    const trainerName = trainer ? trainer.name : action.trainerId || "Unknown Trainer";
+    container.appendChild(createActionChip(trainerName, "chip-trainer"));
+    appendSpacer();
 
-    const partySummary = Array.isArray(action.party)
-      ? action.party.map(member => {
-          if (member.entityType === "pokemon") {
-            const p = runState.pokemon.find(p => p.pokemonId === member.entityId);
-            return p ? p.speciesName : "Unknown Pokémon";
+    container.appendChild(createActionChip(action.result, action.result === "win" ? "chip-win" : "chip-loss"));
+
+    if (Array.isArray(action.party) && action.party.length > 0) {
+      appendSpacer();
+      appendText("Party: ", "action-inline-label");
+
+      action.party.forEach((member, index) => {
+        if (index > 0) {
+          appendText(", ", "action-inline-separator");
+        }
+
+        if (member.entityType === "pokemon") {
+          const pokemon = runState.pokemon.find((p) => p.pokemonId === member.entityId);
+          const name = pokemon
+            ? `${pokemon.speciesName}${pokemon.variant ? ` (${pokemon.variant})` : ""}`
+            : "Unknown Pokémon";
+
+          container.appendChild(createActionChip(name, "chip-species"));
+        }
+
+        if (member.entityType === "fusion") {
+          const fusion = runState.fusions.find((f) => f.fusionId === member.entityId);
+
+          if (!fusion) {
+            container.appendChild(createActionChip("Unknown Fusion", "chip-fusion"));
+            return;
           }
 
-          if (member.entityType === "fusion") {
-            const f = runState.fusions.find(f => f.fusionId === member.entityId);
-            if (!f) return "Unknown Fusion";
+          const head = runState.pokemon.find((p) => p.pokemonId === fusion.headPokemonId);
+          const body = runState.pokemon.find((p) => p.pokemonId === fusion.bodyPokemonId);
 
-            const head = runState.pokemon.find(p => p.pokemonId === f.headPokemonId);
-            const body = runState.pokemon.find(p => p.pokemonId === f.bodyPokemonId);
+          const headName = head ? `${head.speciesName}${head.variant ? ` (${head.variant})` : ""}` : "Unknown";
+          const bodyName = body ? `${body.speciesName}${body.variant ? ` (${body.variant})` : ""}` : "Unknown";
 
-            return `${head?.speciesName || "?"} + ${body?.speciesName || "?"}`;
-          }
-        }).join(", ")
-      : "";
-
-    container.textContent =
-      `[BATTLE] ${action.battleType} — ${trainerName} — ${action.result}` +
-      (partySummary ? ` — Party: ${partySummary}` : "");
+          container.appendChild(createActionChip(`${headName} + ${bodyName}`, "chip-fusion"));
+        }
+      });
+    }
 
     return container;
   }
 
-  container.textContent = `[UNKNOWN ACTION]`;
+  container.appendChild(createActionChip("UNKNOWN ACTION"));
   return container;
+}
+
+function createActionChip(text, className = "") {
+  const chip = document.createElement("span");
+  chip.className = `action-chip${className ? ` ${className}` : ""}`;
+  chip.textContent = text;
+  return chip;
 }
 
 // =========================

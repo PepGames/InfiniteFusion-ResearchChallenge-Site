@@ -474,3 +474,69 @@ button:disabled {
 .petal-anim-wrap.pulse {
   animation: petalPulse 0.35s ease;
 }
+
+.action-card-content {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  line-height: 1.5;
+}
+
+.action-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+  color: #f3f4f6;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+.chip-catch {
+  background: rgba(59, 130, 246, 0.16);
+}
+
+.chip-fusion {
+  background: rgba(168, 85, 247, 0.18);
+}
+
+.chip-death {
+  background: rgba(239, 68, 68, 0.16);
+}
+
+.chip-battle {
+  background: rgba(249, 115, 22, 0.18);
+}
+
+.chip-subtype {
+  background: rgba(255,255,255,0.08);
+}
+
+.chip-species {
+  background: rgba(16, 185, 129, 0.14);
+}
+
+.chip-location {
+  background: rgba(234, 179, 8, 0.14);
+}
+
+.chip-trainer {
+  background: rgba(244, 114, 182, 0.14);
+}
+
+.chip-win {
+  background: rgba(34, 197, 94, 0.18);
+}
+
+.chip-loss {
+  background: rgba(239, 68, 68, 0.18);
+}
+
+.action-inline-label,
+.action-inline-separator,
+.action-card-spacer {
+  color: rgba(255,255,255,0.8);
+}
