@@ -330,7 +330,7 @@ function rebuildDerivedStateFromActions() {
             speciesId: action.speciesId,
             speciesName: species.name,
             variant: species.variant || "",
-            nickname: "",
+            nickname: action.nickname || "",
             locationId: action.locationId || "",
             catchType: action.catchType || "",
             status: "alive",
@@ -348,7 +348,7 @@ function rebuildDerivedStateFromActions() {
             speciesId: action.headSpeciesId,
             speciesName: headSpecies.name,
             variant: headSpecies.variant || "",
-            nickname: "",
+            nickname: action.headNickname || "",
             locationId: action.locationId || "",
             catchType: action.catchType || "",
             status: "alive",
@@ -362,7 +362,7 @@ function rebuildDerivedStateFromActions() {
             speciesId: action.bodySpeciesId,
             speciesName: bodySpecies.name,
             variant: bodySpecies.variant || "",
-            nickname: "",
+            nickname: action.bodyNickname || "",
             locationId: action.locationId || "",
             catchType: action.catchType || "",
             status: "alive",
@@ -802,6 +802,11 @@ function renderActionFields() {
               <option value="">Select a species</option>
             </select>
           </div>
+
+          <div class="field-row">
+            <label for="catch-nickname">Nickname (optional)</label>
+            <input id="catch-nickname" type="text" placeholder="e.g. Bubbles" />
+          </div>
         </div>
 
         <div id="catch-fusion-fields" style="display:none;">
@@ -813,10 +818,20 @@ function renderActionFields() {
           </div>
 
           <div class="field-row">
+            <label for="catch-head-nickname">Head Nickname (optional)</label>
+            <input id="catch-head-nickname" type="text" placeholder="e.g. Sparky" />
+          </div>
+
+          <div class="field-row">
             <label for="catch-body-species">Body Species</label>
             <select id="catch-body-species">
               <option value="">Select body species</option>
             </select>
+          </div>
+
+          <div class="field-row">
+            <label for="catch-body-nickname">Body Nickname (optional)</label>
+            <input id="catch-body-nickname" type="text" placeholder="e.g. Shellshock" />
           </div>
         </div>
       `;
@@ -860,15 +875,15 @@ function renderActionFields() {
     const activeFusions = runState.fusions.filter((f) => f.status === "active");
 
     const pokemonOptions = alivePokemon.map((p) =>
-      `<option value="pokemon:${p.pokemonId}">Pokémon — ${p.speciesName}${p.variant ? ` (${p.variant})` : ""}</option>`
+      `<option value="pokemon:${p.pokemonId}">Pokémon — ${getPokemonDisplayName(p)}</option>`
     ).join("");
 
     const fusionOptions = activeFusions.map((f) => {
       const head = runState.pokemon.find((p) => p.pokemonId === f.headPokemonId);
       const body = runState.pokemon.find((p) => p.pokemonId === f.bodyPokemonId);
 
-      const headName = head ? `${head.speciesName}${head.variant ? ` (${head.variant})` : ""}` : "Unknown";
-      const bodyName = body ? `${body.speciesName}${body.variant ? ` (${body.variant})` : ""}` : "Unknown";
+      const headName = getPokemonDisplayName(head);
+      const bodyName = getPokemonDisplayName(body);
 
       return `<option value="fusion:${f.fusionId}">Fusion — ${headName} + ${bodyName}</option>`;
     }).join("");
@@ -896,7 +911,7 @@ function renderActionFields() {
     );
 
     const options = available.map((p) =>
-      `<option value="${p.pokemonId}">${p.speciesName}${p.variant ? ` (${p.variant})` : ""}</option>`
+      `<option value="${p.pokemonId}">${getPokemonDisplayName(p)}</option>`
     ).join("");
 
     container.innerHTML = `
@@ -1184,8 +1199,8 @@ function formatActionText(action) {
       const head = runState.pokemon.find((p) => p.pokemonId === fusion.headPokemonId);
       const body = runState.pokemon.find((p) => p.pokemonId === fusion.bodyPokemonId);
 
-      const headName = head ? `${head.speciesName}${head.variant ? ` (${head.variant})` : ""}` : "Unknown";
-      const bodyName = body ? `${body.speciesName}${body.variant ? ` (${body.variant})` : ""}` : "Unknown";
+      const headName = getPokemonDisplayName(head);
+      const bodyName = getPokemonDisplayName(body);
 
       return `[DEATH] Fusion — ${headName} + ${bodyName}`;
     }
@@ -1197,8 +1212,8 @@ function formatActionText(action) {
     const head = runState.pokemon.find((p) => p.pokemonId === action.headPokemonId);
     const body = runState.pokemon.find((p) => p.pokemonId === action.bodyPokemonId);
 
-    const headName = head ? `${head.speciesName}${head.variant ? ` (${head.variant})` : ""}` : "Unknown";
-    const bodyName = body ? `${body.speciesName}${body.variant ? ` (${body.variant})` : ""}` : "Unknown";
+    const headName = getPokemonDisplayName(head);
+    const bodyName = getPokemonDisplayName(body);
 
     return `[FUSION] ${headName} + ${bodyName}`;
   }
@@ -1325,7 +1340,7 @@ function getBattleEligibleEntities() {
     .map((p) => ({
       entityType: "pokemon",
       entityId: p.pokemonId,
-      label: `${p.speciesName}${p.variant ? ` (${p.variant})` : ""}`
+      label: getPokemonDisplayName(p)
     }));
 
   const activeFusions = runState.fusions
@@ -1334,8 +1349,8 @@ function getBattleEligibleEntities() {
       const head = runState.pokemon.find((p) => p.pokemonId === f.headPokemonId);
       const body = runState.pokemon.find((p) => p.pokemonId === f.bodyPokemonId);
 
-      const headName = head ? `${head.speciesName}${head.variant ? ` (${head.variant})` : ""}` : "Unknown";
-      const bodyName = body ? `${body.speciesName}${body.variant ? ` (${body.variant})` : ""}` : "Unknown";
+      const headName = getPokemonDisplayName(head);
+      const bodyName = getPokemonDisplayName(body);
 
       return {
         entityType: "fusion",
@@ -1398,18 +1413,23 @@ function renderActionCard(action) {
         ? `${species.name}${species.variant ? ` (${species.variant})` : ""}`
         : action.speciesId;
 
-      container.appendChild(createActionChip(speciesName, "chip-species"));
+      const displayName = action.nickname || speciesName;
+
+      container.appendChild(createActionChip(displayName, "chip-species"));
     } else {
       const headSpecies = speciesById[action.headSpeciesId];
       const bodySpecies = speciesById[action.bodySpeciesId];
 
-      const headName = headSpecies
+      const headSpeciesName = headSpecies
         ? `${headSpecies.name}${headSpecies.variant ? ` (${headSpecies.variant})` : ""}`
         : action.headSpeciesId;
 
-      const bodyName = bodySpecies
+      const bodySpeciesName = bodySpecies
         ? `${bodySpecies.name}${bodySpecies.variant ? ` (${bodySpecies.variant})` : ""}`
         : action.bodySpeciesId;
+
+      const headName = action.headNickname || headSpeciesName;
+      const bodyName = action.bodyNickname || bodySpeciesName;
 
       container.appendChild(createActionChip(headName, "chip-species"));
       appendText(" + ", "action-inline-separator");
@@ -1432,8 +1452,8 @@ function renderActionCard(action) {
     const head = runState.pokemon.find((p) => p.pokemonId === action.headPokemonId);
     const body = runState.pokemon.find((p) => p.pokemonId === action.bodyPokemonId);
 
-    const headName = head ? `${head.speciesName}${head.variant ? ` (${head.variant})` : ""}` : "Unknown";
-    const bodyName = body ? `${body.speciesName}${body.variant ? ` (${body.variant})` : ""}` : "Unknown";
+    const headName = getPokemonDisplayName(head);
+    const bodyName = getPokemonDisplayName(body);
 
     container.appendChild(createActionChip(headName, "chip-species"));
     appendText(" + ", "action-inline-separator");
@@ -1447,10 +1467,7 @@ function renderActionCard(action) {
     appendSpacer();
 
     if (action.targetType === "pokemon") {
-      const target = runState.pokemon.find((p) => p.pokemonId === action.targetId);
-      const name = target
-        ? `${target.speciesName}${target.variant ? ` (${target.variant})` : ""}`
-        : "Unknown Pokémon";
+      const name = getPokemonDisplayName(target);
 
       container.appendChild(createActionChip(name, "chip-species"));
       return container;
@@ -1467,8 +1484,8 @@ function renderActionCard(action) {
       const head = runState.pokemon.find((p) => p.pokemonId === fusion.headPokemonId);
       const body = runState.pokemon.find((p) => p.pokemonId === fusion.bodyPokemonId);
 
-      const headName = head ? `${head.speciesName}${head.variant ? ` (${head.variant})` : ""}` : "Unknown";
-      const bodyName = body ? `${body.speciesName}${body.variant ? ` (${body.variant})` : ""}` : "Unknown";
+      const headName = getPokemonDisplayName(head);
+      const bodyName = getPokemonDisplayName(body);
 
       container.appendChild(createActionChip(headName, "chip-species"));
       appendText(" + ", "action-inline-separator");
@@ -1507,9 +1524,7 @@ function renderActionCard(action) {
 
         if (member.entityType === "pokemon") {
           const pokemon = runState.pokemon.find((p) => p.pokemonId === member.entityId);
-          const name = pokemon
-            ? `${pokemon.speciesName}${pokemon.variant ? ` (${pokemon.variant})` : ""}`
-            : "Unknown Pokémon";
+          const name = getPokemonDisplayName(pokemon);
 
           container.appendChild(createActionChip(name, "chip-species"));
         }
@@ -1525,8 +1540,8 @@ function renderActionCard(action) {
           const head = runState.pokemon.find((p) => p.pokemonId === fusion.headPokemonId);
           const body = runState.pokemon.find((p) => p.pokemonId === fusion.bodyPokemonId);
 
-          const headName = head ? `${head.speciesName}${head.variant ? ` (${head.variant})` : ""}` : "Unknown";
-          const bodyName = body ? `${body.speciesName}${body.variant ? ` (${body.variant})` : ""}` : "Unknown";
+          const headName = getPokemonDisplayName(head);
+          const bodyName = getPokemonDisplayName(body);
 
           container.appendChild(createActionChip(`${headName} + ${bodyName}`, "chip-fusion"));
         }
@@ -1545,6 +1560,16 @@ function createActionChip(text, className = "") {
   chip.className = `action-chip${className ? ` ${className}` : ""}`;
   chip.textContent = text;
   return chip;
+}
+
+function getPokemonDisplayName(pokemon) {
+  if (!pokemon) return "Unknown Pokémon";
+  return pokemon.nickname || `${pokemon.speciesName}${pokemon.variant ? ` (${pokemon.variant})` : ""}`;
+}
+
+function getSpeciesDisplayName(species) {
+  if (!species) return "Unknown Species";
+  return `${species.name}${species.variant ? ` (${species.variant})` : ""}`;
 }
 
 // =========================
@@ -1622,7 +1647,10 @@ function handleCatchAction() {
 
   if (!isFusion) {
     const speciesSelect = document.getElementById("catch-species");
+    const nicknameInput = document.getElementById("catch-nickname");
+
     const speciesId = speciesSelect?.value || "";
+    const nickname = nicknameInput?.value.trim() || "";
 
     if (!speciesId) {
       alert("Please choose a species.");
@@ -1643,14 +1671,19 @@ function handleCatchAction() {
       locationId,
       isFusion: false,
       caughtPokemonId,
-      speciesId
+      speciesId,
+      nickname
     });
   } else {
     const headSpeciesSelect = document.getElementById("catch-head-species");
     const bodySpeciesSelect = document.getElementById("catch-body-species");
+    const headNicknameInput = document.getElementById("catch-head-nickname");
+    const bodyNicknameInput = document.getElementById("catch-body-nickname");
 
     const headSpeciesId = headSpeciesSelect?.value || "";
     const bodySpeciesId = bodySpeciesSelect?.value || "";
+    const headNickname = headNicknameInput?.value.trim() || "";
+    const bodyNickname = bodyNicknameInput?.value.trim() || "";
 
     if (!headSpeciesId || !bodySpeciesId) {
       alert("Please choose both fusion species.");
@@ -1678,7 +1711,9 @@ function handleCatchAction() {
       headPokemonId,
       bodyPokemonId,
       headSpeciesId,
-      bodySpeciesId
+      bodySpeciesId,
+      headNickname,
+      bodyNickname
     });
   }
 
