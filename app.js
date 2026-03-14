@@ -892,10 +892,8 @@ function renderActionFields() {
     }
 
   if (type === "death") {
-    const alivePokemon = runState.pokemon.filter(
-      (p) => p.status === "alive" && !p.activeFusionId
-    );
-    const activeFusions = runState.fusions.filter((f) => f.status === "active");
+    const alivePokemon = runState.pokemon.filter(isPokemonStandalone);
+    const activeFusions = runState.fusions.filter(isFusionActive);
 
     const pokemonOptions = alivePokemon.map((p) =>
       `<option value="pokemon:${p.pokemonId}">Pokémon — ${getPokemonDisplayName(p)}</option>`
@@ -924,9 +922,7 @@ function renderActionFields() {
   }
 
   if (type === "fusion") {
-    const available = runState.pokemon.filter(
-      (p) => p.status === "alive" && !p.activeFusionId
-    );
+    const available = runState.pokemon.filter(canPokemonBeFusionSelected);
 
     const options = available.map((p) =>
       `<option value="${p.pokemonId}">${getPokemonDisplayName(p)}</option>`
@@ -952,7 +948,7 @@ function renderActionFields() {
   }
 
   if (type === "split") {
-    const activeFusions = getSplittableFusions();
+    const activeFusions = runState.fusions.filter(canFusionBeSplitSelected);
 
     const options = activeFusions.map((fusion) => {
       const fusionName = getFusionDisplayName(fusion);
@@ -1273,17 +1269,20 @@ function populateLocationSelect(selectId) {
 
 function getBattleEligibleEntities() {
   const standalonePokemon = runState.pokemon
-    .filter((p) => p.status === "alive" && !p.activeFusionId)
+    .filter(isPokemonStandalone)
     .map((p) => ({
       entityType: "pokemon",
       entityId: p.pokemonId,
       label: getPokemonDisplayName(p)
     }));
 
-  const fusionOptions = activeFusions.map((f) => {
-    const fusionName = getFusionDisplayName(f);
-    return `<option value="fusion:${f.fusionId}">Fusion — ${fusionName}</option>`;
-  }).join("");
+  const activeFusions = runState.fusions
+    .filter(isFusionActive)
+    .map((f) => ({
+      entityType: "fusion",
+      entityId: f.fusionId,
+      label: getFusionDisplayName(f)
+    }));
 
   return [...standalonePokemon, ...activeFusions];
 }
@@ -1460,7 +1459,7 @@ function renderActionCard(action) {
         }
 
         if (member.entityType === "pokemon") {
-          const pokemon = runState.pokemon.find((p) => p.pokemonId === member.entityId);
+          const pokemon = getPokemonById(member.entityId);
           const name = getPokemonDisplayName(pokemon);
 
           container.appendChild(createActionChip(name, "chip-species"));
@@ -1524,10 +1523,6 @@ function getFusionDisplayName(fusion) {
   return `${headName} + ${bodyName}`;
 }
 
-function getSplittableFusions() {
-  return runState.fusions.filter((f) => f.status === "active");
-}
-
 function handleSplitAction() {
   if (runState.resources.splitsAvailable <= 0) {
     alert("You do not have any splits available.");
@@ -1548,7 +1543,7 @@ function handleSplitAction() {
     return;
   }
 
-  if (fusion.status !== "active") {
+  if (!canFusionBeSplitSelected(fusion)) {
     alert("Only active fusions can be split.");
     return;
   }
@@ -1602,6 +1597,26 @@ function spendResourcesForRedoneAction(action) {
       runState.resources.splitsAvailable - 1
     );
   }
+}
+
+function isPokemonAlive(pokemon) {
+  return !!pokemon && pokemon.status === "alive";
+}
+
+function isPokemonStandalone(pokemon) {
+  return isPokemonAlive(pokemon) && !pokemon.activeFusionId;
+}
+
+function isFusionActive(fusion) {
+  return !!fusion && fusion.status === "active";
+}
+
+function canPokemonBeFusionSelected(pokemon) {
+  return isPokemonStandalone(pokemon);
+}
+
+function canFusionBeSplitSelected(fusion) {
+  return isFusionActive(fusion);
 }
 
 // =========================
@@ -1805,27 +1820,18 @@ function handleFusionAction() {
     return;
   }
 
-  if (headPokemon.status !== "alive" || bodyPokemon.status !== "alive") {
-    alert("Only living Pokémon can be fused.");
-    return;
-  }
-
-  if (headPokemon.activeFusionId || bodyPokemon.activeFusionId) {
-    alert("One or both selected Pokémon are already part of an active fusion.");
+  if (!canPokemonBeFusionSelected(headPokemon) || !canPokemonBeFusionSelected(bodyPokemon)) {
+    alert("One or both selected Pokémon cannot be fused right now.");
     return;
   }
 
   const fusionId = crypto.randomUUID();
 
-  function commitAction(actionType, payload) {
-    addAction({
-      ...createBaseAction(actionType),
-      ...payload
-    });
-
-    updateAndSave();
-    renderActionFields();
-  }
+  commitAction("fusion", {
+    fusionId,
+    headPokemonId,
+    bodyPokemonId
+  });
 }
 
 function handleBattleAction() {
@@ -1850,6 +1856,11 @@ function handleBattleAction() {
   const trainer = trainerById[trainerId];
   if (!trainer) {
     alert("Selected trainer could not be found.");
+    return;
+  }
+
+  if (trainer.battleType !== battleType) {
+    alert("Selected trainer does not match the chosen battle type.");
     return;
   }
 
@@ -1908,6 +1919,8 @@ function handleUndoAction() {
   restoreResourcesForUndoneAction(action);
 
   updateAndSave();
+  renderActionFields();
+  
 }
 
 function handleRedoAction() {
@@ -1919,6 +1932,7 @@ function handleRedoAction() {
   runState.actions.push(action);
 
   updateAndSave();
+  renderActionFields();
 }
 
 function handleDeleteAction(actionId) {
