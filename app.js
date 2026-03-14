@@ -580,6 +580,31 @@ function doesAchievementMeetCondition(achievement, progressMap) {
     return count >= (achievement.target || 1);
   }
 
+  if (achievement.conditionType === "catch_type_count") {
+    const count = countCatchesByCatchType(achievement.catchType);
+    return count >= (achievement.target || 1);
+  }
+
+  if (achievement.conditionType === "catch_location_count") {
+    const count = countCatchesByLocation(achievement.locationId);
+    return count >= (achievement.target || 1);
+  }
+
+  if (achievement.conditionType === "battle_trainer_count") {
+    const count = countBattlesByTrainer(achievement.trainerId);
+    return count >= (achievement.target || 1);
+  }
+
+  if (achievement.conditionType === "battle_trainer_win_count") {
+    const count = countBattleWinsByTrainer(achievement.trainerId);
+    return count >= (achievement.target || 1);
+  }
+
+  if (achievement.conditionType === "battle_trainer_fusion_win_count") {
+    const count = countBattleFusionWinsByTrainer(achievement.trainerId);
+    return count >= (achievement.target || 1);
+  }
+
   return false;
 }
 
@@ -1617,6 +1642,42 @@ function canPokemonBeFusionSelected(pokemon) {
 
 function canFusionBeSplitSelected(fusion) {
   return isFusionActive(fusion);
+}
+
+function getCatchActions() {
+  return runState.actions.filter((action) => action.actionType === "catch");
+}
+
+function getBattleActions() {
+  return runState.actions.filter((action) => action.actionType === "battle");
+}
+
+function countCatchesByCatchType(catchType) {
+  return getCatchActions().filter((action) => action.catchType === catchType).length;
+}
+
+function countCatchesByLocation(locationId) {
+  return getCatchActions().filter((action) => action.locationId === locationId).length;
+}
+
+function countBattlesByTrainer(trainerId) {
+  return getBattleActions().filter((action) => action.trainerId === trainerId).length;
+}
+
+function countBattleWinsByTrainer(trainerId) {
+  return getBattleActions().filter(
+    (action) => action.trainerId === trainerId && action.result === "win"
+  ).length;
+}
+
+function countBattleFusionWinsByTrainer(trainerId) {
+  return getBattleActions().filter((action) => {
+    if (action.trainerId !== trainerId) return false;
+    if (action.result !== "win") return false;
+
+    return Array.isArray(action.party) &&
+      action.party.some((member) => member.entityType === "fusion");
+  }).length;
 }
 
 // =========================

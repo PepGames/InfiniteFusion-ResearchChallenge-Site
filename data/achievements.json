@@ -1,67 +1,47 @@
 [
-  {
-    "id": "first-catch",
-    "name": "Starter Pokemon",
-    "description": "Log your first catch.",
-    "rpReward": 1,
-    "conditionType": "action_count",
-    "actionType": "catch",
-    "target": 1,
-    "previousAchievement": "",
-    "tags": ["catching"]
-  },
-  {
-    "id": "five-catches",
-    "name": "Field Researcher",
-    "description": "Log 5 catches.",
-    "rpReward": 2,
-    "conditionType": "action_count",
-    "actionType": "catch",
-    "target": 5,
-    "previousAchievement": "first-catch",
-    "tags": ["catching"]
-  },
-  {
-    "id": "first-fusion",
-    "name": "Fusion Research Begins",
-    "description": "Create your first fusion.",
-    "rpReward": 2,
-    "conditionType": "action_count",
-    "actionType": "fusion",
-    "target": 1,
-    "previousAchievement": "",
-    "tags": ["fusion"]
-  },
-  {
-    "id": "first-death",
-    "name": "First Casualty",
-    "description": "Lose your first Pokémon.",
-    "rpReward": 1,
-    "conditionType": "action_count",
-    "actionType": "death",
-    "target": 1,
-    "previousAchievement": "",
-    "tags": ["survival"]
-  },
-  {
-    "id": "first-gym-win",
-    "name": "First Gym Victory",
-    "description": "Win your first gym battle.",
-    "rpReward": 3,
-    "conditionType": "gym_result",
-    "result": "win",
-    "target": 1,
-    "previousAchievement": "",
-    "tags": ["gym"]
-  },
-  {
-    "id": "fusion-gym-win",
-    "name": "Fusion Specialist",
-    "description": "Win a gym battle using a fusion.",
-    "rpReward": 3,
-    "conditionType": "gym_used_fusion_win",
-    "target": 1,
-    "previousAchievement": "",
-    "tags": ["gym", "fusion"]
-  }
+ {
+  "id": "first-catch",
+  "name": "The Most Important Choice",
+  "description": "Obtain your Starter Pokémon",
+  "rpReward": 1,
+  "conditionType": "catch_type_count",
+  "catchType": "starter",
+  "target": 1,
+  "symbol": "trophy",
+  "tier": "Bronze"
+},
+{
+  "id": "first-catch",
+  "name": "The Most Important Choice",
+  "description": "Obtain your Starter Pokémon",
+  "rpReward": 1,
+  "conditionType": "catch_type_count",
+  "catchType": "starter",
+  "target": 1,
+  "symbol": "trophy",
+  "tier": "Bronze"
+},
+{
+  "id": "defeat-brock",
+  "name": "Boulderbadge",
+  "description": "Defeat Brock in a Gym Battle",
+  "rpReward": 1,
+  "conditionType": "battle_trainer_win_count",
+  "trainerId": "brock",
+  "target": 1,
+  "symbol": "rock_symbol",
+  "tier": "Bronze"
+},
+{
+  "id": "defeat-brock-gold",
+  "name": "Golden Boulderbadge",
+  "description": "Defeat Brock in a Gym Battle with a Fusion Pokémon",
+  "rpReward": 1,
+  "conditionType": "battle_trainer_fusion_win_count",
+  "trainerId": "brock",
+  "target": 1,
+  "previousAchievement": "defeat-brock",
+  "symbol": "rock_symbol",
+  "tier": "Gold"
+}
 ]
