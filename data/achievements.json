@@ -11,12 +11,12 @@
   "tier": "Bronze"
 },
 {
-  "id": "first-catch",
-  "name": "The Most Important Choice",
-  "description": "Obtain your Starter Pokémon",
+  "id": "route-1",
+  "name": "Encounter - Route 1",
+  "description": "Catch 1 Pokémon on Route 1",
   "rpReward": 1,
-  "conditionType": "catch_type_count",
-  "catchType": "starter",
+  "conditionType": "catch_location_count",
+  "locationId": "route_1",
   "target": 1,
   "symbol": "trophy",
   "tier": "Bronze"
