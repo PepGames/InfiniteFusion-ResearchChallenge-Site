@@ -879,8 +879,8 @@ function renderActionFields() {
     ).join("");
 
     const fusionOptions = activeFusions.map((f) => {
-      const head = runState.pokemon.find((p) => p.pokemonId === f.headPokemonId);
-      const body = runState.pokemon.find((p) => p.pokemonId === f.bodyPokemonId);
+      const head = getPokemonById(action.headPokemonId);
+      const body = getPokemonById(action.bodyPokemonId);
 
       const headName = getPokemonDisplayName(head);
       const bodyName = getPokemonDisplayName(body);
@@ -1191,13 +1191,13 @@ function formatActionText(action) {
     }
 
     if (action.targetType === "fusion") {
-      const fusion = runState.fusions.find((f) => f.fusionId === action.targetId);
+      const fusion = getFusionById(action.targetId);
       if (!fusion) {
         return `[DEATH] Unknown Fusion`;
       }
 
-      const head = runState.pokemon.find((p) => p.pokemonId === fusion.headPokemonId);
-      const body = runState.pokemon.find((p) => p.pokemonId === fusion.bodyPokemonId);
+      const head = getPokemonById(action.headPokemonId);
+      const body = getPokemonById(action.bodyPokemonId);
 
       const headName = getPokemonDisplayName(head);
       const bodyName = getPokemonDisplayName(body);
@@ -1209,8 +1209,8 @@ function formatActionText(action) {
   }
 
   if (action.actionType === "fusion") {
-    const head = runState.pokemon.find((p) => p.pokemonId === action.headPokemonId);
-    const body = runState.pokemon.find((p) => p.pokemonId === action.bodyPokemonId);
+    const head = getPokemonById(action.headPokemonId);
+    const body = getPokemonById(action.bodyPokemonId);
 
     const headName = getPokemonDisplayName(head);
     const bodyName = getPokemonDisplayName(body);
@@ -1233,11 +1233,11 @@ function formatActionText(action) {
           }
 
           if (member.entityType === "fusion") {
-            const fusion = runState.fusions.find((f) => f.fusionId === member.entityId);
+            const fusion = getFusionById(action.targetId);
             if (!fusion) return "Unknown Fusion";
 
-            const head = runState.pokemon.find((p) => p.pokemonId === fusion.headPokemonId);
-            const body = runState.pokemon.find((p) => p.pokemonId === fusion.bodyPokemonId);
+            const head = getPokemonById(action.headPokemonId);
+            const body = getPokemonById(action.bodyPokemonId);
 
             const headName = head ? `${head.speciesName}${head.variant ? ` (${head.variant})` : ""}` : "Unknown";
             const bodyName = body ? `${body.speciesName}${body.variant ? ` (${body.variant})` : ""}` : "Unknown";
@@ -1298,8 +1298,8 @@ function getFusionsDiscoveredCount() {
 
   runState.actions.forEach((action) => {
     if (action.actionType === "fusion") {
-      const head = runState.pokemon.find((p) => p.pokemonId === action.headPokemonId);
-      const body = runState.pokemon.find((p) => p.pokemonId === action.bodyPokemonId);
+      const head = getPokemonById(action.headPokemonId);
+      const body = getPokemonById(action.bodyPokemonId);
 
       if (!head || !body) return;
 
@@ -1346,8 +1346,8 @@ function getBattleEligibleEntities() {
   const activeFusions = runState.fusions
     .filter((f) => f.status === "active")
     .map((f) => {
-      const head = runState.pokemon.find((p) => p.pokemonId === f.headPokemonId);
-      const body = runState.pokemon.find((p) => p.pokemonId === f.bodyPokemonId);
+      const head = getPokemonById(action.headPokemonId);
+      const body = getPokemonById(action.bodyPokemonId);
 
       const headName = getPokemonDisplayName(head);
       const bodyName = getPokemonDisplayName(body);
@@ -1449,8 +1449,8 @@ function renderActionCard(action) {
     container.appendChild(createActionChip("FUSION", "chip-fusion"));
     appendSpacer();
 
-    const head = runState.pokemon.find((p) => p.pokemonId === action.headPokemonId);
-    const body = runState.pokemon.find((p) => p.pokemonId === action.bodyPokemonId);
+    const head = getPokemonById(action.headPokemonId);
+    const body = getPokemonById(action.bodyPokemonId);
 
     const headName = getPokemonDisplayName(head);
     const bodyName = getPokemonDisplayName(body);
@@ -1474,15 +1474,15 @@ function renderActionCard(action) {
     }
 
     if (action.targetType === "fusion") {
-      const fusion = runState.fusions.find((f) => f.fusionId === action.targetId);
+      const fusion = getFusionById(action.targetId);
 
       if (!fusion) {
         container.appendChild(createActionChip("Unknown Fusion", "chip-fusion"));
         return container;
       }
 
-      const head = runState.pokemon.find((p) => p.pokemonId === fusion.headPokemonId);
-      const body = runState.pokemon.find((p) => p.pokemonId === fusion.bodyPokemonId);
+      const head = getPokemonById(action.headPokemonId);
+      const body = getPokemonById(action.bodyPokemonId);
 
       const headName = getPokemonDisplayName(head);
       const bodyName = getPokemonDisplayName(body);
@@ -1530,15 +1530,15 @@ function renderActionCard(action) {
         }
 
         if (member.entityType === "fusion") {
-          const fusion = runState.fusions.find((f) => f.fusionId === member.entityId);
+          const fusion = getFusionById(action.targetId);
 
           if (!fusion) {
             container.appendChild(createActionChip("Unknown Fusion", "chip-fusion"));
             return;
           }
 
-          const head = runState.pokemon.find((p) => p.pokemonId === fusion.headPokemonId);
-          const body = runState.pokemon.find((p) => p.pokemonId === fusion.bodyPokemonId);
+          const head = getPokemonById(action.headPokemonId);
+          const body = getPokemonById(action.bodyPokemonId);
 
           const headName = getPokemonDisplayName(head);
           const bodyName = getPokemonDisplayName(body);
@@ -1570,6 +1570,26 @@ function getPokemonDisplayName(pokemon) {
 function getSpeciesDisplayName(species) {
   if (!species) return "Unknown Species";
   return `${species.name}${species.variant ? ` (${species.variant})` : ""}`;
+}
+
+function getPokemonById(id) {
+  return runState.pokemon.find(p => p.pokemonId === id) || null;
+}
+
+function getFusionById(id) {
+  return runState.fusions.find(f => f.fusionId === id) || null;
+}
+
+function getFusionDisplayName(fusion) {
+  if (!fusion) return "Unknown Fusion";
+
+  const head = getPokemonById(fusion.headPokemonId);
+  const body = getPokemonById(fusion.bodyPokemonId);
+
+  const headName = getPokemonDisplayName(head);
+  const bodyName = getPokemonDisplayName(body);
+
+  return `${headName} + ${bodyName}`;
 }
 
 // =========================
