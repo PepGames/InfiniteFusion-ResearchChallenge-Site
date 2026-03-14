@@ -535,8 +535,13 @@ button:disabled {
   background: rgba(239, 68, 68, 0.18);
 }
 
+.chip-split {
+  background: rgba(14, 165, 233, 0.18);
+}
+
 .action-inline-label,
 .action-inline-separator,
 .action-card-spacer {
   color: rgba(255,255,255,0.8);
 }
+

@@ -34,6 +34,7 @@ const actionHandlers = {
   catch: handleCatchAction,
   death: handleDeathAction,
   fusion: handleFusionAction,
+  split: handleSplitAction,
   battle: handleBattleAction
 };
 
@@ -474,6 +475,28 @@ function rebuildDerivedStateFromActions() {
         });
         break;
       }
+      case "split": {
+        const fusion = fusions.find((f) => f.fusionId === action.fusionId);
+        if (!fusion) break;
+        if (fusion.status !== "active") break;
+
+        fusion.status = "split";
+        fusion.splitActionId = action.actionId;
+        fusion.splitAt = action.actionAt;
+
+        const head = pokemon.find((p) => p.pokemonId === fusion.headPokemonId);
+        const body = pokemon.find((p) => p.pokemonId === fusion.bodyPokemonId);
+
+        if (head && head.activeFusionId === fusion.fusionId) {
+          head.activeFusionId = null;
+        }
+
+        if (body && body.activeFusionId === fusion.fusionId) {
+          body.activeFusionId = null;
+        }
+
+        break;
+      }
     }
   }
 
@@ -879,13 +902,8 @@ function renderActionFields() {
     ).join("");
 
     const fusionOptions = activeFusions.map((f) => {
-      const head = getPokemonById(action.headPokemonId);
-      const body = getPokemonById(action.bodyPokemonId);
-
-      const headName = getPokemonDisplayName(head);
-      const bodyName = getPokemonDisplayName(body);
-
-      return `<option value="fusion:${f.fusionId}">Fusion — ${headName} + ${bodyName}</option>`;
+      const fusionName = getFusionDisplayName(f);
+      return `<option value="fusion:${f.fusionId}">Fusion — ${fusionName}</option>`;
     }).join("");
 
     container.innerHTML = `
@@ -927,6 +945,25 @@ function renderActionFields() {
         <label for="fusion-body">Body Pokémon</label>
         <select id="fusion-body">
           <option value="">Select a Pokémon</option>
+          ${options}
+        </select>
+      </div>
+    `;
+  }
+
+  if (type === "split") {
+    const activeFusions = getSplittableFusions();
+
+    const options = activeFusions.map((fusion) => {
+      const fusionName = getFusionDisplayName(fusion);
+      return `<option value="${fusion.fusionId}">${fusionName}</option>`;
+    }).join("");
+
+    container.innerHTML = `
+      <div class="field-row">
+        <label for="split-fusion">Fusion</label>
+        <select id="split-fusion">
+          <option value="">Select a fusion</option>
           ${options}
         </select>
       </div>
@@ -1155,106 +1192,6 @@ function attachAnimationCleanup() {
 // Helpers
 // =========================
 
-function formatActionText(action) {
-  if (action.actionType === "catch") {
-    if (!action.isFusion) {
-      const species = speciesById[action.speciesId];
-      const speciesName = species
-        ? `${species.name}${species.variant ? ` (${species.variant})` : ""}`
-        : action.speciesId;
-
-      return `[CATCH] ${action.catchType} — ${speciesName} — ${action.locationId}`;
-    }
-
-    const headSpecies = speciesById[action.headSpeciesId];
-    const bodySpecies = speciesById[action.bodySpeciesId];
-
-    const headName = headSpecies
-      ? `${headSpecies.name}${headSpecies.variant ? ` (${headSpecies.variant})` : ""}`
-      : action.headSpeciesId;
-
-    const bodyName = bodySpecies
-      ? `${bodySpecies.name}${bodySpecies.variant ? ` (${bodySpecies.variant})` : ""}`
-      : action.bodySpeciesId;
-
-    return `[CATCH] ${action.catchType} fusion — ${headName} + ${bodyName} — ${action.locationId}`;
-  }
-
-  if (action.actionType === "death") {
-    if (action.targetType === "pokemon") {
-      const target = runState.pokemon.find((p) => p.pokemonId === action.targetId);
-      const name = target
-        ? `${target.speciesName}${target.variant ? ` (${target.variant})` : ""}`
-        : "Unknown Pokémon";
-
-      return `[DEATH] ${name}`;
-    }
-
-    if (action.targetType === "fusion") {
-      const fusion = getFusionById(action.targetId);
-      if (!fusion) {
-        return `[DEATH] Unknown Fusion`;
-      }
-
-      const head = getPokemonById(action.headPokemonId);
-      const body = getPokemonById(action.bodyPokemonId);
-
-      const headName = getPokemonDisplayName(head);
-      const bodyName = getPokemonDisplayName(body);
-
-      return `[DEATH] Fusion — ${headName} + ${bodyName}`;
-    }
-
-    return `[DEATH] Unknown Target`;
-  }
-
-  if (action.actionType === "fusion") {
-    const head = getPokemonById(action.headPokemonId);
-    const body = getPokemonById(action.bodyPokemonId);
-
-    const headName = getPokemonDisplayName(head);
-    const bodyName = getPokemonDisplayName(body);
-
-    return `[FUSION] ${headName} + ${bodyName}`;
-  }
-
-  if (action.actionType === "battle") {
-    const trainer = trainerById[action.trainerId];
-    const trainerName = trainer ? trainer.name : action.trainerId || "Unknown Trainer";
-    const battleTypeLabel = action.battleType ? action.battleType.replace(/_/g, " ") : "battle";
-
-    const partySummary = Array.isArray(action.party)
-      ? action.party.map((member) => {
-          if (member.entityType === "pokemon") {
-            const pokemon = runState.pokemon.find((p) => p.pokemonId === member.entityId);
-            return pokemon
-              ? `${pokemon.speciesName}${pokemon.variant ? ` (${pokemon.variant})` : ""}`
-              : "Unknown Pokémon";
-          }
-
-          if (member.entityType === "fusion") {
-            const fusion = getFusionById(action.targetId);
-            if (!fusion) return "Unknown Fusion";
-
-            const head = getPokemonById(action.headPokemonId);
-            const body = getPokemonById(action.bodyPokemonId);
-
-            const headName = head ? `${head.speciesName}${head.variant ? ` (${head.variant})` : ""}` : "Unknown";
-            const bodyName = body ? `${body.speciesName}${body.variant ? ` (${body.variant})` : ""}` : "Unknown";
-
-            return `${headName} + ${bodyName}`;
-          }
-
-          return "Unknown Member";
-        }).join(", ")
-      : "";
-
-    return `[BATTLE] ${battleTypeLabel} — ${trainerName} — ${action.result}${partySummary ? ` — Party: ${partySummary}` : ""}`;
-  }
-
-  return `[UNKNOWN ACTION]`;
-}
-
 function formatActionTimestamp(isoString) {
   if (!isoString) return "";
 
@@ -1343,21 +1280,10 @@ function getBattleEligibleEntities() {
       label: getPokemonDisplayName(p)
     }));
 
-  const activeFusions = runState.fusions
-    .filter((f) => f.status === "active")
-    .map((f) => {
-      const head = getPokemonById(action.headPokemonId);
-      const body = getPokemonById(action.bodyPokemonId);
-
-      const headName = getPokemonDisplayName(head);
-      const bodyName = getPokemonDisplayName(body);
-
-      return {
-        entityType: "fusion",
-        entityId: f.fusionId,
-        label: `${headName} + ${bodyName}`
-      };
-    });
+  const fusionOptions = activeFusions.map((f) => {
+    const fusionName = getFusionDisplayName(f);
+    return `<option value="fusion:${f.fusionId}">Fusion — ${fusionName}</option>`;
+  }).join("");
 
   return [...standalonePokemon, ...activeFusions];
 }
@@ -1467,6 +1393,7 @@ function renderActionCard(action) {
     appendSpacer();
 
     if (action.targetType === "pokemon") {
+      const target = getPokemonById(action.targetId);
       const name = getPokemonDisplayName(target);
 
       container.appendChild(createActionChip(name, "chip-species"));
@@ -1481,18 +1408,28 @@ function renderActionCard(action) {
         return container;
       }
 
-      const head = getPokemonById(action.headPokemonId);
-      const body = getPokemonById(action.bodyPokemonId);
-
-      const headName = getPokemonDisplayName(head);
-      const bodyName = getPokemonDisplayName(body);
-
-      container.appendChild(createActionChip(headName, "chip-species"));
-      appendText(" + ", "action-inline-separator");
-      container.appendChild(createActionChip(bodyName, "chip-species"));
+      const fusionName = getFusionDisplayName(fusion);
+      container.appendChild(createActionChip(fusionName, "chip-fusion"));
 
       return container;
     }
+  }
+
+  if (action.actionType === "split") {
+    container.appendChild(createActionChip("SPLIT", "chip-split"));
+    appendSpacer();
+
+    const fusion = getFusionById(action.fusionId);
+
+    if (!fusion) {
+      container.appendChild(createActionChip("Unknown Fusion", "chip-fusion"));
+      return container;
+    }
+
+    const fusionName = getFusionDisplayName(fusion);
+    container.appendChild(createActionChip(fusionName, "chip-fusion"));
+
+    return container;
   }
 
   if (action.actionType === "battle") {
@@ -1530,20 +1467,15 @@ function renderActionCard(action) {
         }
 
         if (member.entityType === "fusion") {
-          const fusion = getFusionById(action.targetId);
+          const fusion = getFusionById(member.entityId);
 
           if (!fusion) {
             container.appendChild(createActionChip("Unknown Fusion", "chip-fusion"));
             return;
           }
 
-          const head = getPokemonById(action.headPokemonId);
-          const body = getPokemonById(action.bodyPokemonId);
-
-          const headName = getPokemonDisplayName(head);
-          const bodyName = getPokemonDisplayName(body);
-
-          container.appendChild(createActionChip(`${headName} + ${bodyName}`, "chip-fusion"));
+          const fusionName = getFusionDisplayName(fusion);
+          container.appendChild(createActionChip(fusionName, "chip-fusion"));
         }
       });
     }
@@ -1590,6 +1522,86 @@ function getFusionDisplayName(fusion) {
   const bodyName = getPokemonDisplayName(body);
 
   return `${headName} + ${bodyName}`;
+}
+
+function getSplittableFusions() {
+  return runState.fusions.filter((f) => f.status === "active");
+}
+
+function handleSplitAction() {
+  if (runState.resources.splitsAvailable <= 0) {
+    alert("You do not have any splits available.");
+    return;
+  }
+
+  const splitFusionSelect = document.getElementById("split-fusion");
+  const fusionId = splitFusionSelect?.value || "";
+
+  if (!fusionId) {
+    alert("Please choose a fusion to split.");
+    return;
+  }
+
+  const fusion = getFusionById(fusionId);
+  if (!fusion) {
+    alert("Selected fusion could not be found.");
+    return;
+  }
+
+  if (fusion.status !== "active") {
+    alert("Only active fusions can be split.");
+    return;
+  }
+
+  addAction({
+    ...createBaseAction("split"),
+    fusionId
+  });
+
+  runState.resources.splitsAvailable -= 1;
+
+  updateAndSave();
+  renderActionFields();
+}
+
+function commitAction(actionType, payload) {
+  addAction({
+    ...createBaseAction(actionType),
+    ...payload
+  });
+
+  updateAndSave();
+  renderActionFields();
+}
+
+function restoreResourcesForUndoneAction(action) {
+  if (!action) return;
+
+  if (action.actionType === "catch") {
+    runState.resources.catchesAvailable += 1;
+  }
+
+  if (action.actionType === "split") {
+    runState.resources.splitsAvailable += 1;
+  }
+}
+
+function spendResourcesForRedoneAction(action) {
+  if (!action) return;
+
+  if (action.actionType === "catch") {
+    runState.resources.catchesAvailable = Math.max(
+      0,
+      runState.resources.catchesAvailable - 1
+    );
+  }
+
+  if (action.actionType === "split") {
+    runState.resources.splitsAvailable = Math.max(
+      0,
+      runState.resources.splitsAvailable - 1
+    );
+  }
 }
 
 // =========================
@@ -1761,15 +1773,11 @@ function handleDeathAction() {
     return;
   }
 
-  addAction({
-    ...createBaseAction("death"),
+  commitAction("death", {
     targetType,
     targetId,
     note
   });
-
-  updateAndSave();
-  renderActionFields();
 }
 
 function handleFusionAction() {
@@ -1809,15 +1817,15 @@ function handleFusionAction() {
 
   const fusionId = crypto.randomUUID();
 
-  addAction({
-    ...createBaseAction("fusion"),
-    fusionId,
-    headPokemonId,
-    bodyPokemonId
-  });
+  function commitAction(actionType, payload) {
+    addAction({
+      ...createBaseAction(actionType),
+      ...payload
+    });
 
-  updateAndSave();
-  renderActionFields();
+    updateAndSave();
+    renderActionFields();
+  }
 }
 
 function handleBattleAction() {
@@ -1883,16 +1891,12 @@ function handleBattleAction() {
     return { entityType, entityId };
   });
 
-  addAction({
-    ...createBaseAction("battle"),
+  commitAction("battle", {
     battleType,
     trainerId,
     result,
     party
   });
-
-  updateAndSave();
-  renderActionFields();
 }
 
 function handleUndoAction() {
@@ -1901,6 +1905,8 @@ function handleUndoAction() {
   const action = runState.actions.pop();
   runState.redoStack.push(action);
 
+  restoreResourcesForUndoneAction(action);
+
   updateAndSave();
 }
 
@@ -1908,6 +1914,8 @@ function handleRedoAction() {
   if (runState.redoStack.length === 0) return;
 
   const action = runState.redoStack.pop();
+
+  spendResourcesForRedoneAction(action);
   runState.actions.push(action);
 
   updateAndSave();
@@ -1916,6 +1924,11 @@ function handleRedoAction() {
 function handleDeleteAction(actionId) {
   const confirmed = window.confirm("Delete this action?");
   if (!confirmed) return;
+
+  const actionToDelete = runState.actions.find((action) => action.actionId === actionId);
+  if (actionToDelete) {
+    restoreResourcesForUndoneAction(actionToDelete);
+  }
 
   runState.actions = runState.actions.filter((action) => action.actionId !== actionId);
   runState.redoStack = [];
