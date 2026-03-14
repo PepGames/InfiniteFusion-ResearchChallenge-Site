@@ -30,6 +30,14 @@ const defaultRunState = {
   purchases: []
 };
 
+const VALID_ACTION_TYPES = new Set([
+  "catch",
+  "death",
+  "fusion",
+  "split",
+  "battle"
+]);
+
 const actionHandlers = {
   catch: handleCatchAction,
   death: handleDeathAction,
@@ -139,10 +147,21 @@ function saveRunState(state) {
 async function loadAchievementCatalog() {
   try {
     const response = await fetch("data/achievements.json");
+
+    if (!response.ok) {
+      throw new Error(`HTTP error ${response.status}`);
+    }
+
     achievementCatalog = await response.json();
+
+    if (!Array.isArray(achievementCatalog)) {
+      throw new Error("achievements.json is not an array.");
+    }
+
     validateAchievementCatalog();
   } catch (error) {
     console.error("Failed to load achievements:", error);
+    alert("Achievement database failed to load. Check console.");
   }
 }
 
@@ -237,6 +256,11 @@ function validateAchievementCatalog() {
   const errors = [];
   const achievementIds = new Set();
   const achievementMap = {};
+  const allowedRuleTypes = new Set([
+    "action_count",
+    "party_battle_count",
+    "fusion_dex_count"
+  ]);
 
   for (const achievement of achievementCatalog) {
     if (!achievement?.id) {
@@ -250,6 +274,93 @@ function validateAchievementCatalog() {
 
     achievementIds.add(achievement.id);
     achievementMap[achievement.id] = achievement;
+
+    if (!achievement.name) {
+      errors.push(`Achievement "${achievement.id}" is missing name.`);
+    }
+
+    if (achievement.tags && !Array.isArray(achievement.tags)) {
+      errors.push(`Achievement "${achievement.id}" has non-array tags.`);
+    }
+
+    if (!achievement.rule || typeof achievement.rule !== "object" || Array.isArray(achievement.rule)) {
+      errors.push(`Achievement "${achievement.id}" is missing a valid rule object.`);
+      continue;
+    }
+
+    const rule = achievement.rule;
+
+    if (!rule.type) {
+      errors.push(`Achievement "${achievement.id}" is missing rule.type.`);
+    } else if (!allowedRuleTypes.has(rule.type)) {
+      errors.push(`Achievement "${achievement.id}" has unknown rule.type "${rule.type}".`);
+    }
+
+    if (rule.target !== undefined) {
+      const target = Number(rule.target);
+      if (!Number.isFinite(target) || target < 1) {
+        errors.push(`Achievement "${achievement.id}" has invalid rule.target "${rule.target}".`);
+      }
+    }
+
+    if (rule.filters !== undefined) {
+      if (!rule.filters || typeof rule.filters !== "object" || Array.isArray(rule.filters)) {
+        errors.push(`Achievement "${achievement.id}" has invalid rule.filters.`);
+      }
+    }
+
+    if (rule.options !== undefined) {
+      if (!rule.options || typeof rule.options !== "object" || Array.isArray(rule.options)) {
+        errors.push(`Achievement "${achievement.id}" has invalid rule.options.`);
+      }
+    }
+
+    if (
+      (rule.type === "action_count" || rule.type === "party_battle_count") &&
+      !rule.actionType
+    ) {
+      errors.push(`Achievement "${achievement.id}" requires rule.actionType.`);
+    }
+
+    if (rule.type === "action_count" && rule.actionType) {
+      if (!VALID_ACTION_TYPES.has(rule.actionType)) {
+        errors.push(
+          `Achievement "${achievement.id}" has invalid rule.actionType "${rule.actionType}".`
+        );
+      }
+    }
+
+    if (rule.type === "party_battle_count" && rule.actionType !== "battle") {
+      errors.push(`Achievement "${achievement.id}" with party_battle_count must use actionType "battle".`);
+    }
+
+    if (rule.type === "fusion_dex_count") {
+      const options = rule.options || {};
+      const allowedMatchModes = new Set([
+        "either_component",
+        "both_components",
+        "head_only",
+        "body_only"
+      ]);
+
+      if (
+        options.speciesTypesIncludes !== undefined &&
+        !Array.isArray(options.speciesTypesIncludes)
+      ) {
+        errors.push(
+          `Achievement "${achievement.id}" has invalid options.speciesTypesIncludes.`
+        );
+      }
+
+      if (
+        options.match !== undefined &&
+        !allowedMatchModes.has(options.match)
+      ) {
+        errors.push(
+          `Achievement "${achievement.id}" has invalid options.match "${options.match}".`
+        );
+      }
+    }
   }
 
   for (const achievement of achievementCatalog) {
@@ -283,7 +394,7 @@ function validateAchievementCatalog() {
   }
 
   for (const achievement of achievementCatalog) {
-    if (hasCycle(achievement.id)) {
+    if (achievement?.id && hasCycle(achievement.id)) {
       errors.push(`Circular dependency detected involving "${achievement.id}".`);
     }
   }
@@ -526,7 +637,6 @@ function updateAndSave() {
   debugLog("Achievement changes:", achievementChanges);
 }
 
-
 // =========================
 // Achievement Logic
 // =========================
@@ -539,25 +649,140 @@ function isPreviousAchievementUnlocked(achievement, progressMap) {
   return !!progressMap[achievement.previousAchievement]?.unlocked;
 }
 
-function countActionsByType(actionType) {
-  return runState.actions.filter((action) => action.actionType === actionType).length;
+function getAchievementRule(achievement) {
+  return achievement?.rule || {};
 }
 
-function countBattleResults(result) {
-  return runState.actions.filter(
-    (action) => action.actionType === "battle" && action.result === result
-  ).length;
+function getRuleTarget(rule) {
+  const target = Number(rule?.target);
+  return Number.isFinite(target) && target > 0 ? target : 1;
 }
 
-function countBattleFusionWins() {
+function countFilteredActions(actionType, filters = {}) {
   return runState.actions.filter((action) => {
-    if (action.actionType !== "battle" || action.result !== "win") {
+    if (action.actionType !== actionType) return false;
+
+    return Object.entries(filters).every(([key, value]) => action[key] === value);
+  }).length;
+}
+
+function countPartyBattleMatches(filters = {}, options = {}) {
+  return runState.actions.filter((action) => {
+    if (action.actionType !== "battle") return false;
+
+    const basicMatch = Object.entries(filters).every(([key, value]) => action[key] === value);
+    if (!basicMatch) return false;
+
+    const party = Array.isArray(action.party) ? action.party : [];
+    const fusionCount = party.filter((member) => member.entityType === "fusion").length;
+    const pokemonCount = party.filter((member) => member.entityType === "pokemon").length;
+
+    if (
+      options.minFusionPartyMembers !== undefined &&
+      fusionCount < Number(options.minFusionPartyMembers)
+    ) {
       return false;
     }
 
-    return Array.isArray(action.party) &&
-      action.party.some((member) => member.entityType === "fusion");
+    if (
+      options.maxFusionPartyMembers !== undefined &&
+      fusionCount > Number(options.maxFusionPartyMembers)
+    ) {
+      return false;
+    }
+
+    if (
+      options.minPokemonPartyMembers !== undefined &&
+      pokemonCount < Number(options.minPokemonPartyMembers)
+    ) {
+      return false;
+    }
+
+    if (
+      options.maxPokemonPartyMembers !== undefined &&
+      pokemonCount > Number(options.maxPokemonPartyMembers)
+    ) {
+      return false;
+    }
+
+    if (options.requireFusionInParty === true && fusionCount < 1) {
+      return false;
+    }
+
+    if (options.requireFullParty === true && party.length !== 6) {
+      return false;
+    }
+
+    return true;
   }).length;
+}
+
+function getSpeciesTypes(species) {
+  if (!species) return [];
+
+  const types = [];
+
+  if (species.primaryType) {
+    types.push(String(species.primaryType).toLowerCase());
+  }
+
+  if (species.secondaryType) {
+    types.push(String(species.secondaryType).toLowerCase());
+  }
+
+  return [...new Set(types)];
+}
+
+function fusionActionMatchesDexOptions(action, options = {}) {
+  if (action.actionType !== "fusion") return false;
+
+  const headPokemon = getPokemonById(action.headPokemonId);
+  const bodyPokemon = getPokemonById(action.bodyPokemonId);
+
+  if (!headPokemon || !bodyPokemon) return false;
+
+  const headSpecies = speciesById[headPokemon.speciesId];
+  const bodySpecies = speciesById[bodyPokemon.speciesId];
+
+  if (!headSpecies || !bodySpecies) return false;
+
+  const headTypes = getSpeciesTypes(headSpecies);
+  const bodyTypes = getSpeciesTypes(bodySpecies);
+
+  const requiredTypes = Array.isArray(options.speciesTypesIncludes)
+    ? options.speciesTypesIncludes.map((type) => String(type).toLowerCase())
+    : [];
+
+  const matchMode = options.match || "either_component";
+
+  if (requiredTypes.length > 0) {
+    const headMatches = requiredTypes.some((type) => headTypes.includes(type));
+    const bodyMatches = requiredTypes.some((type) => bodyTypes.includes(type));
+
+    if (matchMode === "either_component" && !headMatches && !bodyMatches) {
+      return false;
+    }
+
+    if (matchMode === "both_components" && (!headMatches || !bodyMatches)) {
+      return false;
+    }
+
+    if (matchMode === "head_only" && !headMatches) {
+      return false;
+    }
+
+    if (matchMode === "body_only" && !bodyMatches) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function countFusionDexMatches(options = {}) {
+  return runState.actions.filter((action) =>
+    fusionActionMatchesDexOptions(action, options)
+  ).length;
 }
 
 function doesAchievementMeetCondition(achievement, progressMap) {
@@ -565,44 +790,26 @@ function doesAchievementMeetCondition(achievement, progressMap) {
     return false;
   }
 
-  if (achievement.conditionType === "action_count") {
-    const count = countActionsByType(achievement.actionType);
-    return count >= (achievement.target || 1);
+  const rule = getAchievementRule(achievement);
+  const ruleType = rule.type;
+  const actionType = rule.actionType;
+  const filters = rule.filters || {};
+  const options = rule.options || {};
+  const target = getRuleTarget(rule);
+
+  if (ruleType === "action_count") {
+    const count = countFilteredActions(actionType, filters);
+    return count >= target;
   }
 
-  if (achievement.conditionType === "battle_result") {
-    const count = countBattleResults(achievement.result);
-    return count >= (achievement.target || 1);
+  if (ruleType === "party_battle_count") {
+    const count = countPartyBattleMatches(filters, options);
+    return count >= target;
   }
 
-  if (achievement.conditionType === "battle_used_fusion_win") {
-    const count = countBattleFusionWins();
-    return count >= (achievement.target || 1);
-  }
-
-  if (achievement.conditionType === "catch_type_count") {
-    const count = countCatchesByCatchType(achievement.catchType);
-    return count >= (achievement.target || 1);
-  }
-
-  if (achievement.conditionType === "catch_location_count") {
-    const count = countCatchesByLocation(achievement.locationId);
-    return count >= (achievement.target || 1);
-  }
-
-  if (achievement.conditionType === "battle_trainer_count") {
-    const count = countBattlesByTrainer(achievement.trainerId);
-    return count >= (achievement.target || 1);
-  }
-
-  if (achievement.conditionType === "battle_trainer_win_count") {
-    const count = countBattleWinsByTrainer(achievement.trainerId);
-    return count >= (achievement.target || 1);
-  }
-
-  if (achievement.conditionType === "battle_trainer_fusion_win_count") {
-    const count = countBattleFusionWinsByTrainer(achievement.trainerId);
-    return count >= (achievement.target || 1);
+  if (ruleType === "fusion_dex_count") {
+    const count = countFusionDexMatches(options);
+    return count >= target;
   }
 
   return false;
@@ -682,7 +889,6 @@ function evaluateAchievements() {
   };
 }
 
-
 // =========================
 // Rendering
 // =========================
@@ -755,7 +961,18 @@ function renderAchievements() {
   const container = document.getElementById("achievements-list");
   container.innerHTML = "";
 
-  const sortedAchievements = [...achievementCatalog].sort((a, b) => {
+  const visibleAchievements = achievementCatalog.filter((achievement) => {
+    const progress = runState.achievementProgress[achievement.id];
+    const unlocked = !!progress?.unlocked;
+
+    if (achievement.hidden && !unlocked) {
+      return false;
+    }
+
+    return true;
+  });
+
+  const sortedAchievements = [...visibleAchievements].sort((a, b) => {
     const progressA = runState.achievementProgress[a.id];
     const progressB = runState.achievementProgress[b.id];
 
@@ -777,6 +994,7 @@ function renderAchievements() {
   sortedAchievements.forEach((achievement) => {
     const progress = runState.achievementProgress[achievement.id];
     const unlocked = !!progress?.unlocked;
+    const description = achievement.description || "";
 
     const card = document.createElement("div");
     card.className = "achievement-card";
@@ -793,7 +1011,7 @@ function renderAchievements() {
       <div class="achievement-row">
         <div>
           <div class="achievement-title">${achievement.name} (+${achievement.rpReward} RP)</div>
-          <div class="achievement-desc">${achievement.description}</div>
+          <div class="achievement-desc">${description}</div>
           <div class="achievement-desc">${statusText}</div>
         </div>
       </div>
@@ -1642,42 +1860,6 @@ function canPokemonBeFusionSelected(pokemon) {
 
 function canFusionBeSplitSelected(fusion) {
   return isFusionActive(fusion);
-}
-
-function getCatchActions() {
-  return runState.actions.filter((action) => action.actionType === "catch");
-}
-
-function getBattleActions() {
-  return runState.actions.filter((action) => action.actionType === "battle");
-}
-
-function countCatchesByCatchType(catchType) {
-  return getCatchActions().filter((action) => action.catchType === catchType).length;
-}
-
-function countCatchesByLocation(locationId) {
-  return getCatchActions().filter((action) => action.locationId === locationId).length;
-}
-
-function countBattlesByTrainer(trainerId) {
-  return getBattleActions().filter((action) => action.trainerId === trainerId).length;
-}
-
-function countBattleWinsByTrainer(trainerId) {
-  return getBattleActions().filter(
-    (action) => action.trainerId === trainerId && action.result === "win"
-  ).length;
-}
-
-function countBattleFusionWinsByTrainer(trainerId) {
-  return getBattleActions().filter((action) => {
-    if (action.trainerId !== trainerId) return false;
-    if (action.result !== "win") return false;
-
-    return Array.isArray(action.party) &&
-      action.party.some((member) => member.entityType === "fusion");
-  }).length;
 }
 
 // =========================

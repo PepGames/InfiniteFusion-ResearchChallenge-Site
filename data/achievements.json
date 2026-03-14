@@ -1,47 +1,197 @@
 [
- {
+{
   "id": "first-catch",
   "name": "The Most Important Choice",
-  "description": "Obtain your Starter Pokémon",
+  "description": "Obtain your Starter Pokemon",
   "rpReward": 1,
-  "conditionType": "catch_type_count",
-  "catchType": "starter",
-  "target": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "catchType": "starter"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
   "symbol": "trophy",
-  "tier": "Bronze"
+  "tier": "bronze",
+  "hidden": false
 },
 {
-  "id": "route-1",
-  "name": "Encounter - Route 1",
-  "description": "Catch 1 Pokémon on Route 1",
+  "id": "first-fusion",
+  "name": "It's Alive!",
+  "description": "Create your first Fusion Pokemon",
   "rpReward": 1,
-  "conditionType": "catch_location_count",
-  "locationId": "route_1",
-  "target": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {},
+    "target": 1,
+    "actionType": "fusion"
+  },
+  "tags": [
+    "fusion"
+  ],
   "symbol": "trophy",
-  "tier": "Bronze"
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "first-fusion-death",
+  "name": "This One's on The House",
+  "description": "Lose your first Fusion Pokemon in Battle",
+  "rpReward": 2,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "targetType": "fusion"
+    },
+    "target": 1,
+    "actionType": "death"
+  },
+  "tags": [
+    "fusion"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
 },
 {
   "id": "defeat-brock",
   "name": "Boulderbadge",
   "description": "Defeat Brock in a Gym Battle",
   "rpReward": 1,
-  "conditionType": "battle_trainer_win_count",
-  "trainerId": "brock",
-  "target": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "trainerId": "brock",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle"
+  },
+  "tags": [
+    "gym"
+  ],
   "symbol": "rock_symbol",
-  "tier": "Bronze"
+  "tier": "bronze",
+  "hidden": false
 },
 {
   "id": "defeat-brock-gold",
   "name": "Golden Boulderbadge",
-  "description": "Defeat Brock in a Gym Battle with a Fusion Pokémon",
+  "description": "Defeat Brock in a Gym Battle with a Fusion Pokemon",
   "rpReward": 1,
-  "conditionType": "battle_trainer_fusion_win_count",
-  "trainerId": "brock",
-  "target": 1,
+  "rule": {
+    "type": "party_battle_count",
+    "filters": {
+      "trainerId": "brock",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle",
+    "options": {
+      "minFusionPartyMembers": 1
+    }
+  },
   "previousAchievement": "defeat-brock",
+  "tags": [
+    "gym"
+  ],
   "symbol": "rock_symbol",
-  "tier": "Gold"
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "route-1",
+  "name": "Encounter - Route 1",
+  "description": "Catch 1 Pokemon on Route 1",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_1"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "water-1",
+  "name": "Splash Enjoyer",
+  "description": "Perform 1 Fusion involving Water Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 1,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "water"
+      ]
+    }
+  },
+  "tags": [
+    "fusion",
+    "water"
+  ],
+  "symbol": "water_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "water-2",
+  "name": "River Runner",
+  "description": "Perform 3 Fusions involving Water Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 3,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "water"
+      ]
+    }
+  },
+  "previousAchievement": "water-1",
+  "tags": [
+    "fusion",
+    "water"
+  ],
+  "symbol": "water_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "defeat-lance-master",
+  "name": "Ultimate Showdown of Ultimate Destiny",
+  "description": "Defeat Lance in a Battle with a team of 6 Fusion Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "party_battle_count",
+    "filters": {
+      "trainerId": "brock",
+      "result": "win"
+    },
+    "target": 6,
+    "actionType": "battle",
+    "options": {
+      "minFusionPartyMembers": 6
+    }
+  },
+  "tier": "master",
+  "hidden": false
 }
 ]
