@@ -1023,7 +1023,7 @@ function renderAchievements() {
     const card = document.createElement("div");
     card.className = "achievement-card-v3";
     card.style.backgroundImage = `
-      linear-gradient(180deg, rgba(10, 17, 32, 0.5), rgba(7, 13, 24, 0.88)),
+      linear-gradient(180deg, rgba(10, 17, 32, 0.5), rgba(7, 13, 24, 0.5)),
       url("${backgroundSrc}")
     `;
 
