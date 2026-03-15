@@ -2057,7 +2057,13 @@ function removeAchievementToast(toastId) {
 }
 
 function getAchievementToastBadgeImage(achievement) {
-  return getAchievementBadgeImage(achievement);
+  const symbol = String(achievement?.symbol || "").trim();
+
+  if (!symbol) {
+    return "assets/achievements/badges_toast/trophy_default_toast.png";
+  }
+
+  return `assets/achievements/badges_toast/${symbol}_toast.png`;
 }
 
 function getAchievementToastBackground(achievement, updateType) {
