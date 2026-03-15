@@ -574,21 +574,17 @@ button:disabled {
 .achievement-icon-box {
   width: 128px;
   height: 128px;
-  border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.05);
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  backdrop-filter: blur(2px);
 }
 
-.achievement-badge-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
+.achievement-icon-box {
+  width: 128px;
+  height: 128px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .achievement-main-panel {
