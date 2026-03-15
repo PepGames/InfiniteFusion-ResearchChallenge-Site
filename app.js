@@ -58,6 +58,7 @@ let trainerCatalog = [];
 let trainerById = {};
 let achievementNotificationQueue = [];
 let achievementNotificationIdCounter = 0;
+let achievementAssetCache = new Set();
 
 let lastRenderedFusionFlowerValues = {
   fusions: null,
@@ -1029,8 +1030,7 @@ function renderAchievements() {
     const clampedCurrent = Math.min(current, target);
     const percent = Math.max(0, Math.min(100, (current / target) * 100));
 
-    const badgeSrc = getAchievementBadgeImage(achievement);
-    const backgroundSrc = getAchievementTierBackground(achievement);
+    badgeImg.src = badgeSrc;
 
     const card = document.createElement("div");
     card.className = "achievement-card-v3 achievement-card-scaled";
@@ -2027,24 +2027,18 @@ function queueAchievementNotifications(achievementChanges) {
       achievementNotificationQueue[existingIndex] = {
         ...existing,
         updateType: item.updateType,
-        isReady: false,
-        isRendering: false,
-        resolvedBadgeSrc: null,
-        resolvedBackgroundSrc: null
+       
       };
     } else {
       achievementNotificationQueue.push({
         id: `achievement-toast-${achievementNotificationIdCounter++}`,
         ...item,
-        isReady: false,
-        isRendering: false,
-        resolvedBadgeSrc: null,
-        resolvedBackgroundSrc: null
+   
       });
     }
   });
 
-  prepareAchievementToastAssets();
+  renderAchievementToasts();
 }
 
 function removeAchievementToast(toastId) {
@@ -2058,7 +2052,7 @@ function removeAchievementToast(toastId) {
     (item) => item.id !== toastId
   );
 
-  prepareAchievementToastAssets();
+  renderAchievementToasts();
 }
 
 function getAchievementToastBadgeImage(achievement) {
@@ -2211,55 +2205,27 @@ function applyAchievementToastBadgeImage(imgEl, src) {
   imgEl.dataset.loadedSrc = src;
 }
 
-function preloadImage(src) {
-  return new Promise((resolve) => {
-    if (!src) {
-      resolve(null);
-      return;
-    }
+function preloadAchievementAssets() {
+  if (!Array.isArray(achievementCatalog)) return;
+
+  const sources = new Set();
+
+  achievementCatalog.forEach((achievement) => {
+    const badge = getAchievementToastBadgeImage(achievement);
+    const background = getAchievementTierBackground(achievement);
+
+    if (badge) sources.add(badge);
+    if (background) sources.add(background);
+  });
+
+  sources.forEach((src) => {
+    if (!src || achievementAssetCache.has(src)) return;
 
     const img = new Image();
-
-    img.onload = () => resolve(src);
-    img.onerror = () => resolve(null);
-
     img.src = src;
+
+    achievementAssetCache.add(src);
   });
-}
-
-async function resolveAchievementToastAssets(achievement, updateType) {
-  const requestedBadgeSrc = getAchievementToastBadgeImage(achievement);
-  const requestedBackgroundSrc = getAchievementToastBackground(achievement, updateType);
-
-  const loadedBadgeSrc = await preloadImage(requestedBadgeSrc);
-  const loadedBackgroundSrc = await preloadImage(requestedBackgroundSrc);
-
-  return {
-    badgeSrc: loadedBadgeSrc || "assets/achievements/badges/trophy_default.png",
-    backgroundSrc: loadedBackgroundSrc || "assets/achievements/backgrounds/default.png"
-  };
-}
-
-async function prepareAchievementToastAssets() {
-  const pendingItems = achievementNotificationQueue.filter(
-    (item) => !item.isReady && !item.isRendering
-  );
-
-  for (const item of pendingItems) {
-    const achievement = achievementCatalog.find((a) => a.id === item.achievementId);
-    if (!achievement) continue;
-
-    item.isRendering = true;
-
-    const assets = await resolveAchievementToastAssets(achievement, item.updateType);
-
-    item.resolvedBadgeSrc = assets.badgeSrc;
-    item.resolvedBackgroundSrc = assets.backgroundSrc;
-    item.isReady = true;
-    item.isRendering = false;
-  }
-
-  renderAchievementToasts();
 }
 
 // =========================
@@ -2691,6 +2657,7 @@ async function init() {
   await loadSpeciesCatalog();
   await loadLocationCatalog();
   await loadTrainerCatalog();
+  preloadAchievementAssets();
   attachEventListeners();
   attachTabEventListeners();
   attachAnimationCleanup();
