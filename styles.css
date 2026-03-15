@@ -569,7 +569,7 @@ button:disabled {
   display: grid;
   grid-template-columns: 150px minmax(0, 1fr);
   gap: 22px;
-  align-items: stretch;
+  align-items: center;
   padding: 22px;
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.14);
