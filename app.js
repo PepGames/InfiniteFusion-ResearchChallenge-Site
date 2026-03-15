@@ -914,6 +914,7 @@ function renderRun() {
   renderFusionFlowerWidget();
   renderActionLog();
   renderAchievements();
+  updateAchievementCardScales();
 
   const undoBtn = document.getElementById("undo-action-btn");
   const redoBtn = document.getElementById("redo-action-btn");
@@ -1958,6 +1959,22 @@ function getAchievementTierBackground(achievement) {
   return `assets/achievements/backgrounds/${tierKey}.png`;
 }
 
+function updateAchievementCardScales() {
+  const shells = document.querySelectorAll(".achievement-scale-shell");
+
+  shells.forEach((shell) => {
+    const designWidth = 1100;
+    const designHeight = 220;
+    const availableWidth = shell.clientWidth;
+    const scale = Math.min(1, availableWidth / designWidth);
+
+    shell.style.setProperty("--achievement-scale", scale);
+    shell.style.setProperty("--achievement-design-width", designWidth);
+    shell.style.setProperty("--achievement-design-height", designHeight);
+    shell.style.height = `${designHeight * scale}px`;
+  });
+}
+
 // =========================
 // Event Handlers
 // =========================
@@ -2357,6 +2374,7 @@ function attachEventListeners() {
   document.getElementById("import-run-input").addEventListener("change", importRun);
   document.getElementById("undo-action-btn").addEventListener("click", handleUndoAction);
   document.getElementById("redo-action-btn").addEventListener("click", handleRedoAction);
+  window.addEventListener("resize", updateAchievementCardScales);
 }
 
 function attachTabEventListeners() {
