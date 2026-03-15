@@ -2026,17 +2026,25 @@ function queueAchievementNotifications(achievementChanges) {
 
       achievementNotificationQueue[existingIndex] = {
         ...existing,
-        updateType: item.updateType
+        updateType: item.updateType,
+        isReady: false,
+        isRendering: false,
+        resolvedBadgeSrc: null,
+        resolvedBackgroundSrc: null
       };
     } else {
       achievementNotificationQueue.push({
         id: `achievement-toast-${achievementNotificationIdCounter++}`,
-        ...item
+        ...item,
+        isReady: false,
+        isRendering: false,
+        resolvedBadgeSrc: null,
+        resolvedBackgroundSrc: null
       });
     }
   });
 
-  renderAchievementToasts();
+  prepareAchievementToastAssets();
 }
 
 function removeAchievementToast(toastId) {
@@ -2050,7 +2058,7 @@ function removeAchievementToast(toastId) {
     (item) => item.id !== toastId
   );
 
-  renderAchievementToasts();
+  prepareAchievementToastAssets();
 }
 
 function getAchievementToastBadgeImage(achievement) {
@@ -2065,6 +2073,7 @@ function renderAchievementToasts() {
   const layer = document.getElementById("achievement-toast-layer");
   if (!layer) return;
 
+  const readyItems = achievementNotificationQueue.filter((item) => item.isReady);
   const visibleItems = achievementNotificationQueue.slice(0, 3);
   const hiddenCount = Math.max(0, achievementNotificationQueue.length - 3);
 
@@ -2086,8 +2095,8 @@ function renderAchievementToasts() {
       const achievement = achievementCatalog.find((a) => a.id === item.achievementId);
       if (!achievement) return;
 
-      const badgeSrc = getAchievementToastBadgeImage(achievement);
-      const backgroundSrc = getAchievementToastBackground(achievement, item.updateType);
+      const badgeSrc = item.resolvedBadgeSrc || "assets/achievements/badges/trophy_default.png";
+      const backgroundSrc = item.resolvedBackgroundSrc || "assets/achievements/backgrounds/default.png";
 
       const toastOverlay =
         item.updateType === "unlocked"
@@ -2196,6 +2205,57 @@ function applyAchievementToastBadgeImage(imgEl, src) {
   };
 
   imgEl.src = src;
+}
+
+function preloadImage(src) {
+  return new Promise((resolve) => {
+    if (!src) {
+      resolve(null);
+      return;
+    }
+
+    const img = new Image();
+
+    img.onload = () => resolve(src);
+    img.onerror = () => resolve(null);
+
+    img.src = src;
+  });
+}
+
+async function resolveAchievementToastAssets(achievement, updateType) {
+  const requestedBadgeSrc = getAchievementToastBadgeImage(achievement);
+  const requestedBackgroundSrc = getAchievementToastBackground(achievement, updateType);
+
+  const loadedBadgeSrc = await preloadImage(requestedBadgeSrc);
+  const loadedBackgroundSrc = await preloadImage(requestedBackgroundSrc);
+
+  return {
+    badgeSrc: loadedBadgeSrc || "assets/achievements/badges/trophy_default.png",
+    backgroundSrc: loadedBackgroundSrc || "assets/achievements/backgrounds/default.png"
+  };
+}
+
+async function prepareAchievementToastAssets() {
+  const pendingItems = achievementNotificationQueue.filter(
+    (item) => !item.isReady && !item.isRendering
+  );
+
+  for (const item of pendingItems) {
+    const achievement = achievementCatalog.find((a) => a.id === item.achievementId);
+    if (!achievement) continue;
+
+    item.isRendering = true;
+
+    const assets = await resolveAchievementToastAssets(achievement, item.updateType);
+
+    item.resolvedBadgeSrc = assets.badgeSrc;
+    item.resolvedBackgroundSrc = assets.backgroundSrc;
+    item.isReady = true;
+    item.isRendering = false;
+  }
+
+  renderAchievementToasts();
 }
 
 // =========================
