@@ -727,3 +727,10 @@ button:disabled {
     padding: 0 10px;
   }
 }
+
+.achievement-title-v2,
+.achievement-desc-v2,
+.achievement-meta-v2 {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
