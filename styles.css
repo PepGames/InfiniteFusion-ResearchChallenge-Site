@@ -682,7 +682,7 @@ button:disabled {
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.16);
   background: rgba(255, 255, 255, 0.10);
-  margin-top: 15px;
+  margin-top: 5px;
   backdrop-filter: blur(2px);
 }
 
