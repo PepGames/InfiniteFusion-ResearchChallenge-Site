@@ -914,7 +914,7 @@ function renderRun() {
   renderFusionFlowerWidget();
   renderActionLog();
   renderAchievements();
-  updateAchievementCardScales();
+  requestAnimationFrame(updateAchievementCardScales);
 
   const undoBtn = document.getElementById("undo-action-btn");
   const redoBtn = document.getElementById("redo-action-btn");
