@@ -559,7 +559,7 @@ button:disabled {
   padding: 22px;
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.14);
-  background-size: cover;
+  background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
