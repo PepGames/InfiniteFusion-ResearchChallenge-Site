@@ -2060,10 +2060,10 @@ function getAchievementToastBadgeImage(achievement) {
   const symbol = String(achievement?.symbol || "").trim();
 
   if (!symbol) {
-    return "assets/achievements/badges_toast/trophy_default_toast.png";
+    return "assets/achievements/badges/trophy_default_toast.png";
   }
 
-  return `assets/achievements/badges_toast/${symbol}_toast.png`;
+  return `assets/achievements/badges/${symbol}_toast.png`;
 }
 
 function getAchievementToastBackground(achievement, updateType) {
