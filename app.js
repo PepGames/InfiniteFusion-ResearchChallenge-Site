@@ -2043,10 +2043,29 @@ function queueAchievementNotifications(achievementChanges) {
 }
 
 function removeAchievementToast(toastId) {
-  const toast = achievementNotificationQueue.find((item) => item.id === toastId);
+  const toastData = achievementNotificationQueue.find((item) => item.id === toastId);
+  const toastNode = document.querySelector(`.achievement-toast[data-toast-id="${toastId}"]`);
 
-  if (toast?.timeoutId) {
-    clearTimeout(toast.timeoutId);
+  if (toastData?.timeoutId) {
+    clearTimeout(toastData.timeoutId);
+  }
+
+  if (toastNode && !toastNode.classList.contains("achievement-toast-leave")) {
+    toastNode.classList.add("achievement-toast-leave");
+
+    toastNode.addEventListener(
+      "animationend",
+      () => {
+        achievementNotificationQueue = achievementNotificationQueue.filter(
+          (item) => item.id !== toastId
+        );
+        toastNode.remove();
+        renderAchievementToasts();
+      },
+      { once: true }
+    );
+
+    return;
   }
 
   achievementNotificationQueue = achievementNotificationQueue.filter(
