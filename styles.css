@@ -746,7 +746,7 @@ button:disabled {
 }
 
 .achievement-toast {
-  width: min(360px, calc(100vw - 24px));
+  width: min(520px, calc(100vw - 32px));
   min-height: 84px;
   display: grid;
   grid-template-columns: 68px minmax(0, 1fr);
@@ -838,7 +838,7 @@ button:disabled {
 @keyframes achievementToastIn {
   from {
     opacity: 0;
-    transform: translateY(10px) scale(0.98);
+    transform: translateY(-14px) scale(0.98);
   }
   to {
     opacity: 1;
