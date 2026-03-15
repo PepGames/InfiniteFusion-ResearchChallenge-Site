@@ -768,7 +768,7 @@ button:disabled {
 }
 
 .achievement-toast-enter.achievement-toast-unlocked {
-  animation: achievementToastIn 220ms ease, achievementBorderFlash 420ms ease;
+  animation: achievementToastIn 220ms ease, achievementBadgeGlowIn 420ms ease, achievementBorderFlash 420ms ease;
 }
 
 .achievement-toast-unlocked {
@@ -907,9 +907,8 @@ button:disabled {
 }
 
 .achievement-toast-leave.achievement-toast-unlocked {
-  animation: achievementToastOut 220ms ease forwards, achievementBadgeGlowIn 420ms ease, achievementBorderFade 220ms ease forwards;
+  animation: achievementToastOut 220ms ease forwards, achievementBorderFade 220ms ease forwards;
 }
-
 
 @keyframes achievementToastOut {
   from {
