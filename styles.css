@@ -767,7 +767,7 @@ button:disabled {
   animation: achievementToastIn 220ms ease;
 }
 
-.achievement-toast-enter .achievement-toast-unlocked {
+.achievement-toast-enter.achievement-toast-unlocked {
   animation: achievementBorderFlash 220ms ease;
 }
 

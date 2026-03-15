@@ -2113,7 +2113,7 @@ function renderAchievementToasts() {
       if (statusEl) statusEl.textContent = statusLabel;
       if (titleEl) titleEl.textContent = achievement.name;
       if (descEl) descEl.textContent = achievement.description || "";
-      if (badgeEl) badgeEl.src = badgeSrc;
+      applyAchievementToastBadgeImage(badgeEl, badgeSrc);
 
       return;
     }
@@ -2139,7 +2139,6 @@ function renderAchievementToasts() {
       <div class="achievement-toast-badge-wrap">
         <img
           class="achievement-toast-badge"
-          src="${badgeSrc}"
           alt="${achievement.name} badge"
         />
       </div>
@@ -2152,15 +2151,7 @@ function renderAchievementToasts() {
     `;
 
     const badgeImg = toast.querySelector(".achievement-toast-badge");
-    if (badgeImg) {
-      badgeImg.addEventListener(
-        "error",
-        () => {
-          badgeImg.src = "assets/achievements/badges/trophy_default.png";
-        },
-        { once: true }
-      );
-    }
+    applyAchievementToastBadgeImage(badgeImg, badgeSrc);
 
     layer.appendChild(toast);
 
@@ -2194,6 +2185,17 @@ function renderAchievementToasts() {
   } else if (summary) {
     summary.remove();
   }
+}
+
+function applyAchievementToastBadgeImage(imgEl, src) {
+  if (!imgEl) return;
+
+  imgEl.onerror = () => {
+    imgEl.onerror = null;
+    imgEl.src = "assets/achievements/badges/trophy_default.png";
+  };
+
+  imgEl.src = src;
 }
 
 // =========================
