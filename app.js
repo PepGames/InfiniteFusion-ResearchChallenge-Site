@@ -2211,25 +2211,17 @@ function applyAchievementToastBadgeImage(imgEl, src) {
 }
 
 function preloadAchievementAssets() {
-  if (!Array.isArray(achievementCatalog)) return;
-
-  const sources = new Set();
-
   achievementCatalog.forEach((achievement) => {
     const badge = getAchievementToastBadgeImage(achievement);
-    const background = getAchievementTierBackground(achievement);
+    const bg = getAchievementToastBackground(achievement, "unlocked");
 
-    if (badge) sources.add(badge);
-    if (background) sources.add(background);
-  });
+    const img1 = new Image();
+    img1.src = badge;
+    img1.decode?.().catch(() => {});
 
-  sources.forEach((src) => {
-    if (!src || achievementAssetCache.has(src)) return;
-
-    const img = new Image();
-    img.src = src;
-
-    achievementAssetCache.add(src);
+    const img2 = new Image();
+    img2.src = bg;
+    img2.decode?.().catch(() => {});
   });
 }
 
