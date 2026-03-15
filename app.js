@@ -734,6 +734,7 @@ function getSpeciesTypes(species) {
 }
 
 function fusionActionMatchesDexOptions(action, options = {}) {
+  // Counts only player-created fusion actions.
   if (action.actionType !== "fusion") return false;
 
   const headPokemon = getPokemonById(action.headPokemonId);
@@ -785,11 +786,7 @@ function countFusionDexMatches(options = {}) {
   ).length;
 }
 
-function doesAchievementMeetCondition(achievement, progressMap) {
-  if (!isPreviousAchievementUnlocked(achievement, progressMap)) {
-    return false;
-  }
-
+function getAchievementProgressState(achievement, progressMap) {
   const rule = getAchievementRule(achievement);
   const ruleType = rule.type;
   const actionType = rule.actionType;
@@ -797,22 +794,24 @@ function doesAchievementMeetCondition(achievement, progressMap) {
   const options = rule.options || {};
   const target = getRuleTarget(rule);
 
+  let current = 0;
+
   if (ruleType === "action_count") {
-    const count = countFilteredActions(actionType, filters);
-    return count >= target;
+    current = countFilteredActions(actionType, filters);
+  } else if (ruleType === "party_battle_count") {
+    current = countPartyBattleMatches(filters, options);
+  } else if (ruleType === "fusion_dex_count") {
+    current = countFusionDexMatches(options);
   }
 
-  if (ruleType === "party_battle_count") {
-    const count = countPartyBattleMatches(filters, options);
-    return count >= target;
-  }
+  const prerequisiteMet = isPreviousAchievementUnlocked(achievement, progressMap);
+  const unlocked = prerequisiteMet && current >= target;
 
-  if (ruleType === "fusion_dex_count") {
-    const count = countFusionDexMatches(options);
-    return count >= target;
-  }
-
-  return false;
+  return {
+    current,
+    target,
+    unlocked
+  };
 }
 
 function calculateAchievementEarnedRP(progressMap) {
@@ -829,7 +828,7 @@ function calculateAchievementEarnedRP(progressMap) {
 
 function evaluateAchievements() {
   const previousProgress = structuredClone(runState.achievementProgress);
-  let nextProgress = structuredClone(previousProgress);
+  let nextProgress = {};
 
   const now = new Date().toISOString();
   let changed = true;
@@ -845,23 +844,35 @@ function evaluateAchievements() {
       break;
     }
 
+    const rebuiltProgress = {};
+
     achievementCatalog.forEach((achievement) => {
-      const previouslyUnlocked = !!nextProgress[achievement.id]?.unlocked;
-      const meetsCondition = doesAchievementMeetCondition(achievement, nextProgress);
+      const previousEntry = previousProgress[achievement.id];
+      const priorUnlockedAt = previousEntry?.unlockedAt || null;
 
-      if (meetsCondition && !previouslyUnlocked) {
-        nextProgress[achievement.id] = {
-          unlocked: true,
-          unlockedAt: previousProgress[achievement.id]?.unlockedAt || now
-        };
-        changed = true;
-      }
+      const progressState = getAchievementProgressState(achievement, {
+        ...nextProgress,
+        ...rebuiltProgress
+      });
 
-      if (!meetsCondition && previouslyUnlocked) {
-        delete nextProgress[achievement.id];
-        changed = true;
-      }
+      rebuiltProgress[achievement.id] = {
+        unlocked: progressState.unlocked,
+        unlockedAt: progressState.unlocked
+          ? (priorUnlockedAt || now)
+          : null,
+        current: progressState.current,
+        target: progressState.target
+      };
     });
+
+    const before = JSON.stringify(nextProgress);
+    const after = JSON.stringify(rebuiltProgress);
+
+    nextProgress = rebuiltProgress;
+
+    if (before !== after) {
+      changed = true;
+    }
   }
 
   const newlyUnlocked = [];
@@ -992,30 +1003,74 @@ function renderAchievements() {
   });
 
   sortedAchievements.forEach((achievement) => {
-    const progress = runState.achievementProgress[achievement.id];
-    const unlocked = !!progress?.unlocked;
+    const progress = runState.achievementProgress[achievement.id] || {
+      unlocked: false,
+      unlockedAt: null,
+      current: 0,
+      target: getRuleTarget(achievement.rule)
+    };
+
+    const unlocked = !!progress.unlocked;
     const description = achievement.description || "";
+    const current = Number(progress.current || 0);
+    const target = Number(progress.target || 1);
+    const clampedCurrent = Math.min(current, target);
+    const percent = Math.max(0, Math.min(100, (current / target) * 100));
+
+    const badgeSrc = getAchievementBadgeImage(achievement);
+    const backgroundSrc = getAchievementTierBackground(achievement);
 
     const card = document.createElement("div");
-    card.className = "achievement-card";
+    card.className = "achievement-card-v3";
+    card.style.backgroundImage = `
+      linear-gradient(180deg, rgba(10, 17, 32, 0.78), rgba(7, 13, 24, 0.88)),
+      url("${backgroundSrc}")
+    `;
 
     if (unlocked) {
       card.classList.add("achievement-complete");
     }
 
-    const statusText = unlocked
+    const metaText = unlocked
       ? `Completed • ${formatActionTimestamp(progress.unlockedAt)}`
-      : "Locked";
+      : `Progress: ${clampedCurrent} / ${target}`;
 
     card.innerHTML = `
-      <div class="achievement-row">
-        <div>
-          <div class="achievement-title">${achievement.name} (+${achievement.rpReward} RP)</div>
-          <div class="achievement-desc">${description}</div>
-          <div class="achievement-desc">${statusText}</div>
+      <div class="achievement-icon-panel">
+        <div class="achievement-icon-box">
+          <img
+            class="achievement-badge-image"
+            src="${badgeSrc}"
+            alt="${achievement.name} badge"
+          />
+        </div>
+      </div>
+
+      <div class="achievement-main-panel">
+        <div class="achievement-topline">
+          <div class="achievement-title-v2">${achievement.name}</div>
+          <div class="achievement-rp-v2">+${achievement.rpReward} RP</div>
+        </div>
+
+        <div class="achievement-desc-v2">${description}</div>
+
+        <div class="achievement-meta-v2">${metaText}</div>
+
+        <div class="achievement-progress-shell ${unlocked ? "is-complete" : ""}">
+          <div class="achievement-progress-fill" style="width: ${percent}%;"></div>
+          <div class="achievement-progress-text">
+            ${unlocked ? "Complete" : `${clampedCurrent} / ${target}`}
+          </div>
         </div>
       </div>
     `;
+
+    const badgeImage = card.querySelector(".achievement-badge-image");
+    if (badgeImage) {
+      badgeImage.addEventListener("error", () => {
+        badgeImage.src = "assets/achievements/badges/trophy_default.png";
+      }, { once: true });
+    }
 
     container.appendChild(card);
   });
@@ -1860,6 +1915,42 @@ function canPokemonBeFusionSelected(pokemon) {
 
 function canFusionBeSplitSelected(fusion) {
   return isFusionActive(fusion);
+}
+
+function normalizeTierKey(tier) {
+  return String(tier || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "_");
+}
+
+function getAchievementBadgeImage(achievement) {
+  const symbol = String(achievement?.symbol || "").trim();
+
+  if (!symbol) {
+    return "assets/achievements/badges/trophy_default.png";
+  }
+
+  return `assets/achievements/badges/${symbol}.png`;
+}
+
+function getAchievementTierBackground(achievement) {
+  const tierKey = normalizeTierKey(achievement?.tier);
+
+  const allowedTiers = new Set([
+    "bronze",
+    "silver",
+    "gold",
+    "platinum",
+    "diamond",
+    "master"
+  ]);
+
+  if (!allowedTiers.has(tierKey)) {
+    return "assets/achievements/backgrounds/default.png";
+  }
+
+  return `assets/achievements/backgrounds/${tierKey}.png`;
 }
 
 // =========================
