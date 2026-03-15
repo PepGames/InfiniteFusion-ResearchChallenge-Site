@@ -1030,7 +1030,8 @@ function renderAchievements() {
     const clampedCurrent = Math.min(current, target);
     const percent = Math.max(0, Math.min(100, (current / target) * 100));
 
-    badgeImg.src = badgeSrc;
+    const badgeSrc = getAchievementBadgeImage(achievement);
+    const backgroundSrc = getAchievementTierBackground(achievement);
 
     const card = document.createElement("div");
     card.className = "achievement-card-v3 achievement-card-scaled";
@@ -2067,7 +2068,6 @@ function renderAchievementToasts() {
   const layer = document.getElementById("achievement-toast-layer");
   if (!layer) return;
 
-  const readyItems = achievementNotificationQueue.filter((item) => item.isReady);
   const visibleItems = achievementNotificationQueue.slice(0, 3);
   const hiddenCount = Math.max(0, achievementNotificationQueue.length - 3);
 
@@ -2085,28 +2085,28 @@ function renderAchievementToasts() {
       `.achievement-toast[data-toast-id="${item.id}"]`
     );
 
+    const achievement = achievementCatalog.find((a) => a.id === item.achievementId);
+    if (!achievement) return;
+
+    const badgeSrc = getAchievementToastBadgeImage(achievement);
+    const backgroundSrc = getAchievementToastBackground(achievement, item.updateType);
+
+    const toastOverlay =
+      item.updateType === "unlocked"
+        ? `linear-gradient(180deg, rgba(10, 17, 32, 0.22), rgba(7, 13, 24, 0.32))`
+        : `linear-gradient(180deg, rgba(10, 17, 32, 0.48), rgba(7, 13, 24, 0.60))`;
+
+    const statusLabel =
+      item.updateType === "unlocked"
+        ? "Achievement Unlocked"
+        : "Achievement Removed";
+
     if (existingToast) {
-      const achievement = achievementCatalog.find((a) => a.id === item.achievementId);
-      if (!achievement) return;
-
-      const badgeSrc = item.resolvedBadgeSrc || "assets/achievements/badges/trophy_default.png";
-      const backgroundSrc = item.resolvedBackgroundSrc || "assets/achievements/backgrounds/default.png";
-
-      const toastOverlay =
-        item.updateType === "unlocked"
-          ? `linear-gradient(180deg, rgba(10, 17, 32, 0.22), rgba(7, 13, 24, 0.32))`
-          : `linear-gradient(180deg, rgba(10, 17, 32, 0.48), rgba(7, 13, 24, 0.60))`;
-
       existingToast.className = `achievement-toast achievement-toast-${item.updateType}`;
       existingToast.style.backgroundImage = `
         ${toastOverlay},
         url("${backgroundSrc}")
       `;
-
-      const statusLabel =
-        item.updateType === "unlocked"
-          ? "Achievement Unlocked"
-          : "Achievement Removed";
 
       const statusEl = existingToast.querySelector(".achievement-toast-status");
       const titleEl = existingToast.querySelector(".achievement-toast-title");
@@ -2123,22 +2123,13 @@ function renderAchievementToasts() {
       return;
     }
 
-    const achievement = achievementCatalog.find((a) => a.id === item.achievementId);
-    if (!achievement) return;
-
-    const badgeSrc = getAchievementToastBadgeImage(achievement);
-    const backgroundSrc = getAchievementToastBackground(achievement, item.updateType);
-
     const toast = document.createElement("div");
     toast.className = `achievement-toast achievement-toast-${item.updateType} achievement-toast-enter`;
     toast.dataset.toastId = item.id;
     toast.style.backgroundImage = `
-      linear-gradient(180deg, rgba(10, 17, 32, 0.28), rgba(7, 13, 24, 0.40)),
+      ${toastOverlay},
       url("${backgroundSrc}")
     `;
-
-    const statusLabel =
-      item.updateType === "unlocked" ? "Achievement Unlocked" : "Achievement Removed";
 
     toast.innerHTML = `
       <div class="achievement-toast-badge-wrap">
@@ -2157,6 +2148,14 @@ function renderAchievementToasts() {
 
     const badgeImg = toast.querySelector(".achievement-toast-badge");
     applyAchievementToastBadgeImage(badgeImg, badgeSrc);
+
+    toast.addEventListener(
+      "animationend",
+      () => {
+        toast.classList.remove("achievement-toast-enter");
+      },
+      { once: true }
+    );
 
     layer.appendChild(toast);
 
