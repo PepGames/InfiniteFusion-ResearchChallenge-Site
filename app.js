@@ -2122,7 +2122,9 @@ function renderAchievementToasts() {
       if (statusEl) statusEl.textContent = statusLabel;
       if (titleEl) titleEl.textContent = achievement.name;
       if (descEl) descEl.textContent = achievement.description || "";
-      applyAchievementToastBadgeImage(badgeEl, badgeSrc);
+      if (badgeEl && badgeEl.dataset.loadedSrc !== badgeSrc) {
+        applyAchievementToastBadgeImage(badgeEl, badgeSrc);
+      }
 
       return;
     }
@@ -2202,9 +2204,11 @@ function applyAchievementToastBadgeImage(imgEl, src) {
   imgEl.onerror = () => {
     imgEl.onerror = null;
     imgEl.src = "assets/achievements/badges/trophy_default.png";
+    imgEl.dataset.loadedSrc = "assets/achievements/badges/trophy_default.png";
   };
 
   imgEl.src = src;
+  imgEl.dataset.loadedSrc = src;
 }
 
 function preloadImage(src) {

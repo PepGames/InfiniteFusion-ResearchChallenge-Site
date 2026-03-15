@@ -793,6 +793,8 @@ button:disabled {
   height: 56px;
   object-fit: contain;
   display: block;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 .achievement-toast-content {
