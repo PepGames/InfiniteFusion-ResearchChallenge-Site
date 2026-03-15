@@ -2210,19 +2210,40 @@ function applyAchievementToastBadgeImage(imgEl, src) {
   imgEl.dataset.loadedSrc = src;
 }
 
-function preloadAchievementAssets() {
+async function preloadAchievementAssets() {
+  if (!Array.isArray(achievementCatalog)) return;
+
+  const sources = new Set();
+
   achievementCatalog.forEach((achievement) => {
     const badge = getAchievementToastBadgeImage(achievement);
-    const bg = getAchievementToastBackground(achievement, "unlocked");
+    const background = getAchievementTierBackground(achievement);
 
-    const img1 = new Image();
-    img1.src = badge;
-    img1.decode?.().catch(() => {});
-
-    const img2 = new Image();
-    img2.src = bg;
-    img2.decode?.().catch(() => {});
+    if (badge) sources.add(badge);
+    if (background) sources.add(background);
   });
+
+  const preloadPromises = [];
+
+  sources.forEach((src) => {
+    if (!src || achievementAssetCache.has(src)) return;
+
+    const img = new Image();
+    img.src = src;
+
+    const promise =
+      typeof img.decode === "function"
+        ? img.decode().catch(() => {})
+        : new Promise((resolve) => {
+            img.onload = () => resolve();
+            img.onerror = () => resolve();
+          });
+
+    preloadPromises.push(promise);
+    achievementAssetCache.add(src);
+  });
+
+  await Promise.all(preloadPromises);
 }
 
 // =========================
@@ -2654,7 +2675,7 @@ async function init() {
   await loadSpeciesCatalog();
   await loadLocationCatalog();
   await loadTrainerCatalog();
-  preloadAchievementAssets();
+  await preloadAchievementAssets();
   attachEventListeners();
   attachTabEventListeners();
   attachAnimationCleanup();
