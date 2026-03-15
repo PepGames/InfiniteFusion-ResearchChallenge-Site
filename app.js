@@ -2017,16 +2017,32 @@ function queueAchievementNotifications(achievementChanges) {
   if (items.length === 0) return;
 
   items.forEach((item) => {
-    achievementNotificationQueue.push({
+    const existingIndex = achievementNotificationQueue.findIndex(
+      (queued) => queued.achievementId === item.achievementId
+    );
+
+    const notification = {
       id: `achievement-toast-${achievementNotificationIdCounter++}`,
       ...item
-    });
+    };
+
+    if (existingIndex >= 0) {
+      achievementNotificationQueue[existingIndex] = notification;
+    } else {
+      achievementNotificationQueue.push(notification);
+    }
   });
 
   renderAchievementToasts();
 }
 
 function removeAchievementToast(toastId) {
+  const toast = achievementNotificationQueue.find((item) => item.id === toastId);
+
+  if (toast?.timeoutId) {
+    clearTimeout(toast.timeoutId);
+  }
+
   achievementNotificationQueue = achievementNotificationQueue.filter(
     (item) => item.id !== toastId
   );
@@ -2059,7 +2075,7 @@ function renderAchievementToasts() {
   const visibleItems = achievementNotificationQueue.slice(0, 3);
   const hiddenCount = Math.max(0, achievementNotificationQueue.length - 3);
 
-  visibleItems.forEach((item, index) => {
+  visibleItems.forEach((item) => {
     const achievement = achievementCatalog.find((a) => a.id === item.achievementId);
     if (!achievement) return;
 
@@ -2105,10 +2121,13 @@ function renderAchievementToasts() {
 
     layer.appendChild(toast);
 
-    const lifetime = item.updateType === "unlocked" ? 5000 : 4200;
-    window.setTimeout(() => {
-      removeAchievementToast(item.id);
-    }, lifetime + index * 180);
+    if (!item.timeoutId) {
+      const lifetime = item.updateType === "unlocked" ? 5000 : 4200;
+
+      item.timeoutId = window.setTimeout(() => {
+        removeAchievementToast(item.id);
+      }, lifetime);
+    }
   });
 
   if (hiddenCount > 0) {
