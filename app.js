@@ -56,6 +56,8 @@ let locationCatalog = [];
 let locationById = {};
 let trainerCatalog = [];
 let trainerById = {};
+let achievementNotificationQueue = [];
+let achievementNotificationIdCounter = 0;
 
 let lastRenderedFusionFlowerValues = {
   fusions: null,
@@ -623,16 +625,25 @@ function getAvailableRP() {
 function updateAndSave() {
   rebuildDerivedStateFromActions();
   const achievementChanges = evaluateAchievements();
+
   achievementChanges.newlyUnlocked.forEach((id) => {
     const achievement = achievementCatalog.find((a) => a.id === id);
     if (!achievement) return;
 
     console.log("Achievement unlocked:", achievement.name);
-
     popValue(document.getElementById("rp-earned"));
   });
+
+  achievementChanges.newlyRemoved.forEach((id) => {
+    const achievement = achievementCatalog.find((a) => a.id === id);
+    if (!achievement) return;
+
+    console.log("Achievement removed:", achievement.name);
+  });
+
   saveRunState(runState);
   renderRun();
+  queueAchievementNotifications(achievementChanges);
 
   debugLog("Achievement changes:", achievementChanges);
 }
@@ -1988,6 +1999,124 @@ function updateAchievementCardScales() {
     shell.style.setProperty("--achievement-design-height", designHeight);
     shell.style.height = `${designHeight * scale}px`;
   });
+}
+
+function queueAchievementNotifications(achievementChanges) {
+  const unlockedItems = achievementChanges.newlyUnlocked.map((id) => ({
+    achievementId: id,
+    updateType: "unlocked"
+  }));
+
+  const removedItems = achievementChanges.newlyRemoved.map((id) => ({
+    achievementId: id,
+    updateType: "removed"
+  }));
+
+  const items = [...unlockedItems, ...removedItems];
+
+  if (items.length === 0) return;
+
+  items.forEach((item) => {
+    achievementNotificationQueue.push({
+      id: `achievement-toast-${achievementNotificationIdCounter++}`,
+      ...item
+    });
+  });
+
+  renderAchievementToasts();
+}
+
+function removeAchievementToast(toastId) {
+  achievementNotificationQueue = achievementNotificationQueue.filter(
+    (item) => item.id !== toastId
+  );
+
+  renderAchievementToasts();
+}
+
+function getAchievementToastBadgeImage(achievement) {
+  return getAchievementBadgeImage(achievement);
+}
+
+function getAchievementToastBackground(achievement, updateType) {
+  if (updateType === "removed") {
+    return "assets/achievements/backgrounds/default.png";
+  }
+
+  return getAchievementTierBackground(achievement);
+}
+
+function renderAchievementToasts() {
+  const layer = document.getElementById("achievement-toast-layer");
+  if (!layer) return;
+
+  layer.innerHTML = "";
+
+  if (achievementNotificationQueue.length === 0) {
+    return;
+  }
+
+  const visibleItems = achievementNotificationQueue.slice(0, 3);
+  const hiddenCount = Math.max(0, achievementNotificationQueue.length - 3);
+
+  visibleItems.forEach((item, index) => {
+    const achievement = achievementCatalog.find((a) => a.id === item.achievementId);
+    if (!achievement) return;
+
+    const badgeSrc = getAchievementToastBadgeImage(achievement);
+    const backgroundSrc = getAchievementToastBackground(achievement, item.updateType);
+
+    const toast = document.createElement("div");
+    toast.className = `achievement-toast achievement-toast-${item.updateType}`;
+    toast.style.backgroundImage = `
+      linear-gradient(180deg, rgba(10, 17, 32, 0.28), rgba(7, 13, 24, 0.40)),
+      url("${backgroundSrc}")
+    `;
+
+    const statusLabel =
+      item.updateType === "unlocked" ? "Achievement Unlocked" : "Achievement Removed";
+
+    toast.innerHTML = `
+      <div class="achievement-toast-badge-wrap">
+        <img
+          class="achievement-toast-badge"
+          src="${badgeSrc}"
+          alt="${achievement.name} badge"
+        />
+      </div>
+
+      <div class="achievement-toast-content">
+        <div class="achievement-toast-status">${statusLabel}</div>
+        <div class="achievement-toast-title">${achievement.name}</div>
+        <div class="achievement-toast-desc">${achievement.description || ""}</div>
+      </div>
+    `;
+
+    const badgeImg = toast.querySelector(".achievement-toast-badge");
+    if (badgeImg) {
+      badgeImg.addEventListener(
+        "error",
+        () => {
+          badgeImg.src = "assets/achievements/badges/trophy_default.png";
+        },
+        { once: true }
+      );
+    }
+
+    layer.appendChild(toast);
+
+    const lifetime = item.updateType === "unlocked" ? 5000 : 4200;
+    window.setTimeout(() => {
+      removeAchievementToast(item.id);
+    }, lifetime + index * 180);
+  });
+
+  if (hiddenCount > 0) {
+    const summary = document.createElement("div");
+    summary.className = "achievement-toast-summary";
+    summary.textContent = `and ${hiddenCount} more achievement${hiddenCount === 1 ? "" : "s"} updated`;
+    layer.appendChild(summary);
+  }
 }
 
 // =========================
