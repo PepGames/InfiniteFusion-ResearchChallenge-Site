@@ -665,6 +665,7 @@ button:disabled {
 .achievement-meta-v2 {
   font-size: 0.98rem;
   color: #c3cce0;
+  margin-top: 10px;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
 }
 
@@ -700,7 +701,6 @@ button:disabled {
   align-items: center;
   justify-content: center;
   padding: 0 14px;
-  margin: 10px;
   font-size: 0.94rem;
   font-weight: 700;
   color: #f8fbff;
