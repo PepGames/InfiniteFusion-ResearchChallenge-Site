@@ -615,18 +615,16 @@ button:disabled {
   align-items: center;
   gap: 4px;
   min-width: 0;
-  padding-top: 5px;
   align-items: center;
   text-align: center; 
 }
 
 .achievement-topline {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-  min-width: 0;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
 }
 
 .achievement-title-v2,
@@ -644,12 +642,15 @@ button:disabled {
   font-weight: 700;
   line-height: 1.04;
   color: #f5f7fb;
+  text-align: center;
+  justify-self: center;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
 }
 
 .achievement-rp-v2 {
   font-size: 1rem;
   font-weight: 700;
+  justify-self: end;
   color: #dce7ff;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
 }
@@ -678,6 +679,7 @@ button:disabled {
   border: 1px solid rgba(255, 255, 255, 0.16);
   background: rgba(255, 255, 255, 0.10);
   margin-top: 8px;
+  padding-top: 5px;
   backdrop-filter: blur(2px);
 }
 
