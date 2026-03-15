@@ -1023,9 +1023,13 @@ function renderAchievements() {
 
     const card = document.createElement("div");
     card.className = "achievement-card-v3 achievement-card-scaled";
-    card.classList.add("achievement-card-scaled");
+
+    const backgroundOverlay = unlocked
+      ? `linear-gradient(180deg, rgba(10, 17, 32, 0.22), rgba(7, 13, 24, 0.30))`
+      : `linear-gradient(180deg, rgba(10, 17, 32, 0.55), rgba(7, 13, 24, 0.68))`;
+
     card.style.backgroundImage = `
-      linear-gradient(180deg, rgba(10, 17, 32, 0.5), rgba(7, 13, 24, 0.5)),
+      ${backgroundOverlay},
       url("${backgroundSrc}")
     `;
 
