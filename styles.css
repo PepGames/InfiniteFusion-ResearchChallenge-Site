@@ -612,9 +612,12 @@ button:disabled {
 .achievement-main-panel {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  gap: 4px;
   min-width: 0;
-  padding-top: 10px;
+  padding-top: 5px;
+  align-items: center;
+  text-align: center; 
 }
 
 .achievement-topline {
@@ -636,6 +639,7 @@ button:disabled {
 }
 
 .achievement-title-v2 {
+  letter-spacing: 0.3px;
   font-size: 2rem;
   font-weight: 700;
   line-height: 1.04;
@@ -665,6 +669,8 @@ button:disabled {
 
 /* Progress bar */
 .achievement-progress-shell {
+  width: 100%;
+  max-width: 520px;
   position: relative;
   height: 30px;
   border-radius: 999px;
