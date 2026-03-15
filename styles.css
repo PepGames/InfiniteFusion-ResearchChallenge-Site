@@ -551,6 +551,24 @@ button:disabled {
   gap: 18px;
 }
 
+.achievement-scale-shell {
+  --achievement-design-width: 1100;
+  --achievement-design-height: 220;
+  --achievement-scale: min(1, calc((100vw - 64px) / var(--achievement-design-width)));
+
+  position: relative;
+  width: 100%;
+  height: calc(var(--achievement-design-height) * 1px * var(--achievement-scale));
+  overflow: visible;
+}
+
+.achievement-card-scaled {
+  width: calc(var(--achievement-design-width) * 1px);
+  min-height: calc(var(--achievement-design-height) * 1px);
+  transform: scale(var(--achievement-scale));
+  transform-origin: top left;
+}
+
 .achievement-card-v3 {
   display: grid;
   grid-template-columns: 150px 1fr;
@@ -559,8 +577,8 @@ button:disabled {
   padding: 22px;
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.14);
-  background-size: 100% 100%;
-  background-position: center;
+  background-size: cover;
+  background-position: center 60%;
   background-repeat: no-repeat;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
 }
@@ -725,6 +743,18 @@ button:disabled {
   .achievement-progress-text {
     font-size: 0.8rem;
     padding: 0 10px;
+  }
+}
+
+@media (max-width: 900px) {
+  .achievement-scale-shell {
+    --achievement-scale: min(1, calc((100vw - 48px) / var(--achievement-design-width)));
+  }
+}
+
+@media (max-width: 600px) {
+  .achievement-scale-shell {
+    --achievement-scale: min(1, calc((100vw - 32px) / var(--achievement-design-width)));
   }
 }
 

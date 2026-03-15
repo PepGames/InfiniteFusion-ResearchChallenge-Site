@@ -1021,7 +1021,8 @@ function renderAchievements() {
     const backgroundSrc = getAchievementTierBackground(achievement);
 
     const card = document.createElement("div");
-    card.className = "achievement-card-v3";
+    card.className = "achievement-card-v3 achievement-card-scaled";
+    card.classList.add("achievement-card-scaled");
     card.style.backgroundImage = `
       linear-gradient(180deg, rgba(10, 17, 32, 0.5), rgba(7, 13, 24, 0.5)),
       url("${backgroundSrc}")
@@ -1072,7 +1073,11 @@ function renderAchievements() {
       }, { once: true });
     }
 
-    container.appendChild(card);
+    const shell = document.createElement("div");
+    shell.className = "achievement-scale-shell";
+    shell.appendChild(card);
+
+    container.appendChild(shell);
   });
 }
 
