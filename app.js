@@ -2088,7 +2088,25 @@ function renderAchievementToasts() {
     );
 
     if (existingToast) {
-      return; 
+      const achievement = achievementCatalog.find(a => a.id === item.achievementId);
+      if (!achievement) return;
+
+      const statusLabel =
+        item.updateType === "unlocked"
+          ? "Achievement Unlocked"
+          : "Achievement Removed";
+
+      const title = existingToast.querySelector(".achievement-toast-title");
+      const status = existingToast.querySelector(".achievement-toast-status");
+      const desc = existingToast.querySelector(".achievement-toast-desc");
+
+      if (title) title.textContent = achievement.name;
+      if (status) status.textContent = statusLabel;
+      if (desc) desc.textContent = achievement.description || "";
+
+      existingToast.className = `achievement-toast achievement-toast-${item.updateType}`;
+
+      return;
     }
 
     const achievement = achievementCatalog.find((a) => a.id === item.achievementId);
