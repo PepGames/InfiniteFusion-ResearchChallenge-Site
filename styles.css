@@ -620,8 +620,9 @@ button:disabled {
 }
 
 .achievement-topline {
-  display: grid;
-  grid-template-columns: 1fr auto;
+  position: relative;
+  display: flex;
+  justify-content: center;
   align-items: center;
   width: 100%;
   margin-bottom: 10px;
@@ -648,6 +649,8 @@ button:disabled {
 }
 
 .achievement-rp-v2 {
+  position: absolute;
+  right: 0;
   font-size: 1rem;
   font-weight: 700;
   justify-self: end;
