@@ -765,8 +765,12 @@ button:disabled {
 
 .achievement-toast-enter {
   animation: achievementToastIn 220ms ease;
+}
+
+.achievement-toast-enter .achievement-toast-unlocked {
   animation: achievementBorderFlash 220ms ease;
 }
+
 
 .achievement-toast-unlocked {
   filter: grayscale(0) saturate(1.05) brightness(1.02);
