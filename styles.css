@@ -614,6 +614,7 @@ button:disabled {
   flex-direction: column;
   gap: 10px;
   min-width: 0;
+  padding-top: 10px;
 }
 
 .achievement-topline {
