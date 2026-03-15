@@ -722,7 +722,7 @@ button:disabled {
 }
 
 .achievement-card-v3.achievement-complete .achievement-progress-shell {
-  background: rgba(110, 225, 180, 0.12);
+  background: rgba(110, 225, 180, 0.5);
   border-color: rgba(110, 225, 180, 0.35);
 }
 
