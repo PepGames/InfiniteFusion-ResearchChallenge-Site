@@ -793,7 +793,6 @@ button:disabled {
   height: 56px;
   object-fit: contain;
   display: block;
-  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.45));
 }
 
 .achievement-toast-content {
