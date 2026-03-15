@@ -579,12 +579,11 @@ button:disabled {
   justify-content: center;
 }
 
-.achievement-icon-box {
-  width: 128px;
-  height: 128px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.achievement-badge-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .achievement-main-panel {
