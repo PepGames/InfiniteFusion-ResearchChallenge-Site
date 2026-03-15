@@ -2058,10 +2058,6 @@ function getAchievementToastBadgeImage(achievement) {
 }
 
 function getAchievementToastBackground(achievement, updateType) {
-  if (updateType === "removed") {
-    return "assets/achievements/backgrounds/default.png";
-  }
-
   return getAchievementTierBackground(achievement);
 }
 
