@@ -2021,15 +2021,18 @@ function queueAchievementNotifications(achievementChanges) {
       (queued) => queued.achievementId === item.achievementId
     );
 
-    const notification = {
-      id: `achievement-toast-${achievementNotificationIdCounter++}`,
-      ...item
-    };
-
     if (existingIndex >= 0) {
-      achievementNotificationQueue[existingIndex] = notification;
+      const existing = achievementNotificationQueue[existingIndex];
+
+      achievementNotificationQueue[existingIndex] = {
+        ...existing,
+        updateType: item.updateType
+      };
     } else {
-      achievementNotificationQueue.push(notification);
+      achievementNotificationQueue.push({
+        id: `achievement-toast-${achievementNotificationIdCounter++}`,
+        ...item
+      });
     }
   });
 
@@ -2066,16 +2069,28 @@ function renderAchievementToasts() {
   const layer = document.getElementById("achievement-toast-layer");
   if (!layer) return;
 
-  layer.innerHTML = "";
-
-  if (achievementNotificationQueue.length === 0) {
-    return;
-  }
-
   const visibleItems = achievementNotificationQueue.slice(0, 3);
   const hiddenCount = Math.max(0, achievementNotificationQueue.length - 3);
 
+  const visibleIds = new Set(visibleItems.map((item) => item.id));
+
+  // Remove old toast DOM nodes that should no longer be visible
+  Array.from(layer.querySelectorAll(".achievement-toast")).forEach((node) => {
+    const nodeId = node.dataset.toastId;
+    if (!visibleIds.has(nodeId)) {
+      node.remove();
+    }
+  });
+
   visibleItems.forEach((item) => {
+    let existingToast = layer.querySelector(
+      `.achievement-toast[data-toast-id="${item.id}"]`
+    );
+
+    if (existingToast) {
+      return; 
+    }
+
     const achievement = achievementCatalog.find((a) => a.id === item.achievementId);
     if (!achievement) return;
 
@@ -2084,6 +2099,7 @@ function renderAchievementToasts() {
 
     const toast = document.createElement("div");
     toast.className = `achievement-toast achievement-toast-${item.updateType}`;
+    toast.dataset.toastId = item.id;
     toast.style.backgroundImage = `
       linear-gradient(180deg, rgba(10, 17, 32, 0.28), rgba(7, 13, 24, 0.40)),
       url("${backgroundSrc}")
@@ -2130,11 +2146,26 @@ function renderAchievementToasts() {
     }
   });
 
+  visibleItems.forEach((item) => {
+    const toast = layer.querySelector(`.achievement-toast[data-toast-id="${item.id}"]`);
+    if (toast) {
+      layer.appendChild(toast);
+    }
+  });
+
+  let summary = layer.querySelector(".achievement-toast-summary");
+
   if (hiddenCount > 0) {
-    const summary = document.createElement("div");
-    summary.className = "achievement-toast-summary";
+    if (!summary) {
+      summary = document.createElement("div");
+      summary.className = "achievement-toast-summary";
+      layer.appendChild(summary);
+    }
+
     summary.textContent = `and ${hiddenCount} more achievement${hiddenCount === 1 ? "" : "s"} updated`;
     layer.appendChild(summary);
+  } else if (summary) {
+    summary.remove();
   }
 }
 
