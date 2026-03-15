@@ -761,6 +761,9 @@ button:disabled {
   box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(3px);
   pointer-events: none;
+}
+
+.achievement-toast-enter {
   animation: achievementToastIn 220ms ease;
 }
 
@@ -877,10 +880,6 @@ button:disabled {
   .achievement-toast-desc {
     font-size: 0.76rem;
   }
-}
-
-.achievement-toast-unlocked {
-  animation: achievementBorderFlash 0.5s ease-out;
 }
 
 @keyframes achievementBorderFlash {

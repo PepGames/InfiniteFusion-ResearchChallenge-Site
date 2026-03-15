@@ -2070,7 +2070,6 @@ function renderAchievementToasts() {
 
   const visibleIds = new Set(visibleItems.map((item) => item.id));
 
-  // Remove old toast DOM nodes that should no longer be visible
   Array.from(layer.querySelectorAll(".achievement-toast")).forEach((node) => {
     const nodeId = node.dataset.toastId;
     if (!visibleIds.has(nodeId)) {
@@ -2084,23 +2083,37 @@ function renderAchievementToasts() {
     );
 
     if (existingToast) {
-      const achievement = achievementCatalog.find(a => a.id === item.achievementId);
+      const achievement = achievementCatalog.find((a) => a.id === item.achievementId);
       if (!achievement) return;
+
+      const badgeSrc = getAchievementToastBadgeImage(achievement);
+      const backgroundSrc = getAchievementToastBackground(achievement, item.updateType);
+
+      const toastOverlay =
+        item.updateType === "unlocked"
+          ? `linear-gradient(180deg, rgba(10, 17, 32, 0.22), rgba(7, 13, 24, 0.32))`
+          : `linear-gradient(180deg, rgba(10, 17, 32, 0.48), rgba(7, 13, 24, 0.60))`;
+
+      existingToast.className = `achievement-toast achievement-toast-${item.updateType}`;
+      existingToast.style.backgroundImage = `
+        ${toastOverlay},
+        url("${backgroundSrc}")
+      `;
 
       const statusLabel =
         item.updateType === "unlocked"
           ? "Achievement Unlocked"
           : "Achievement Removed";
 
-      const title = existingToast.querySelector(".achievement-toast-title");
-      const status = existingToast.querySelector(".achievement-toast-status");
-      const desc = existingToast.querySelector(".achievement-toast-desc");
+      const statusEl = existingToast.querySelector(".achievement-toast-status");
+      const titleEl = existingToast.querySelector(".achievement-toast-title");
+      const descEl = existingToast.querySelector(".achievement-toast-desc");
+      const badgeEl = existingToast.querySelector(".achievement-toast-badge");
 
-      if (title) title.textContent = achievement.name;
-      if (status) status.textContent = statusLabel;
-      if (desc) desc.textContent = achievement.description || "";
-
-      existingToast.className = `achievement-toast achievement-toast-${item.updateType}`;
+      if (statusEl) statusEl.textContent = statusLabel;
+      if (titleEl) titleEl.textContent = achievement.name;
+      if (descEl) descEl.textContent = achievement.description || "";
+      if (badgeEl) badgeEl.src = badgeSrc;
 
       return;
     }
@@ -2112,7 +2125,7 @@ function renderAchievementToasts() {
     const backgroundSrc = getAchievementToastBackground(achievement, item.updateType);
 
     const toast = document.createElement("div");
-    toast.className = `achievement-toast achievement-toast-${item.updateType}`;
+    toast.className = `achievement-toast achievement-toast-${item.updateType} achievement-toast-enter`;
     toast.dataset.toastId = item.id;
     toast.style.backgroundImage = `
       linear-gradient(180deg, rgba(10, 17, 32, 0.28), rgba(7, 13, 24, 0.40)),
