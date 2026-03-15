@@ -907,12 +907,9 @@ button:disabled {
 }
 
 .achievement-toast-leave.achievement-toast-unlocked {
-  animation: achievementToastOut 220ms ease forwards, achievementBorderFade 220ms ease forwards;
+  animation: achievementToastOut 220ms ease forwards, achievementBadgeGlowIn 420ms ease, achievementBorderFade 220ms ease forwards;
 }
 
-.achievement-toast-enter.achievement-toast-unlocked .achievement-toast-badge {
-  animation: achievementBadgeGlowIn 420ms ease;
-}
 
 @keyframes achievementToastOut {
   from {

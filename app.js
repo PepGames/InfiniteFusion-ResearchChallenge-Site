@@ -2048,31 +2048,32 @@ function removeAchievementToast(toastId) {
 
   if (toastData?.timeoutId) {
     clearTimeout(toastData.timeoutId);
+    toastData.timeoutId = null;
   }
 
-  if (toastNode && !toastNode.classList.contains("achievement-toast-leave")) {
-    toastNode.classList.add("achievement-toast-leave");
-
-    toastNode.addEventListener(
-      "animationend",
-      () => {
-        achievementNotificationQueue = achievementNotificationQueue.filter(
-          (item) => item.id !== toastId
-        );
-        toastNode.remove();
-        renderAchievementToasts();
-      },
-      { once: true }
+  if (!toastNode) {
+    achievementNotificationQueue = achievementNotificationQueue.filter(
+      (item) => item.id !== toastId
     );
-
+    renderAchievementToasts();
     return;
   }
 
-  achievementNotificationQueue = achievementNotificationQueue.filter(
-    (item) => item.id !== toastId
-  );
+  if (toastNode.dataset.leaving === "true") {
+    return;
+  }
 
-  renderAchievementToasts();
+  toastNode.dataset.leaving = "true";
+  toastNode.classList.add("achievement-toast-leave");
+
+  window.setTimeout(() => {
+    achievementNotificationQueue = achievementNotificationQueue.filter(
+      (item) => item.id !== toastId
+    );
+
+    toastNode.remove();
+    renderAchievementToasts();
+  }, 240);
 }
 
 function getAchievementToastBadgeImage(achievement) {
