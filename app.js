@@ -1399,6 +1399,12 @@ function switchTab(tabName) {
     const isActive = panel.id === `tab-${tabName}`;
     panel.classList.toggle("active", isActive);
   });
+
+  if (tabName === "achievements") {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(updateAchievementCardScales);
+    });
+  }
 }
 
 function renderFusionFlowerWidget() {
@@ -1966,6 +1972,11 @@ function updateAchievementCardScales() {
     const designWidth = 1100;
     const designHeight = 220;
     const availableWidth = shell.clientWidth;
+
+    if (!availableWidth || availableWidth <= 0) {
+      return;
+    }
+
     const scale = Math.min(1, availableWidth / designWidth);
 
     shell.style.setProperty("--achievement-scale", scale);

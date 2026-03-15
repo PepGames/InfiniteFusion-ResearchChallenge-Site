@@ -551,14 +551,12 @@ button:disabled {
   gap: 18px;
 }
 
-/* Shell controls the scaled footprint in layout */
 .achievement-scale-shell {
   position: relative;
   width: 100%;
   overflow: visible;
 }
 
-/* The actual card keeps a fixed designed layout and gets scaled by JS */
 .achievement-card-scaled {
   width: calc(var(--achievement-design-width, 1100) * 1px);
   min-height: calc(var(--achievement-design-height, 220) * 1px);
@@ -575,7 +573,7 @@ button:disabled {
   padding: 22px;
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.14);
-  background-size: cover;
+  background-size: 100% 100%;
   background-position: center 60%;
   background-repeat: no-repeat;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
