@@ -1129,7 +1129,7 @@ button:disabled {
   display: grid;
   grid-template-columns: minmax(0, 1fr) max-content;
   gap: 18px;
-  align-items: start;
+  align-items: center;
   padding: 14px;
   background: #111827;
   border: 1px solid #374151;
@@ -1150,6 +1150,7 @@ button:disabled {
   gap: 10px;
   flex-shrink: 0;
   justify-self: end;
+  align-self: center;
 }
 
 .action-log-time {
