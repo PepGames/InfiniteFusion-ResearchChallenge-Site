@@ -1231,13 +1231,20 @@ button:disabled {
 .field-row-checkbox {
   display: flex;
   align-items: center;
+  padding-top: 6px; /* optional tweak */
 }
 
 .field-row-checkbox label {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  min-height: 36px;
+  gap: 6px;
+  margin: 0;
+  line-height: 1;
+}
+
+.field-row-checkbox input[type="checkbox"] {
+  margin: 0;
+  transform: translateY(0);
 }
 
 #action-form-top-row {
