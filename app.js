@@ -1043,6 +1043,7 @@ function renderRun() {
   renderAchievements();
   renderShop();
   requestAnimationFrame(updateAchievementCardScales);
+  requestAnimationFrame(updateActionLogScale);
 
   const undoBtn = document.getElementById("undo-action-btn");
   const redoBtn = document.getElementById("redo-action-btn");
@@ -2734,6 +2735,23 @@ function clearShopCart() {
   });
 }
 
+function updateActionLogScale() {
+  const shell = document.querySelector(".action-log-scale-shell");
+  const inner = document.querySelector(".action-log-scale-inner");
+
+  if (!shell || !inner) return;
+
+  const designWidth = 1000;
+  const availableWidth = shell.clientWidth;
+
+  if (!availableWidth || availableWidth <= 0) return;
+
+  const scale = Math.min(1, availableWidth / designWidth);
+
+  inner.style.transform = `scale(${scale})`;
+  shell.style.height = `${inner.offsetHeight * scale}px`;
+}
+
 // =========================
 // Event Handlers
 // =========================
@@ -3132,6 +3150,7 @@ function attachEventListeners() {
   document.getElementById("undo-action-btn").addEventListener("click", handleUndoAction);
   document.getElementById("redo-action-btn").addEventListener("click", handleRedoAction);
   window.addEventListener("resize", updateAchievementCardScales);
+  window.addEventListener("resize", updateActionLogScale);
 }
 
 function attachTabEventListeners() {

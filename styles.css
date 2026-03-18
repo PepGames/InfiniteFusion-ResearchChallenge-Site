@@ -181,7 +181,7 @@ button:hover,
 .action-log-item {
   display: flex;
   justify-content: space-between;
-  align-items: stretch;
+  align-items: center;
   gap: 16px;
 }
 
@@ -1085,4 +1085,14 @@ button:disabled {
   background-repeat: no-repeat;
   box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(3px);
+}
+
+.action-log-scale-shell {
+  width: 100%;
+  overflow: hidden;
+}
+
+.action-log-scale-inner {
+  width: 1000px;
+  transform-origin: top left;
 }
