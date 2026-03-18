@@ -679,7 +679,7 @@ function updateAndSave() {
       : new Date().toISOString();
 
   const achievementTimestamp = new Date(
-    new Date(latestActionTimestamp).getTime() - 1
+    new Date(latestActionTimestamp).getTime() + 1
   ).toISOString();
 
   rebuildDerivedStateFromActions();
