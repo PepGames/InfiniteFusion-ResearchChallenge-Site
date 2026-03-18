@@ -674,9 +674,10 @@ function getAvailableRP() {
 
 function updateAndSave() {
   const updateTimestamp = new Date().toISOString();
+
   rebuildDerivedStateFromActions();
   syncSpentRPFromActions();
-  const achievementChanges = evaluateAchievements();
+  const achievementChanges = evaluateAchievements(updateTimestamp);
 
   achievementChanges.newlyUnlocked.forEach((id) => {
     const achievement = achievementCatalog.find((a) => a.id === id);
@@ -945,7 +946,7 @@ function calculateAchievementEarnedRP(progressMap) {
   }, 0);
 }
 
-function evaluateAchievements() {
+function evaluateAchievements(updateTimestamp) {
   const previousProgress = structuredClone(runState.achievementProgress);
   let nextProgress = {};
 
