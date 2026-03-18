@@ -2064,6 +2064,7 @@ function removeAchievementToast(toastId) {
   }
 
   toastNode.dataset.leaving = "true";
+  toastNode.classList.remove("achievement-toast-enter");
   toastNode.classList.add("achievement-toast-leave");
 
   window.setTimeout(() => {
