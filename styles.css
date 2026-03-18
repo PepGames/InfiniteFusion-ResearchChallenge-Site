@@ -403,8 +403,8 @@ button:disabled {
 
 .fusion-flower-rp-chip {
   position: absolute;
-  top: 18px;
-  right: 18px;
+  top: clamp(10px, 2vw, 18px);
+  right: clamp(10px, 2vw, 18px);
   z-index: 5;
 
   display: flex;
@@ -413,11 +413,11 @@ button:disabled {
   justify-content: center;
   gap: 2px;
 
-  min-width: 150px;
-  min-height: 92px;
-  padding: 12px 18px;
+  min-width: clamp(110px, 14vw, 150px);
+  min-height: clamp(70px, 10vw, 92px);
+  padding: clamp(8px, 1.5vw, 12px) clamp(12px, 2vw, 18px);
 
-  border-radius: 20px;
+  border-radius: clamp(14px, 2vw, 20px);
   border: 1px solid rgba(255, 215, 120, 0.28);
   background:
     linear-gradient(180deg, rgba(24, 31, 48, 0.96), rgba(10, 15, 28, 0.96));
@@ -428,7 +428,7 @@ button:disabled {
 }
 
 .fusion-flower-rp-label {
-  font-size: 0.9rem;
+  font-size: clamp(0.65rem, 1.2vw, 0.9rem);
   font-weight: 700;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -437,7 +437,7 @@ button:disabled {
 }
 
 .fusion-flower-rp-value {
-  font-size: clamp(2rem, 3vw, 2.8rem);
+  font-size: clamp(1.4rem, 3.2vw, 2.8rem);
   font-weight: 800;
   line-height: 1;
   color: #ffe6a3;
