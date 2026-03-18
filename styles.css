@@ -1154,3 +1154,34 @@ button:disabled {
 .action-log-scale-shell.action-log-mobile .action-chip {
   white-space: nowrap;
 }
+
+.action-log-scale-shell:not(.action-log-mobile) .action-log-item {
+  flex-wrap: nowrap;
+}
+
+.action-log-scale-shell:not(.action-log-mobile) .action-log-text {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  align-items: center;
+}
+
+.action-log-scale-shell:not(.action-log-mobile) .action-log-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.action-log-scale-shell:not(.action-log-mobile) .action-log-time {
+  white-space: nowrap;
+}
+
+.action-log-scale-shell:not(.action-log-mobile) .action-card-content {
+  flex-wrap: nowrap;
+}
+
+.action-log-scale-shell:not(.action-log-mobile) .action-chip {
+  white-space: nowrap;
+}

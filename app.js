@@ -2745,33 +2745,24 @@ function updateActionLogScale() {
   if (!availableWidth || availableWidth <= 0) return;
 
   const mobileBreakpoint = 760;
+  const designWidth = 1120;
 
   if (availableWidth <= mobileBreakpoint) {
     shell.classList.add("action-log-mobile");
-    inner.style.transform = "";
     inner.style.width = "";
+    inner.style.transform = "";
     shell.style.height = "";
     return;
   }
 
   shell.classList.remove("action-log-mobile");
 
-  const previousTransform = inner.style.transform;
-  const previousWidth = inner.style.width;
-
-  inner.style.transform = "none";
-  inner.style.width = "max-content";
-
-  const designWidth = Math.ceil(inner.scrollWidth);
-
-  inner.style.width = `${designWidth}px`;
-
   const scale = Math.min(1, availableWidth / designWidth);
 
+  inner.style.width = `${designWidth}px`;
   inner.style.transform = `scale(${scale})`;
   shell.style.height = `${inner.offsetHeight * scale}px`;
 }
-
 
 // =========================
 // Event Handlers
