@@ -2744,10 +2744,11 @@ function updateActionLogScale() {
   const availableWidth = shell.clientWidth;
   if (!availableWidth || availableWidth <= 0) return;
 
-  const mobileBreakpoint = 760;
+  const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+  const mobileBreakpoint = 700;
   const designWidth = 1120;
 
-  if (availableWidth <= mobileBreakpoint) {
+  if (viewportWidth <= mobileBreakpoint) {
     shell.classList.add("action-log-mobile");
     inner.style.width = "";
     inner.style.transform = "";
