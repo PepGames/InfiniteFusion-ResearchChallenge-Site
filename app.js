@@ -1048,7 +1048,7 @@ function renderRun() {
   const rpEarnedEl = document.getElementById("rp-earned");
   const rpSpentEl = document.getElementById("rp-spent");
   const rpAvailableEl = document.getElementById("rp-available");
-  const rpAvailableChipEl = document.getElementById("rp-available-chip");
+  const rpAvailableChipEls = document.querySelectorAll(".rp-available-display");
 
   const earnedValue = runState.rp.achievementEarned + runState.rp.bonusEarned;
   const spentValue = runState.rp.spent;
@@ -1057,7 +1057,9 @@ function renderRun() {
   if (rpEarnedEl) rpEarnedEl.textContent = earnedValue;
   if (rpSpentEl) rpSpentEl.textContent = spentValue;
   if (rpAvailableEl) rpAvailableEl.textContent = availableValue;
-  if (rpAvailableChipEl) rpAvailableChipEl.textContent = availableValue;
+  rpAvailableChipEls.forEach((el) => {
+  el.textContent = availableValue;
+});
 
   renderFusionFlowerWidget();
   renderActionLog();

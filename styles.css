@@ -664,6 +664,22 @@ button:disabled {
   border-color: rgba(234, 179, 8, 0.28);
 }
 
+.shop-panel {
+  position: relative;
+}
+
+.shop-rp-chip-wrap {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.shop-rp-chip {
+  position: static;
+  top: auto;
+  right: auto;
+  z-index: auto;
+}
 
 /* =========================
    Achievement Cards Tab
