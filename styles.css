@@ -1196,16 +1196,13 @@ button:disabled {
 
 .form-row {
   display: grid;
-  gap: 10px;
+  gap: 8px;
   margin-bottom: 12px;
 }
 
-.form-row .field-row {
-  margin-bottom: 0;
-  min-width: 0;
-}
-
+.form-row .field-row,
 .form-row > .field-row {
+  margin-bottom: 0;
   min-width: 0;
 }
 
@@ -1240,25 +1237,22 @@ button:disabled {
   display: flex;
   align-items: center;
   gap: 8px;
-  min-height: 42px;
+  min-height: 36px;
 }
 
 #action-form-top-row {
   margin-bottom: 12px;
 }
 
-#action-form .field-row label {
+#action-form select {
+  text-overflow: ellipsis;
+}
+
+#action-form option {
   font-size: 0.9rem;
-  line-height: 1.15;
 }
 
-#action-form select,
-#action-form input {
-  padding: 8px 10px;
-  font-size: 0.92rem;
-}
-
-@media (max-width: 720px) {
+/*@media (max-width: 720px) {
   .form-row {
     gap: 8px;
   }
@@ -1291,7 +1285,7 @@ button:disabled {
   .form-row-4 {
     grid-template-columns: 1fr;
   }
-}
+}*/
 
 /* =========================
    Responsive
