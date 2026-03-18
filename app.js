@@ -1687,6 +1687,15 @@ function renderAchievementLogCard(achievementId) {
   const container = document.createElement("span");
   container.className = "action-card-content achievement-log-card";
 
+  const backgroundSrc = getAchievementTierBackground(achievement);
+
+  container.style.backgroundImage = `
+    linear-gradient(180deg, rgba(10, 17, 32, 0.35), rgba(7, 13, 24, 0.45)),
+    url("${backgroundSrc}")
+  `;
+  container.style.backgroundSize = "cover";
+  container.style.backgroundPosition = "center";
+
   if (!achievement) {
     container.appendChild(createActionChip("ACHIEVEMENT", "chip-achievement"));
     container.appendChild(createActionChip("Unknown Achievement", "chip-achievement-title"));
