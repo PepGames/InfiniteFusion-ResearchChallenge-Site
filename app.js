@@ -1658,8 +1658,13 @@ function buildDisplayTimeline() {
       return 0;
     }
 
-    if (a.entryType === "action") return -1;
-    if (b.entryType === "action") return 1;
+    if (a.entryType === "action" && b.entryType !== "action") {
+      return -1;
+    }
+
+    if (b.entryType === "action" && a.entryType !== "action") {
+      return 1;
+    }
 
     return 0;
   });
