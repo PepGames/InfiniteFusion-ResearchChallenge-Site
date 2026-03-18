@@ -1075,7 +1075,6 @@ button:disabled {
   display: flex;
   align-items: center;
   gap: 12px;
-  width: 100%;
   min-width: 0;
   min-height: 72px;
   padding: 10px 14px;
