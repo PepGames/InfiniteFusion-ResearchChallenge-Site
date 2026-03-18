@@ -1279,40 +1279,15 @@ button:disabled {
   font-size: 0.9rem;
 }
 
-/*@media (max-width: 720px) {
-  .form-row {
-    gap: 8px;
-  }
-
-  .form-row-4 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  #action-form .field-row label {
-    font-size: 0.84rem;
-  }
-
-  #action-form select,
-  #action-form input {
-    padding: 7px 9px;
-    font-size: 0.86rem;
-  }
+.catch-fusion-toggle-row {
+  margin-top: 4px;
+  margin-bottom: 8px;
 }
 
-@media (max-width: 560px) {
-  .form-row-3,
-  .form-row-4 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
 
-@media (max-width: 420px) {
-  .form-row-2,
-  .form-row-3,
-  .form-row-4 {
-    grid-template-columns: 1fr;
-  }
-}*/
+#action-form button[type="submit"] {
+  margin-top: 4px;
+}
 
 /* =========================
    Responsive
