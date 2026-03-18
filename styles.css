@@ -409,11 +409,13 @@ button:disabled {
   z-index: 5;
 
   display: inline-flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: clamp(6px, 0.8vw, 12px);
 
   width: auto;
+  min-width: max-content;
   min-height: clamp(44px, 5vw, 64px);
   padding: clamp(6px, 0.8vw, 10px) clamp(10px, 1.2vw, 16px);
 
@@ -429,13 +431,18 @@ button:disabled {
   white-space: nowrap;
 }
 
+.fusion-flower-rp-label,
+.fusion-flower-rp-value {
+  display: inline-block;
+  white-space: nowrap;
+}
+
 .fusion-flower-rp-label {
   font-size: clamp(0.62rem, 0.8vw, 0.95rem);
   font-weight: 700;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   color: #d8c39a;
-  text-align: center;
   line-height: 1;
 }
 
@@ -444,7 +451,6 @@ button:disabled {
   font-weight: 800;
   line-height: 1;
   color: #ffe6a3;
-  text-align: center;
   text-shadow: 0 2px 10px rgba(255, 210, 110, 0.18);
 }
 
