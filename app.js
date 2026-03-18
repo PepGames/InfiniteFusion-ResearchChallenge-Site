@@ -1068,6 +1068,10 @@ function renderActionLog() {
     const li = document.createElement("li");
     li.className = "action-log-item";
 
+    if (entry.entryType === "achievement_unlocked") {
+      li.classList.add("action-log-item-achievement");
+    }
+
     const textSpan = document.createElement("span");
     textSpan.className = "action-log-text";
 

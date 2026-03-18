@@ -1,3 +1,7 @@
+/* =========================
+   Global / Base
+   ========================= */
+
 * {
   box-sizing: border-box;
 }
@@ -9,6 +13,16 @@ body {
   color: #f3f4f6;
 }
 
+h1,
+h2 {
+  margin-top: 0;
+}
+
+
+/* =========================
+   App Layout
+   ========================= */
+
 .app {
   width: min(100%, 1000px);
   margin: 0 auto;
@@ -17,10 +31,6 @@ body {
 
 .app-header {
   margin-bottom: 24px;
-}
-
-h1, h2 {
-  margin-top: 0;
 }
 
 .subtitle {
@@ -34,6 +44,11 @@ h1, h2 {
   padding: clamp(12px, 2vw, 16px);
   margin-bottom: 20px;
 }
+
+
+/* =========================
+   Forms / Inputs / Buttons
+   ========================= */
 
 .field-row {
   display: flex;
@@ -73,9 +88,20 @@ button:hover,
   background: #4b5563;
 }
 
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(40%);
+}
+
 #import-run-input {
   display: none;
 }
+
+
+/* =========================
+   Stats
+   ========================= */
 
 .stat-grid {
   display: grid;
@@ -102,6 +128,11 @@ button:hover,
   font-weight: bold;
 }
 
+
+/* =========================
+   Pokémon Lists / Cards
+   ========================= */
+
 .pokemon-form {
   margin-bottom: 16px;
 }
@@ -119,6 +150,11 @@ button:hover,
   padding: 12px;
   margin-bottom: 10px;
 }
+
+
+/* =========================
+   Legacy Achievement List
+   ========================= */
 
 .achievement-list {
   display: flex;
@@ -153,6 +189,11 @@ button:hover,
   opacity: 1;
 }
 
+
+/* =========================
+   Tabs
+   ========================= */
+
 .tab-bar {
   display: flex;
   gap: 10px;
@@ -178,27 +219,10 @@ button:hover,
   display: block;
 }
 
-.action-log-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-}
 
-.action-log-text {
-  display: flex;
-  flex: 1 1 auto;
-  min-width: 0;
-  align-items: center;
-}
-
-.action-log-time {
-  flex-shrink: 0;
-  color: #9ca3af;
-  font-size: 0.9rem;
-  white-space: nowrap;
-  margin-left: auto;
-}
+/* =========================
+   Action Controls
+   ========================= */
 
 .action-controls {
   display: flex;
@@ -206,41 +230,10 @@ button:hover,
   margin-bottom: 10px;
 }
 
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  filter: grayscale(40%);
-}
 
-.action-log-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-  margin-left: auto;
-}
-
-.action-delete-btn {
-  background: transparent;
-  border: none;
-  color: #9ca3af;
-  font-size: 1rem;
-  line-height: 1;
-  padding: 2px 6px;
-  cursor: pointer;
-  opacity: 0.45;
-}
-
-.action-delete-btn:hover {
-  opacity: 1;
-  color: #d1d5db;
-  background: transparent;
-}
-
-.action-delete-btn:focus {
-  outline: 1px solid #6b7280;
-  outline-offset: 2px;
-}
+/* =========================
+   Fusion Flower Widget
+   ========================= */
 
 .fusion-flower-panel {
   overflow: visible;
@@ -292,8 +285,8 @@ button:disabled {
   height: 100%;
   display: block;
   filter:
-    drop-shadow(0 12px 18px rgba(0,0,0,0.35))
-    drop-shadow(0 2px 6px rgba(0,0,0,0.25));
+    drop-shadow(0 12px 18px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
   --petal-top: #865c03;
   --petal-mid: #d8a244;
   --petal-bottom: #f4cc92;
@@ -351,12 +344,10 @@ button:disabled {
   letter-spacing: 0.03em;
   line-height: 0.9;
   text-transform: uppercase;
-
-  -webkit-text-stroke: 1.2px rgba(0,0,0,0.45);
-
+  -webkit-text-stroke: 1.2px rgba(0, 0, 0, 0.45);
   text-shadow:
-    0 1px 1px rgba(255,255,255,0.18),
-    0 2px 3px rgba(0,0,0,0.35);
+    0 1px 1px rgba(255, 255, 255, 0.18),
+    0 2px 3px rgba(0, 0, 0, 0.35);
 }
 
 .marker-font .petal-label {
@@ -369,23 +360,22 @@ button:disabled {
   font-weight: 700;
   line-height: 1;
   color: #0f172a;
-  text-shadow:
-    0 2px 4px rgba(0,0,0,0.22);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.22);
 }
 
 .petal-top .petal-label {
   color: #e3b21a;
-  -webkit-text-stroke: .5px rgba(103, 72, 4, 0.7);
+  -webkit-text-stroke: 0.5px rgba(103, 72, 4, 0.7);
 }
 
 .petal-left .petal-label {
   color: #20c765;
-  -webkit-text-stroke: .5px rgba(9, 90, 46, 0.75);
+  -webkit-text-stroke: 0.5px rgba(9, 90, 46, 0.75);
 }
 
 .petal-right .petal-label {
   color: #ef5350;
-  -webkit-text-stroke: .5px rgba(120, 28, 28, 0.75);
+  -webkit-text-stroke: 0.5px rgba(120, 28, 28, 0.75);
 }
 
 .petal-left .petal-label,
@@ -399,8 +389,9 @@ button:disabled {
 }
 
 .petal-top .petal-content {
-  transform: translate(0%, -5%)
+  transform: translate(0%, -5%);
 }
+
 .petal-left .petal-content {
   transform: translate(0%, -3%);
 }
@@ -408,6 +399,11 @@ button:disabled {
 .petal-right .petal-content {
   transform: translate(0%, -3%);
 }
+
+
+/* =========================
+   Fusion Flower Animations
+   ========================= */
 
 .petal-value.pop {
   animation: petalValuePop 0.28s ease;
@@ -448,19 +444,19 @@ button:disabled {
 @keyframes petalFlash {
   0% {
     filter:
-      drop-shadow(0 12px 18px rgba(0,0,0,0.35))
-      drop-shadow(0 2px 6px rgba(0,0,0,0.25));
+      drop-shadow(0 12px 18px rgba(0, 0, 0, 0.35))
+      drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
   }
   50% {
     filter:
-      drop-shadow(0 12px 18px rgba(0,0,0,0.35))
-      drop-shadow(0 2px 6px rgba(0,0,0,0.25))
-      drop-shadow(0 0 12px rgba(255,255,255,0.25));
+      drop-shadow(0 12px 18px rgba(0, 0, 0, 0.35))
+      drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25))
+      drop-shadow(0 0 12px rgba(255, 255, 255, 0.25));
   }
   100% {
     filter:
-      drop-shadow(0 12px 18px rgba(0,0,0,0.35))
-      drop-shadow(0 2px 6px rgba(0,0,0,0.25));
+      drop-shadow(0 12px 18px rgba(0, 0, 0, 0.35))
+      drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
   }
 }
 
@@ -474,6 +470,11 @@ button:disabled {
 .petal-anim-wrap.pulse {
   animation: petalPulse 0.35s ease;
 }
+
+
+/* =========================
+   Action Chips
+   ========================= */
 
 .action-card-content {
   display: flex;
@@ -491,13 +492,20 @@ button:disabled {
   min-width: 0;
   padding: 0.24rem 0.58rem;
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.06);
-  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.025);
   color: #f3f4f6;
   font-size: clamp(0.8rem, 0.74rem + 0.22vw, 0.95rem);
   line-height: 1.25;
   white-space: nowrap;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.015);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.015);
+}
+
+.action-inline-label,
+.action-inline-separator,
+.action-card-spacer {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: clamp(0.78rem, 0.72rem + 0.25vw, 0.95rem);
 }
 
 .chip-catch {
@@ -570,11 +578,10 @@ button:disabled {
   border-color: rgba(234, 179, 8, 0.28);
 }
 
-.action-inline-label,
-.action-inline-separator,
-.action-card-spacer {
-  color: rgba(255,255,255,0.8);
-}
+
+/* =========================
+   Achievement Cards Tab
+   ========================= */
 
 #achievements-list {
   display: flex;
@@ -595,7 +602,6 @@ button:disabled {
   transform-origin: top left;
 }
 
-/* Main achievement card */
 .achievement-card-v3 {
   display: grid;
   grid-template-columns: 150px minmax(0, 1fr);
@@ -609,10 +615,13 @@ button:disabled {
   background-repeat: no-repeat;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
   filter: grayscale(0.75) saturate(0.55) brightness(0.72);
-  transition: filter 180ms ease, border-color 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
+  transition:
+    filter 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    opacity 180ms ease;
 }
 
-/* Left badge area */
 .achievement-icon-panel {
   display: flex;
   align-items: center;
@@ -641,15 +650,13 @@ button:disabled {
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.45));
 }
 
-/* Right content area */
 .achievement-main-panel {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
   min-width: 0;
-  align-items: center;
-  text-align: center; 
+  text-align: center;
 }
 
 .achievement-topline {
@@ -684,7 +691,7 @@ button:disabled {
 .achievement-rp-v2 {
   position: absolute;
   right: 0;
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
   padding: 3px 10px;
   border-radius: 999px;
   font-size: 0.9rem;
@@ -708,7 +715,6 @@ button:disabled {
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
 }
 
-/* Progress bar */
 .achievement-progress-shell {
   width: 100%;
   max-width: 520px;
@@ -717,7 +723,7 @@ button:disabled {
   border-radius: 999px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.1);
   margin-top: 5px;
   backdrop-filter: blur(2px);
 }
@@ -747,7 +753,7 @@ button:disabled {
 }
 
 .achievement-card-v3.achievement-complete {
-  filter: grayscale(0) saturate(1.0) brightness(1.0);
+  filter: grayscale(0) saturate(1) brightness(1);
   border-color: rgba(255, 255, 255, 0.24);
   box-shadow: 0 14px 36px rgba(0, 0, 0, 0.26);
 }
@@ -761,18 +767,21 @@ button:disabled {
   background: linear-gradient(90deg, rgba(74, 190, 120, 0.95), rgba(110, 225, 180, 0.95));
 }
 
+
+/* =========================
+   Global Achievement Toast Layer
+   ========================= */
+
 #achievement-toast-layer {
   position: fixed;
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 9999;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
-
   pointer-events: none;
 }
 
@@ -794,20 +803,8 @@ button:disabled {
   pointer-events: none;
 }
 
-.achievement-toast-enter {
-  animation: achievementToastIn 220ms ease;
-}
-
-.achievement-toast-enter.achievement-toast-unlocked {
-  animation: achievementToastIn 220ms ease, achievementBorderFlash 420ms ease;
-}
-
-.achievement-toast-enter.achievement-toast-unlocked .achievement-toast-badge {
-  animation: achievementBadgeGlowIn 420ms ease;
-}
-
 .achievement-toast-unlocked {
-  filter: grayscale(0) saturate(1.0) brightness(1.0);
+  filter: grayscale(0) saturate(1) brightness(1);
 }
 
 .achievement-toast-removed {
@@ -853,7 +850,8 @@ button:disabled {
   color: #ffffff;
   line-height: 1.08;
   min-width: 0;
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
@@ -862,7 +860,8 @@ button:disabled {
   color: #e4e9f4;
   line-height: 1.2;
   min-width: 0;
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
 }
 
@@ -878,6 +877,31 @@ button:disabled {
   pointer-events: none;
 }
 
+
+/* =========================
+   Achievement Toast Animations
+   ========================= */
+
+.achievement-toast-enter {
+  animation: achievementToastIn 220ms ease;
+}
+
+.achievement-toast-enter.achievement-toast-unlocked {
+  animation: achievementToastIn 220ms ease, achievementBorderFlash 420ms ease;
+}
+
+.achievement-toast-enter.achievement-toast-unlocked .achievement-toast-badge {
+  animation: achievementBadgeGlowIn 420ms ease;
+}
+
+.achievement-toast-leave {
+  animation: achievementToastOut 220ms ease forwards;
+}
+
+.achievement-toast-leave.achievement-toast-unlocked {
+  animation: achievementToastOut 220ms ease forwards;
+}
+
 @keyframes achievementToastIn {
   from {
     opacity: 0;
@@ -889,60 +913,15 @@ button:disabled {
   }
 }
 
-@media (max-width: 560px) {
-  #achievement-toast-layer {
-    top: 10px;
-    left: 50%;
-    right: auto;
-    bottom: auto;
-    transform: translateX(-50%);
-    gap: 8px;
-  }
-
-  .achievement-toast {
-    width: min(320px, calc(100vw - 20px));
-    grid-template-columns: 56px minmax(0, 1fr);
-    gap: 10px;
-    padding: 9px 10px;
-  }
-
-  .achievement-toast-badge-wrap {
-    width: 50px;
-    height: 50px;
-  }
-
-  .achievement-toast-badge {
-    width: 46px;
-    height: 46px;
-  }
-
-  .achievement-toast-title {
-    font-size: 0.92rem;
-  }
-
-  .achievement-toast-desc {
-    font-size: 0.76rem;
-  }
-}
-
 @keyframes achievementBorderFlash {
   0% {
-    border-color: rgba(255,215,120,0.9);
-    box-shadow: 0 0 16px rgba(255,215,120,0.7);
+    border-color: rgba(255, 215, 120, 0.9);
+    box-shadow: 0 0 16px rgba(255, 215, 120, 0.7);
   }
-
   100% {
-    border-color: rgba(255,255,255,0.18);
-    box-shadow: 0 14px 36px rgba(0,0,0,0.35);
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
   }
-}
-
-.achievement-toast-leave {
-  animation: achievementToastOut 220ms ease forwards;
-}
-
-.achievement-toast-leave.achievement-toast-unlocked {
-  animation: achievementToastOut 220ms ease forwards;
 }
 
 @keyframes achievementToastOut {
@@ -974,6 +953,10 @@ button:disabled {
   }
 }
 
+
+/* =========================
+   Shop
+   ========================= */
 
 .shop-item-list {
   display: flex;
@@ -1069,7 +1052,7 @@ button:disabled {
   justify-content: space-between;
   gap: 12px;
   padding-top: 8px;
-  border-top: 1px solid rgba(255,255,255,0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   font-weight: 700;
   color: #f9fafb;
 }
@@ -1086,22 +1069,10 @@ button:disabled {
   flex-shrink: 0;
 }
 
-.achievement-log-toast {
-  width: min(520px, 100%);
-  min-height: 84px;
-  display: grid;
-  grid-template-columns: 68px minmax(0, 1fr);
-  gap: 12px;
-  align-items: center;
-  padding: 10px 12px;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background-size: 100% 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(3px);
-}
+
+/* =========================
+   Action Log
+   ========================= */
 
 .action-log-scale-shell,
 .action-log-scale-inner {
@@ -1134,6 +1105,17 @@ button:disabled {
   background: #111827;
   border: 1px solid #374151;
   border-radius: 12px;
+}
+
+.action-log-item-achievement .action-log-text {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.action-log-item-achievement .achievement-log-toast {
+  margin-left: 0;
+  margin-right: auto;
 }
 
 .action-log-text {
@@ -1184,25 +1166,34 @@ button:disabled {
   outline-offset: 2px;
 }
 
-.action-inline-label,
-.action-inline-separator,
-.action-card-spacer {
-  color: rgba(255,255,255,0.8);
-  font-size: clamp(0.78rem, 0.72rem + 0.25vw, 0.95rem);
-}
+
+/* =========================
+   Action Log Achievement Cards
+   ========================= */
 
 .achievement-log-toast {
   width: 100%;
+  max-width: 520px;
   min-width: 0;
-  max-width: 100%;
+  min-height: 84px;
+  display: grid;
+  grid-template-columns: 68px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(3px);
 }
 
-.achievement-toast-title,
-.achievement-toast-desc,
-.achievement-toast-status {
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
+
+/* =========================
+   Responsive
+   ========================= */
 
 @media (max-width: 900px) {
   .action-log-item {
@@ -1223,6 +1214,40 @@ button:disabled {
 }
 
 @media (max-width: 560px) {
+  #achievement-toast-layer {
+    top: 10px;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    transform: translateX(-50%);
+    gap: 8px;
+  }
+
+  .achievement-toast {
+    width: min(320px, calc(100vw - 20px));
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 10px;
+    padding: 9px 10px;
+  }
+
+  .achievement-toast-badge-wrap {
+    width: 50px;
+    height: 50px;
+  }
+
+  .achievement-toast-badge {
+    width: 46px;
+    height: 46px;
+  }
+
+  .achievement-toast-title {
+    font-size: 0.92rem;
+  }
+
+  .achievement-toast-desc {
+    font-size: 0.76rem;
+  }
+
   .action-log-item {
     padding: 12px;
     gap: 10px;
