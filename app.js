@@ -699,7 +699,10 @@ function updateAndSave() {
     if (!achievement) return;
 
     console.log("Achievement unlocked:", achievement.name);
+
     popValue(document.getElementById("rp-earned"));
+    popValue(document.getElementById("rp-available"));
+    popValue(document.getElementById("rp-available-chip"));
   });
 
   achievementChanges.newlyRemoved.forEach((id) => {
@@ -1708,6 +1711,8 @@ function renderFusionFlowerWidget() {
 }
 
 function popValue(el) {
+  if (!el) return;
+
   el.classList.remove("pop");
   void el.offsetWidth;
   el.classList.add("pop");
