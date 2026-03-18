@@ -93,6 +93,9 @@ document.fonts.load("1em 'Permanent Marker'").then(() => {
 
 function createNewRunState() {
   const now = new Date().toISOString();
+  const startingAction = createStartingTokenAction();
+
+  startingAction.actionAt = now;
 
   return {
     ...structuredClone(defaultRunState),
@@ -100,7 +103,8 @@ function createNewRunState() {
       ...structuredClone(defaultRunState.meta),
       createdAt: now,
       updatedAt: now
-    }
+    },
+    actions: [startingAction]
   };
 }
 
@@ -1238,23 +1242,47 @@ function renderAchievements() {
 function renderActionFields() {
   debugLog("renderActionFields fired");
 
-  const type = document.getElementById("action-type").value;
+  const starterLockActive = isStarterLockActive();
+  const actionTypeSelect = document.getElementById("action-type");
+  const type = actionTypeSelect?.value || "catch";
+  const effectiveType = starterLockActive ? "catch" : type;
+
   const container = document.getElementById("action-fields");
   const topRow = document.getElementById("action-form-top-row");
 
   debugLog("action-fields container:", container);
   debugLog("action type:", type);
+  debugLog("effective action type:", effectiveType);
 
-  if (!container) return;
-  if (!topRow) return;
+  if (!container || !topRow) return;
 
   container.innerHTML = "";
   topRow.className = "form-row form-row-1";
 
-    if (type === "catch") {
-      if (topRow) {
-      topRow.className = "form-row form-row-3";
-    }
+  if (effectiveType === "catch") {
+    topRow.className = "form-row form-row-3";
+    topRow.innerHTML = `
+      <div class="field-row">
+        <label for="action-type">Action Type</label>
+        <select id="action-type">
+          ${getActionTypeOptionsHtml("catch")}
+        </select>
+      </div>
+
+      <div class="field-row">
+        <label for="catch-type">Catch Type</label>
+        <select id="catch-type" required>
+          ${getCatchTypeOptionsHtml()}
+        </select>
+      </div>
+
+      <div class="field-row">
+        <label for="catch-location">Location</label>
+        <select id="catch-location" required>
+          <option value="">Select a location</option>
+        </select>
+      </div>
+    `;
 
     container.innerHTML = `
       <div id="catch-normal-fields">
@@ -1311,74 +1339,57 @@ function renderActionFields() {
       </div>
     `;
 
-    if (topRow) {
-      topRow.innerHTML = `
-        <div class="field-row">
-          <label for="action-type">Action Type</label>
-          <select id="action-type">
-            <option value="catch" selected>Catch (-1 Catch Token)</option>
-            <option value="death">Death</option>
-            <option value="fusion">Fuse</option>
-            <option value="split">Split (-1 Split Token)</option>
-            <option value="battle">Battle</option>
-          </select>
-        </div>
+    document.getElementById("action-type").addEventListener("change", renderActionFields);
 
-        <div class="field-row">
-          <label for="catch-type">Catch Type</label>
-          <select id="catch-type" required>
-            <option value="">Select catch type</option>
-            <option value="wild">Wild</option>
-            <option value="starter">Starter</option>
-            <option value="gift">Gift</option>
-            <option value="trade">Trade</option>
-          </select>
-        </div>
-
-        <div class="field-row">
-          <label for="catch-location">Location</label>
-          <select id="catch-location" required>
-            <option value="">Select a location</option>
-          </select>
-        </div>
-      `;
-
-      document.getElementById("action-type").addEventListener("change", renderActionFields);
+    const catchTypeSelect = document.getElementById("catch-type");
+    if (starterLockActive && catchTypeSelect) {
+      catchTypeSelect.value = "starter";
     }
 
-      populateSpeciesSelect("catch-species");
-      populateSpeciesSelect("catch-head-species");
-      populateSpeciesSelect("catch-body-species");
-      populateLocationSelect("catch-location");
+    populateSpeciesSelect("catch-species");
+    populateSpeciesSelect("catch-head-species");
+    populateSpeciesSelect("catch-body-species");
+    populateLocationSelect("catch-location");
 
-      const fusionCheckbox = document.getElementById("catch-is-fusion");
-      const normalFields = document.getElementById("catch-normal-fields");
-      const fusionFields = document.getElementById("catch-fusion-fields");
-      const catchSpeciesSelect = document.getElementById("catch-species");
-      const catchHeadSpeciesSelect = document.getElementById("catch-head-species");
-      const catchBodySpeciesSelect = document.getElementById("catch-body-species");
+    const fusionCheckbox = document.getElementById("catch-is-fusion");
+    const normalFields = document.getElementById("catch-normal-fields");
+    const fusionFields = document.getElementById("catch-fusion-fields");
+    const catchSpeciesSelect = document.getElementById("catch-species");
+    const catchHeadSpeciesSelect = document.getElementById("catch-head-species");
+    const catchBodySpeciesSelect = document.getElementById("catch-body-species");
 
-      function updateCatchFusionMode() {
-        const isFusion = fusionCheckbox.checked;
+    function updateCatchFusionMode() {
+      const isFusion = fusionCheckbox.checked;
 
+      if (normalFields) {
         normalFields.style.display = isFusion ? "none" : "";
-        fusionFields.style.display = isFusion ? "" : "none";
+      }
 
+      if (fusionFields) {
+        fusionFields.style.display = isFusion ? "" : "none";
+      }
+
+      if (catchSpeciesSelect) {
         catchSpeciesSelect.required = !isFusion;
         catchSpeciesSelect.disabled = isFusion;
+      }
 
+      if (catchHeadSpeciesSelect) {
         catchHeadSpeciesSelect.required = isFusion;
         catchHeadSpeciesSelect.disabled = !isFusion;
+      }
 
+      if (catchBodySpeciesSelect) {
         catchBodySpeciesSelect.required = isFusion;
         catchBodySpeciesSelect.disabled = !isFusion;
       }
-
-      fusionCheckbox.addEventListener("change", updateCatchFusionMode);
-      updateCatchFusionMode();
     }
 
-  if (type === "death") {
+    fusionCheckbox.addEventListener("change", updateCatchFusionMode);
+    updateCatchFusionMode();
+  }
+
+  if (effectiveType === "death") {
     const alivePokemon = runState.pokemon.filter(isPokemonStandalone);
     const activeFusions = runState.fusions.filter(isFusionActive);
 
@@ -1391,32 +1402,26 @@ function renderActionFields() {
       return `<option value="fusion:${f.fusionId}">Fusion — ${fusionName}</option>`;
     }).join("");
 
-    if (topRow) {
-      topRow.className = "form-row form-row-2";
-      topRow.innerHTML = `
-        <div class="field-row">
-          <label for="action-type">Action Type</label>
-          <select id="action-type">
-            <option value="catch">Catch (-1 Catch Token)</option>
-            <option value="death" selected>Death</option>
-            <option value="fusion">Fuse</option>
-            <option value="split">Split (-1 Split Token)</option>
-            <option value="battle">Battle</option>
-          </select>
-        </div>
+    topRow.className = "form-row form-row-2";
+    topRow.innerHTML = `
+      <div class="field-row">
+        <label for="action-type">Action Type</label>
+        <select id="action-type">
+          ${getActionTypeOptionsHtml("death")}
+        </select>
+      </div>
 
-        <div class="field-row">
-          <label for="death-target">Target</label>
-          <select id="death-target">
-            <option value="">Select a target</option>
-            ${fusionOptions}
-            ${pokemonOptions}
-          </select>
-        </div>
-      `;
+      <div class="field-row">
+        <label for="death-target">Target</label>
+        <select id="death-target">
+          <option value="">Select a target</option>
+          ${fusionOptions}
+          ${pokemonOptions}
+        </select>
+      </div>
+    `;
 
-      document.getElementById("action-type").addEventListener("change", renderActionFields);
-    }
+    document.getElementById("action-type").addEventListener("change", renderActionFields);
 
     container.innerHTML = `
       <div class="form-row form-row-1">
@@ -1428,51 +1433,44 @@ function renderActionFields() {
     `;
   }
 
-  if (type === "fusion") {
+  if (effectiveType === "fusion") {
     const available = runState.pokemon.filter(canPokemonBeFusionSelected);
 
     const options = available.map((p) =>
       `<option value="${p.pokemonId}">${getPokemonDisplayName(p)}</option>`
     ).join("");
 
-    if (topRow) {
-      topRow.className = "form-row form-row-3";
-      topRow.innerHTML = `
-        <div class="field-row">
-          <label for="action-type">Action Type</label>
-          <select id="action-type">
-            <option value="catch">Catch (-1 Catch Token)</option>
-            <option value="death">Death</option>
-            <option value="fusion" selected>Fuse</option>
-            <option value="split">Split (-1 Split Token)</option>
-            <option value="battle">Battle</option>
-          </select>
-        </div>
+    topRow.className = "form-row form-row-3";
+    topRow.innerHTML = `
+      <div class="field-row">
+        <label for="action-type">Action Type</label>
+        <select id="action-type">
+          ${getActionTypeOptionsHtml("fusion")}
+        </select>
+      </div>
 
-        <div class="field-row">
-          <label for="fusion-head">Head Pokémon</label>
-          <select id="fusion-head">
-            <option value="">Select a Pokémon</option>
-            ${options}
-          </select>
-        </div>
+      <div class="field-row">
+        <label for="fusion-head">Head Pokémon</label>
+        <select id="fusion-head">
+          <option value="">Select a Pokémon</option>
+          ${options}
+        </select>
+      </div>
 
-        <div class="field-row">
-          <label for="fusion-body">Body Pokémon</label>
-          <select id="fusion-body">
-            <option value="">Select a Pokémon</option>
-            ${options}
-          </select>
-        </div>
-      `;
+      <div class="field-row">
+        <label for="fusion-body">Body Pokémon</label>
+        <select id="fusion-body">
+          <option value="">Select a Pokémon</option>
+          ${options}
+        </select>
+      </div>
+    `;
 
-      document.getElementById("action-type").addEventListener("change", renderActionFields);
-    }
-
+    document.getElementById("action-type").addEventListener("change", renderActionFields);
     container.innerHTML = ``;
   }
 
-  if (type === "split") {
+  if (effectiveType === "split") {
     const activeFusions = runState.fusions.filter(canFusionBeSplitSelected);
 
     const options = activeFusions.map((fusion) => {
@@ -1480,36 +1478,29 @@ function renderActionFields() {
       return `<option value="${fusion.fusionId}">${fusionName}</option>`;
     }).join("");
 
-    if (topRow) {
-      topRow.className = "form-row form-row-2";
-      topRow.innerHTML = `
-        <div class="field-row">
-          <label for="action-type">Action Type</label>
-          <select id="action-type">
-            <option value="catch">Catch (-1 Catch Token)</option>
-            <option value="death">Death</option>
-            <option value="fusion">Fuse</option>
-            <option value="split" selected>Split (-1 Split Token)</option>
-            <option value="battle">Battle</option>
-          </select>
-        </div>
+    topRow.className = "form-row form-row-2";
+    topRow.innerHTML = `
+      <div class="field-row">
+        <label for="action-type">Action Type</label>
+        <select id="action-type">
+          ${getActionTypeOptionsHtml("split")}
+        </select>
+      </div>
 
-        <div class="field-row">
-          <label for="split-fusion">Fusion</label>
-          <select id="split-fusion">
-            <option value="">Select a fusion</option>
-            ${options}
-          </select>
-        </div>
-      `;
+      <div class="field-row">
+        <label for="split-fusion">Fusion</label>
+        <select id="split-fusion">
+          <option value="">Select a fusion</option>
+          ${options}
+        </select>
+      </div>
+    `;
 
-      document.getElementById("action-type").addEventListener("change", renderActionFields);
-    }
-
+    document.getElementById("action-type").addEventListener("change", renderActionFields);
     container.innerHTML = ``;
   }
 
-  if (type === "battle") {
+  if (effectiveType === "battle") {
     const partyOptions = getBattleEligibleEntities()
       .map((entry) => {
         const prefix = entry.entityType === "fusion" ? "Fusion" : "Pokémon";
@@ -1517,49 +1508,43 @@ function renderActionFields() {
       })
       .join("");
 
-    if (topRow) {
-      topRow.className = "form-row form-row-4";
-      topRow.innerHTML = `
-        <div class="field-row">
-          <label for="action-type">Action Type</label>
-          <select id="action-type">
-            <option value="catch">Catch (-1 Catch Token)</option>
-            <option value="death">Death</option>
-            <option value="fusion">Fuse</option>
-            <option value="split">Split (-1 Split Token)</option>
-            <option value="battle" selected>Battle</option>
-          </select>
-        </div>
+    topRow.className = "form-row form-row-4";
+    topRow.innerHTML = `
+      <div class="field-row">
+        <label for="action-type">Action Type</label>
+        <select id="action-type">
+          ${getActionTypeOptionsHtml("battle")}
+        </select>
+      </div>
 
-        <div class="field-row">
-          <label for="battle-type">Battle Type</label>
-          <select id="battle-type">
-            <option value="">Select a battle type</option>
-            <option value="gym">Gym</option>
-            <option value="rival">Rival</option>
-            <option value="elite_four">Elite Four</option>
-            <option value="champion">Champion</option>
-          </select>
-        </div>
+      <div class="field-row">
+        <label for="battle-type">Battle Type</label>
+        <select id="battle-type">
+          <option value="">Select a battle type</option>
+          <option value="gym">Gym</option>
+          <option value="rival">Rival</option>
+          <option value="elite_four">Elite Four</option>
+          <option value="champion">Champion</option>
+        </select>
+      </div>
 
-        <div class="field-row">
-          <label for="battle-trainer">Trainer</label>
-          <select id="battle-trainer">
-            <option value="">Select a trainer</option>
-          </select>
-        </div>
+      <div class="field-row">
+        <label for="battle-trainer">Trainer</label>
+        <select id="battle-trainer">
+          <option value="">Select a trainer</option>
+        </select>
+      </div>
 
-        <div class="field-row">
-          <label for="battle-result">Result</label>
-          <select id="battle-result">
-            <option value="win">Win</option>
-            <option value="loss">Loss</option>
-          </select>
-        </div>
-      `;
+      <div class="field-row">
+        <label for="battle-result">Result</label>
+        <select id="battle-result">
+          <option value="win">Win</option>
+          <option value="loss">Loss</option>
+        </select>
+      </div>
+    `;
 
-      document.getElementById("action-type").addEventListener("change", renderActionFields);
-    }
+    document.getElementById("action-type").addEventListener("change", renderActionFields);
 
     container.innerHTML = `
       <div class="form-row form-row-3">
@@ -1622,6 +1607,11 @@ function renderActionFields() {
       const battleType = battleTypeSelect.value;
       populateBattleTrainerSelect(battleTrainerSelectId, battleType);
     });
+  }
+
+  const finalActionTypeSelect = document.getElementById("action-type");
+  if (starterLockActive && finalActionTypeSelect) {
+    finalActionTypeSelect.value = "catch";
   }
 }
 
@@ -2215,6 +2205,10 @@ function getFusionDisplayName(fusion) {
 }
 
 function handleSplitAction() {
+  if (isStarterLockActive()) {
+  alert("You must log your starter before any other actions.");
+  return false;
+  }
   if (runState.resources.splitsAvailable <= 0) {
     alert("You need a Split Token to perform this action.");
     return false;
@@ -2860,6 +2854,83 @@ function updateActionLogScale() {
   // Intentionally unused.
 }
 
+function createStartingTokenAction() {
+  return {
+    ...createBaseAction("purchase"),
+    lines: [
+      {
+        itemId: "catch_token",
+        quantity: 1,
+        unitCost: 0,
+        lineTotal: 0
+      }
+    ],
+    totalCost: 0,
+    systemGranted: true,
+    note: "Starting Catch Token"
+  };
+}
+
+function hasStarterBeenChosen() {
+  return runState.actions.some(
+    (action) => action.actionType === "catch" && action.catchType === "starter"
+  );
+}
+
+function isStarterLockActive() {
+  return !hasStarterBeenChosen();
+}
+
+function getActionTypeOptionsHtml(selectedValue) {
+  const starterLockActive = isStarterLockActive();
+
+  const options = [
+    { value: "catch", label: "Catch (-1 Catch Token)" },
+    { value: "death", label: "Death" },
+    { value: "fusion", label: "Fuse" },
+    { value: "split", label: "Split (-1 Split Token)" },
+    { value: "battle", label: "Battle" }
+  ];
+
+  return options
+    .map((option) => {
+      const selected = option.value === selectedValue ? "selected" : "";
+      const disabled =
+        starterLockActive && option.value !== "catch" ? "disabled" : "";
+
+      return `<option value="${option.value}" ${selected} ${disabled}>${option.label}</option>`;
+    })
+    .join("");
+}
+
+function getCatchTypeOptionsHtml() {
+  const starterLockActive = isStarterLockActive();
+
+  const options = [
+    { value: "", label: "Select catch type" },
+    { value: "wild", label: "Wild" },
+    { value: "starter", label: "Starter" },
+    { value: "gift", label: "Gift" },
+    { value: "trade", label: "Trade" }
+  ];
+
+  return options
+    .map((option) => {
+      const selected =
+        starterLockActive && option.value === "starter"
+          ? "selected"
+          : (!starterLockActive && option.value === "" ? "selected" : "");
+
+      const disabled =
+        starterLockActive && option.value !== "starter"
+          ? "disabled"
+          : "";
+
+      return `<option value="${option.value}" ${selected} ${disabled}>${option.label}</option>`;
+    })
+    .join("");
+}
+
 // =========================
 // Event Handlers
 // =========================
@@ -2886,6 +2957,14 @@ function handleAddEarnedRP() {
 
 
 function handleLogAction(event) {
+  if (isStarterLockActive()) {
+  const actionType = document.getElementById("action-type").value;
+
+  if (actionType !== "catch") {
+    alert("You must log your starter before any other actions.");
+    return;
+  }
+}
   event.preventDefault();
 
   const actionType = document.getElementById("action-type").value;
@@ -2916,6 +2995,11 @@ function handleCatchAction() {
   if (!catchType || !locationId) {
     alert("Catch actions need both a catch type and a location.");
     return;
+  }
+
+  if (isStarterLockActive() && catchType !== "starter") {
+  alert("Your first logged action must be Catch > Starter.");
+  return false;
   }
 
   if (!isFusion) {
@@ -2995,6 +3079,10 @@ function handleCatchAction() {
 }
 
 function handleDeathAction() {
+  if (isStarterLockActive()) {
+  alert("You must log your starter before any other actions.");
+  return false;
+  }
   const deathTarget = document.getElementById("death-target");
   const deathNote = document.getElementById("death-note");
 
@@ -3021,6 +3109,10 @@ function handleDeathAction() {
 }
 
 function handleFusionAction() {
+  if (isStarterLockActive()) {
+  alert("You must log your starter before any other actions.");
+  return false;
+  }
   const fusionHead = document.getElementById("fusion-head");
   const fusionBody = document.getElementById("fusion-body");
 
@@ -3060,6 +3152,10 @@ function handleFusionAction() {
 }
 
 function handleBattleAction() {
+  if (isStarterLockActive()) {
+  alert("You must log your starter before any other actions.");
+  return false;
+  }
   const battleTypeSelect = document.getElementById("battle-type");
   const battleTrainerSelect = document.getElementById("battle-trainer");
   const battleResultSelect = document.getElementById("battle-result");
