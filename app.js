@@ -673,11 +673,14 @@ function getAvailableRP() {
 }
 
 function updateAndSave() {
-  const updateTimestamp = new Date().toISOString();
+  const latestActionTimestamp =
+    runState.actions.length > 0
+      ? runState.actions[runState.actions.length - 1].actionAt
+      : new Date().toISOString();
 
   rebuildDerivedStateFromActions();
   syncSpentRPFromActions();
-  const achievementChanges = evaluateAchievements(updateTimestamp);
+  const achievementChanges = evaluateAchievements(latestActionTimestamp);
 
   achievementChanges.newlyUnlocked.forEach((id) => {
     const achievement = achievementCatalog.find((a) => a.id === id);
