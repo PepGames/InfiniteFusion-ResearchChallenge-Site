@@ -1246,60 +1246,62 @@ function renderActionFields() {
       topRow.className = "form-row form-row-3";
     }
 
-    container.innerHTML = `
-      <div class="form-row form-row-2">
-        <div class="field-row">
-          <label for="catch-species">Species</label>
-          <select id="catch-species" required>
-            <option value="">Select a species</option>
-          </select>
-        </div>
+      container.innerHTML = `
+        <div id="catch-normal-fields">
+          <div class="form-row form-row-2">
+            <div class="field-row">
+              <label for="catch-species">Species</label>
+              <select id="catch-species" required>
+                <option value="">Select a species</option>
+              </select>
+            </div>
 
-        <div class="field-row">
-          <label for="catch-nickname">Nickname (optional)</label>
-          <input id="catch-nickname" type="text" placeholder="e.g. Bubbles" />
-        </div>
-      </div>
-
-      <div class="form-row form-row-1">
-        <div class="field-row field-row-checkbox">
-          <label>
-            <input type="checkbox" id="catch-is-fusion" />
-            Wild / caught fusion
-          </label>
-        </div>
-      </div>
-
-      <div id="catch-fusion-fields" style="display:none;">
-        <div class="form-row form-row-2">
-          <div class="field-row">
-            <label for="catch-head-species">Head Species</label>
-            <select id="catch-head-species">
-              <option value="">Select head species</option>
-            </select>
-          </div>
-
-          <div class="field-row">
-            <label for="catch-head-nickname">Head Nickname (optional)</label>
-            <input id="catch-head-nickname" type="text" placeholder="e.g. Sparky" />
+            <div class="field-row">
+              <label for="catch-nickname">Nickname (optional)</label>
+              <input id="catch-nickname" type="text" placeholder="e.g. Bubbles" />
+            </div>
           </div>
         </div>
 
-        <div class="form-row form-row-2">
-          <div class="field-row">
-            <label for="catch-body-species">Body Species</label>
-            <select id="catch-body-species">
-              <option value="">Select body species</option>
-            </select>
-          </div>
-
-          <div class="field-row">
-            <label for="catch-body-nickname">Body Nickname (optional)</label>
-            <input id="catch-body-nickname" type="text" placeholder="e.g. Shellshock" />
+        <div class="form-row form-row-1">
+          <div class="field-row field-row-checkbox">
+            <label>
+              <input type="checkbox" id="catch-is-fusion" />
+              Wild / caught fusion
+            </label>
           </div>
         </div>
-      </div>
-    `;
+
+        <div id="catch-fusion-fields" style="display:none;">
+          <div class="form-row form-row-2">
+            <div class="field-row">
+              <label for="catch-head-species">Head Species</label>
+              <select id="catch-head-species">
+                <option value="">Select head species</option>
+              </select>
+            </div>
+
+            <div class="field-row">
+              <label for="catch-head-nickname">Head Nickname (optional)</label>
+              <input id="catch-head-nickname" type="text" placeholder="e.g. Sparky" />
+            </div>
+          </div>
+
+          <div class="form-row form-row-2">
+            <div class="field-row">
+              <label for="catch-body-species">Body Species</label>
+              <select id="catch-body-species">
+                <option value="">Select body species</option>
+              </select>
+            </div>
+
+            <div class="field-row">
+              <label for="catch-body-nickname">Body Nickname (optional)</label>
+              <input id="catch-body-nickname" type="text" placeholder="e.g. Shellshock" />
+            </div>
+          </div>
+        </div>
+      `;
 
     if (topRow) {
       topRow.innerHTML = `
