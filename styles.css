@@ -476,67 +476,98 @@ button:disabled {
 }
 
 .action-card-content {
-  display: inline-flex;
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.35rem;
-  line-height: 1.5;
+  gap: 0.4rem;
+  line-height: 1.45;
+  min-width: 0;
 }
 
 .action-chip {
   display: inline-flex;
   align-items: center;
-  padding: 0.2rem 0.55rem;
+  max-width: 100%;
+  min-width: 0;
+  padding: 0.24rem 0.58rem;
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.025);
   color: #f3f4f6;
-  font-size: 0.95rem;
+  font-size: clamp(0.8rem, 0.74rem + 0.22vw, 0.95rem);
+  line-height: 1.25;
   white-space: nowrap;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.015);
 }
 
 .chip-catch {
-  background: rgba(59, 130, 246, 0.16);
+  background: rgba(59, 130, 246, 0.22);
+  border-color: rgba(59, 130, 246, 0.3);
 }
 
 .chip-fusion {
-  background: rgba(168, 85, 247, 0.18);
+  background: rgba(168, 85, 247, 0.24);
+  border-color: rgba(168, 85, 247, 0.32);
 }
 
 .chip-death {
-  background: rgba(239, 68, 68, 0.16);
+  background: rgba(239, 68, 68, 0.22);
+  border-color: rgba(239, 68, 68, 0.3);
 }
 
 .chip-battle {
-  background: rgba(249, 115, 22, 0.18);
+  background: rgba(249, 115, 22, 0.24);
+  border-color: rgba(249, 115, 22, 0.32);
 }
 
 .chip-subtype {
-  background: rgba(255,255,255,0.08);
+  background: rgba(148, 163, 184, 0.16);
+  border-color: rgba(148, 163, 184, 0.2);
 }
 
 .chip-species {
-  background: rgba(16, 185, 129, 0.14);
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.28);
 }
 
 .chip-location {
-  background: rgba(234, 179, 8, 0.14);
+  background: rgba(234, 179, 8, 0.2);
+  border-color: rgba(234, 179, 8, 0.28);
 }
 
 .chip-trainer {
-  background: rgba(244, 114, 182, 0.14);
+  background: rgba(244, 114, 182, 0.22);
+  border-color: rgba(244, 114, 182, 0.3);
 }
 
 .chip-win {
-  background: rgba(34, 197, 94, 0.18);
+  background: rgba(34, 197, 94, 0.24);
+  border-color: rgba(34, 197, 94, 0.32);
 }
 
 .chip-loss {
-  background: rgba(239, 68, 68, 0.18);
+  background: rgba(239, 68, 68, 0.24);
+  border-color: rgba(239, 68, 68, 0.32);
 }
 
 .chip-split {
-  background: rgba(14, 165, 233, 0.18);
+  background: rgba(14, 165, 233, 0.24);
+  border-color: rgba(14, 165, 233, 0.32);
+}
+
+.chip-purchase {
+  background: rgba(59, 130, 246, 0.22);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.chip-shop-item {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.28);
+}
+
+.chip-cost {
+  background: rgba(234, 179, 8, 0.2);
+  border-color: rgba(234, 179, 8, 0.28);
 }
 
 .action-inline-label,
@@ -943,21 +974,6 @@ button:disabled {
   }
 }
 
-.chip-purchase {
-  background: rgba(59, 130, 246, 0.18);
-}
-
-.chip-shop-item {
-  background: rgba(16, 185, 129, 0.14);
-}
-
-.chip-quantity {
-  background: rgba(255,255,255,0.08);
-}
-
-.chip-cost {
-  background: rgba(234, 179, 8, 0.14);
-}
 
 .shop-item-list {
   display: flex;
@@ -1111,8 +1127,8 @@ button:disabled {
 
 .action-log-item {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 14px;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  gap: 18px;
   align-items: start;
   padding: 14px;
   background: #111827;
@@ -1122,32 +1138,37 @@ button:disabled {
 
 .action-log-text {
   min-width: 0;
+  width: 100%;
   display: block;
 }
 
 .action-log-right {
+  min-width: 250px;
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 10px;
   flex-shrink: 0;
+  justify-self: end;
 }
 
 .action-log-time {
-  color: #9ca3af;
-  font-size: clamp(0.78rem, 0.72rem + 0.25vw, 0.92rem);
+  color: #cbb89a;
+  font-size: clamp(0.8rem, 0.74rem + 0.22vw, 0.92rem);
   line-height: 1.25;
   white-space: nowrap;
+  text-align: right;
 }
 
 .action-delete-btn {
   background: transparent;
   border: none;
-  color: #9ca3af;
+  color: #7f8795;
   font-size: 1rem;
   line-height: 1;
   padding: 4px 6px;
   cursor: pointer;
-  opacity: 0.45;
+  opacity: 0.7;
   align-self: flex-start;
 }
 
@@ -1160,30 +1181,6 @@ button:disabled {
 .action-delete-btn:focus {
   outline: 1px solid #6b7280;
   outline-offset: 2px;
-}
-
-.action-card-content {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4rem;
-  line-height: 1.45;
-  min-width: 0;
-}
-
-.action-chip {
-  display: inline-flex;
-  align-items: center;
-  max-width: 100%;
-  min-width: 0;
-  padding: 0.24rem 0.58rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(255,255,255,0.06);
-  color: #f3f4f6;
-  font-size: clamp(0.78rem, 0.72rem + 0.25vw, 0.95rem);
-  line-height: 1.25;
-  white-space: nowrap;
 }
 
 .action-inline-label,
@@ -1212,13 +1209,15 @@ button:disabled {
   }
 
   .action-log-right {
-    justify-content: space-between;
+    min-width: 0;
     width: 100%;
+    justify-content: space-between;
   }
 
   .action-log-time {
     white-space: normal;
     overflow-wrap: anywhere;
+    text-align: left;
   }
 }
 
@@ -1228,21 +1227,11 @@ button:disabled {
     gap: 10px;
   }
 
-  .action-log-right {
-    gap: 8px;
-  }
-
   .action-card-content {
     gap: 0.35rem;
   }
 
   .action-chip {
     padding: 0.22rem 0.5rem;
-  }
-
-  .achievement-log-toast {
-    grid-template-columns: 56px minmax(0, 1fr);
-    gap: 10px;
-    padding: 9px 10px;
   }
 }
