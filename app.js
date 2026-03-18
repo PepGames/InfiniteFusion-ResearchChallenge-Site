@@ -1043,7 +1043,6 @@ function renderRun() {
   renderAchievements();
   renderShop();
   requestAnimationFrame(updateAchievementCardScales);
-  requestAnimationFrame(updateActionLogScale);
 
   const undoBtn = document.getElementById("undo-action-btn");
   const redoBtn = document.getElementById("redo-action-btn");
@@ -2736,33 +2735,7 @@ function clearShopCart() {
 }
 
 function updateActionLogScale() {
-  const shell = document.querySelector(".action-log-scale-shell");
-  const inner = document.querySelector(".action-log-scale-inner");
-
-  if (!shell || !inner) return;
-
-  const availableWidth = shell.clientWidth;
-  if (!availableWidth || availableWidth <= 0) return;
-
-  const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
-  const mobileBreakpoint = 700;
-  const designWidth = 1120;
-
-  if (viewportWidth <= mobileBreakpoint) {
-    shell.classList.add("action-log-mobile");
-    inner.style.width = "";
-    inner.style.transform = "";
-    shell.style.height = "";
-    return;
-  }
-
-  shell.classList.remove("action-log-mobile");
-
-  const scale = Math.min(1, availableWidth / designWidth);
-
-  inner.style.width = `${designWidth}px`;
-  inner.style.transform = `scale(${scale})`;
-  shell.style.height = `${inner.offsetHeight * scale}px`;
+  // Intentionally unused.
 }
 
 // =========================
@@ -3163,7 +3136,6 @@ function attachEventListeners() {
   document.getElementById("undo-action-btn").addEventListener("click", handleUndoAction);
   document.getElementById("redo-action-btn").addEventListener("click", handleRedoAction);
   window.addEventListener("resize", updateAchievementCardScales);
-  window.addEventListener("resize", updateActionLogScale);
 }
 
 function attachTabEventListeners() {

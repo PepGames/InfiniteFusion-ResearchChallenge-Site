@@ -10,9 +10,9 @@ body {
 }
 
 .app {
-  max-width: 1000px;
+  width: min(100%, 1000px);
   margin: 0 auto;
-  padding: 24px;
+  padding: clamp(14px, 2.2vw, 24px);
 }
 
 .app-header {
@@ -31,7 +31,7 @@ h1, h2 {
   background: #1f2937;
   border: 1px solid #374151;
   border-radius: 12px;
-  padding: 16px;
+  padding: clamp(12px, 2vw, 16px);
   margin-bottom: 20px;
 }
 
@@ -1087,101 +1087,162 @@ button:disabled {
   backdrop-filter: blur(3px);
 }
 
-.action-log-scale-shell {
-  width: 100%;
-  overflow: hidden;
-}
-
+.action-log-scale-shell,
 .action-log-scale-inner {
-  transform-origin: top left;
-  will-change: transform;
+  width: 100%;
 }
 
-.action-log-scale-shell.action-log-mobile {
+.action-log-scale-shell {
   overflow: visible;
 }
 
-.action-log-scale-shell.action-log-mobile .action-log-scale-inner {
-  width: 100% !important;
+.action-log-scale-inner {
   transform: none !important;
 }
 
-.action-log-scale-shell.action-log-mobile .action-log-item {
+#action-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
   flex-direction: column;
-  align-items: stretch;
-  gap: 10px;
+  gap: 12px;
 }
 
-.action-log-scale-shell.action-log-mobile .action-log-text {
-  width: 100%;
-  display: flex;
-  align-items: stretch;
+.action-log-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: start;
+  padding: 14px;
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 12px;
 }
 
-.action-log-scale-shell.action-log-mobile .action-log-right {
-  width: 100%;
-  margin-left: 0;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.action-log-scale-shell.action-log-mobile .action-log-time {
-  margin-left: 0;
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-
-.action-log-scale-shell.action-log-mobile .achievement-log-toast {
-  width: 100%;
+.action-log-text {
   min-width: 0;
-  max-width: none;
+  display: block;
 }
 
-.action-log-scale-shell.action-log-mobile .achievement-toast-title,
-.action-log-scale-shell.action-log-mobile .achievement-toast-desc,
-.action-log-scale-shell.action-log-mobile .achievement-toast-status {
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-.action-log-scale-shell.action-log-mobile .action-card-content {
-  display: flex;
-  flex-wrap: wrap;
-  white-space: normal;
-  gap: 0.5rem;
-}
-
-.action-log-scale-shell.action-log-mobile .action-chip {
-  white-space: nowrap;
-}
-
-.action-log-scale-shell:not(.action-log-mobile) .action-log-item {
-  flex-wrap: nowrap;
-}
-
-.action-log-scale-shell:not(.action-log-mobile) .action-log-text {
-  display: flex;
-  flex: 1 1 auto;
-  min-width: 0;
-  align-items: center;
-}
-
-.action-log-scale-shell:not(.action-log-mobile) .action-log-right {
+.action-log-right {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
-  margin-left: auto;
 }
 
-.action-log-scale-shell:not(.action-log-mobile) .action-log-time {
+.action-log-time {
+  color: #9ca3af;
+  font-size: clamp(0.78rem, 0.72rem + 0.25vw, 0.92rem);
+  line-height: 1.25;
   white-space: nowrap;
 }
 
-.action-log-scale-shell:not(.action-log-mobile) .action-card-content {
-  flex-wrap: nowrap;
+.action-delete-btn {
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 4px 6px;
+  cursor: pointer;
+  opacity: 0.45;
+  align-self: flex-start;
 }
 
-.action-log-scale-shell:not(.action-log-mobile) .action-chip {
+.action-delete-btn:hover {
+  opacity: 1;
+  color: #d1d5db;
+  background: transparent;
+}
+
+.action-delete-btn:focus {
+  outline: 1px solid #6b7280;
+  outline-offset: 2px;
+}
+
+.action-card-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  line-height: 1.45;
+  min-width: 0;
+}
+
+.action-chip {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  min-width: 0;
+  padding: 0.24rem 0.58rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+  color: #f3f4f6;
+  font-size: clamp(0.78rem, 0.72rem + 0.25vw, 0.95rem);
+  line-height: 1.25;
   white-space: nowrap;
+}
+
+.action-inline-label,
+.action-inline-separator,
+.action-card-spacer {
+  color: rgba(255,255,255,0.8);
+  font-size: clamp(0.78rem, 0.72rem + 0.25vw, 0.95rem);
+}
+
+.achievement-log-toast {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.achievement-toast-title,
+.achievement-toast-desc,
+.achievement-toast-status {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+@media (max-width: 900px) {
+  .action-log-item {
+    grid-template-columns: 1fr;
+  }
+
+  .action-log-right {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .action-log-time {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 560px) {
+  .action-log-item {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .action-log-right {
+    gap: 8px;
+  }
+
+  .action-card-content {
+    gap: 0.35rem;
+  }
+
+  .action-chip {
+    padding: 0.22rem 0.5rem;
+  }
+
+  .achievement-log-toast {
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 10px;
+    padding: 9px 10px;
+  }
 }
