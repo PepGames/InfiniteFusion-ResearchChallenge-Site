@@ -1684,62 +1684,39 @@ function buildDisplayTimeline() {
 function renderAchievementLogCard(achievementId) {
   const achievement = achievementCatalog.find((a) => a.id === achievementId);
 
-  const container = document.createElement("span");
-  container.className = "action-card-content achievement-log-card";
-
-  const backgroundSrc = getAchievementTierBackground(achievement);
-  container.style.setProperty("--achievement-log-border", `url("${backgroundSrc}")`);
-
-  container.style.backgroundImage = `
-    linear-gradient(180deg, rgba(10, 17, 32, 0.35), rgba(7, 13, 24, 0.45)),
-    url("${backgroundSrc}")
-  `;
-  container.style.backgroundSize = "cover";
-  container.style.backgroundPosition = "center";
+  const container = document.createElement("div");
+  container.className = "achievement-log-toast";
 
   if (!achievement) {
-    container.appendChild(createActionChip("ACHIEVEMENT", "chip-achievement"));
-    container.appendChild(createActionChip("Unknown Achievement", "chip-achievement-title"));
+    container.textContent = "Unknown Achievement";
     return container;
   }
 
   const badgeSrc = getAchievementToastBadgeImage(achievement);
+  const backgroundSrc = getAchievementTierBackground(achievement);
 
-  const badgeWrap = document.createElement("span");
-  badgeWrap.className = "achievement-log-badge-wrap";
+  container.style.backgroundImage = `
+    linear-gradient(180deg, rgba(10, 17, 32, 0.22), rgba(7, 13, 24, 0.32)),
+    url("${backgroundSrc}")
+  `;
 
-  const badgeImg = document.createElement("img");
-  badgeImg.className = "achievement-log-badge";
-  badgeImg.src = badgeSrc;
-  badgeImg.alt = `${achievement.name} badge`;
+  container.innerHTML = `
+    <div class="achievement-toast-badge-wrap">
+      <img
+        class="achievement-toast-badge"
+        alt="${achievement.name} badge"
+      />
+    </div>
 
-  badgeImg.addEventListener("error", () => {
-    badgeImg.src = "assets/achievements/badges/trophy_default_toast.png";
-  }, { once: true });
+    <div class="achievement-toast-content">
+      <div class="achievement-toast-status">Achievement Unlocked</div>
+      <div class="achievement-toast-title">${achievement.name}</div>
+      <div class="achievement-toast-desc">${achievement.description || ""}</div>
+    </div>
+  `;
 
-  badgeWrap.appendChild(badgeImg);
-
-  const textWrap = document.createElement("span");
-  textWrap.className = "achievement-log-text-wrap";
-
-  const status = document.createElement("span");
-  status.className = "achievement-log-status";
-  status.textContent = "Achievement Unlocked";
-
-  const title = document.createElement("span");
-  title.className = "achievement-log-title";
-  title.textContent = achievement.name;
-
-  const desc = document.createElement("span");
-  desc.className = "achievement-log-desc";
-  desc.textContent = achievement.description || "";
-
-  textWrap.appendChild(status);
-  textWrap.appendChild(title);
-  textWrap.appendChild(desc);
-
-  container.appendChild(badgeWrap);
-  container.appendChild(textWrap);
+  const badgeImg = container.querySelector(".achievement-toast-badge");
+  applyAchievementToastBadgeImage(badgeImg, badgeSrc);
 
   return container;
 }
