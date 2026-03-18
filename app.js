@@ -1239,7 +1239,78 @@ function renderActionFields() {
   container.innerHTML = "";
 
     if (type === "catch") {
-      container.innerHTML = `
+      if (topRow) {
+      topRow.className = "form-row form-row-3";
+    }
+
+    container.innerHTML = `
+      <div class="form-row form-row-2">
+        <div class="field-row">
+          <label for="catch-species">Species</label>
+          <select id="catch-species" required>
+            <option value="">Select a species</option>
+          </select>
+        </div>
+
+        <div class="field-row">
+          <label for="catch-nickname">Nickname (optional)</label>
+          <input id="catch-nickname" type="text" placeholder="e.g. Bubbles" />
+        </div>
+      </div>
+
+      <div class="form-row form-row-1">
+        <div class="field-row field-row-checkbox">
+          <label>
+            <input type="checkbox" id="catch-is-fusion" />
+            Wild / caught fusion
+          </label>
+        </div>
+      </div>
+
+      <div id="catch-fusion-fields" style="display:none;">
+        <div class="form-row form-row-2">
+          <div class="field-row">
+            <label for="catch-head-species">Head Species</label>
+            <select id="catch-head-species">
+              <option value="">Select head species</option>
+            </select>
+          </div>
+
+          <div class="field-row">
+            <label for="catch-head-nickname">Head Nickname (optional)</label>
+            <input id="catch-head-nickname" type="text" placeholder="e.g. Sparky" />
+          </div>
+        </div>
+
+        <div class="form-row form-row-2">
+          <div class="field-row">
+            <label for="catch-body-species">Body Species</label>
+            <select id="catch-body-species">
+              <option value="">Select body species</option>
+            </select>
+          </div>
+
+          <div class="field-row">
+            <label for="catch-body-nickname">Body Nickname (optional)</label>
+            <input id="catch-body-nickname" type="text" placeholder="e.g. Shellshock" />
+          </div>
+        </div>
+      </div>
+    `;
+
+    if (topRow) {
+      topRow.innerHTML = `
+        <div class="field-row">
+          <label for="action-type">Action Type</label>
+          <select id="action-type">
+            <option value="catch" selected>Catch (-1 Catch Token)</option>
+            <option value="death">Death</option>
+            <option value="fusion">Fuse</option>
+            <option value="split">Split (-1 Split Token)</option>
+            <option value="battle">Battle</option>
+          </select>
+        </div>
+
         <div class="field-row">
           <label for="catch-type">Catch Type</label>
           <select id="catch-type" required>
@@ -1257,54 +1328,10 @@ function renderActionFields() {
             <option value="">Select a location</option>
           </select>
         </div>
-
-        <div class="field-row">
-          <label>
-            <input type="checkbox" id="catch-is-fusion" />
-            Wild / caught fusion
-          </label>
-        </div>
-
-        <div id="catch-normal-fields">
-          <div class="field-row">
-            <label for="catch-species">Species</label>
-            <select id="catch-species" required>
-              <option value="">Select a species</option>
-            </select>
-          </div>
-
-          <div class="field-row">
-            <label for="catch-nickname">Nickname (optional)</label>
-            <input id="catch-nickname" type="text" placeholder="e.g. Bubbles" />
-          </div>
-        </div>
-
-        <div id="catch-fusion-fields" style="display:none;">
-          <div class="field-row">
-            <label for="catch-head-species">Head Species</label>
-            <select id="catch-head-species">
-              <option value="">Select head species</option>
-            </select>
-          </div>
-
-          <div class="field-row">
-            <label for="catch-head-nickname">Head Nickname (optional)</label>
-            <input id="catch-head-nickname" type="text" placeholder="e.g. Sparky" />
-          </div>
-
-          <div class="field-row">
-            <label for="catch-body-species">Body Species</label>
-            <select id="catch-body-species">
-              <option value="">Select body species</option>
-            </select>
-          </div>
-
-          <div class="field-row">
-            <label for="catch-body-nickname">Body Nickname (optional)</label>
-            <input id="catch-body-nickname" type="text" placeholder="e.g. Shellshock" />
-          </div>
-        </div>
       `;
+
+      document.getElementById("action-type").addEventListener("change", renderActionFields);
+    }
 
       populateSpeciesSelect("catch-species");
       populateSpeciesSelect("catch-head-species");
@@ -1351,19 +1378,39 @@ function renderActionFields() {
       return `<option value="fusion:${f.fusionId}">Fusion — ${fusionName}</option>`;
     }).join("");
 
-    container.innerHTML = `
-      <div class="field-row">
-        <label for="death-target">Target</label>
-        <select id="death-target">
-          <option value="">Select a target</option>
-          ${fusionOptions}
-          ${pokemonOptions}
-        </select>
-      </div>
+    if (topRow) {
+      topRow.className = "form-row form-row-2";
+      topRow.innerHTML = `
+        <div class="field-row">
+          <label for="action-type">Action Type</label>
+          <select id="action-type">
+            <option value="catch">Catch (-1 Catch Token)</option>
+            <option value="death" selected>Death</option>
+            <option value="fusion">Fuse</option>
+            <option value="split">Split (-1 Split Token)</option>
+            <option value="battle">Battle</option>
+          </select>
+        </div>
 
-      <div class="field-row">
-        <label for="death-note">Death Note (optional)</label>
-        <input id="death-note" type="text" placeholder="e.g. Crit from Brock's Onix" />
+        <div class="field-row">
+          <label for="death-target">Target</label>
+          <select id="death-target">
+            <option value="">Select a target</option>
+            ${fusionOptions}
+            ${pokemonOptions}
+          </select>
+        </div>
+      `;
+
+      document.getElementById("action-type").addEventListener("change", renderActionFields);
+    }
+
+    container.innerHTML = `
+      <div class="form-row form-row-1">
+        <div class="field-row">
+          <label for="death-note">Death Note (optional)</label>
+          <input id="death-note" type="text" placeholder="e.g. Crit from Brock's Onix" />
+        </div>
       </div>
     `;
   }
@@ -1375,23 +1422,41 @@ function renderActionFields() {
       `<option value="${p.pokemonId}">${getPokemonDisplayName(p)}</option>`
     ).join("");
 
-    container.innerHTML = `
-      <div class="field-row">
-        <label for="fusion-head">Head Pokémon</label>
-        <select id="fusion-head">
-          <option value="">Select a Pokémon</option>
-          ${options}
-        </select>
-      </div>
+    if (topRow) {
+      topRow.className = "form-row form-row-3";
+      topRow.innerHTML = `
+        <div class="field-row">
+          <label for="action-type">Action Type</label>
+          <select id="action-type">
+            <option value="catch">Catch (-1 Catch Token)</option>
+            <option value="death">Death</option>
+            <option value="fusion" selected>Fuse</option>
+            <option value="split">Split (-1 Split Token)</option>
+            <option value="battle">Battle</option>
+          </select>
+        </div>
 
-      <div class="field-row">
-        <label for="fusion-body">Body Pokémon</label>
-        <select id="fusion-body">
-          <option value="">Select a Pokémon</option>
-          ${options}
-        </select>
-      </div>
-    `;
+        <div class="field-row">
+          <label for="fusion-head">Head Pokémon</label>
+          <select id="fusion-head">
+            <option value="">Select a Pokémon</option>
+            ${options}
+          </select>
+        </div>
+
+        <div class="field-row">
+          <label for="fusion-body">Body Pokémon</label>
+          <select id="fusion-body">
+            <option value="">Select a Pokémon</option>
+            ${options}
+          </select>
+        </div>
+      `;
+
+      document.getElementById("action-type").addEventListener("change", renderActionFields);
+    }
+
+    container.innerHTML = ``;
   }
 
   if (type === "split") {
@@ -1402,15 +1467,33 @@ function renderActionFields() {
       return `<option value="${fusion.fusionId}">${fusionName}</option>`;
     }).join("");
 
-    container.innerHTML = `
-      <div class="field-row">
-        <label for="split-fusion">Fusion</label>
-        <select id="split-fusion">
-          <option value="">Select a fusion</option>
-          ${options}
-        </select>
-      </div>
-    `;
+    if (topRow) {
+      topRow.className = "form-row form-row-2";
+      topRow.innerHTML = `
+        <div class="field-row">
+          <label for="action-type">Action Type</label>
+          <select id="action-type">
+            <option value="catch">Catch (-1 Catch Token)</option>
+            <option value="death">Death</option>
+            <option value="fusion">Fuse</option>
+            <option value="split" selected>Split (-1 Split Token)</option>
+            <option value="battle">Battle</option>
+          </select>
+        </div>
+
+        <div class="field-row">
+          <label for="split-fusion">Fusion</label>
+          <select id="split-fusion">
+            <option value="">Select a fusion</option>
+            ${options}
+          </select>
+        </div>
+      `;
+
+      document.getElementById("action-type").addEventListener("change", renderActionFields);
+    }
+
+    container.innerHTML = ``;
   }
 
   if (type === "battle") {
@@ -1421,79 +1504,101 @@ function renderActionFields() {
       })
       .join("");
 
+    if (topRow) {
+      topRow.className = "form-row form-row-4";
+      topRow.innerHTML = `
+        <div class="field-row">
+          <label for="action-type">Action Type</label>
+          <select id="action-type">
+            <option value="catch">Catch (-1 Catch Token)</option>
+            <option value="death">Death</option>
+            <option value="fusion">Fuse</option>
+            <option value="split">Split (-1 Split Token)</option>
+            <option value="battle" selected>Battle</option>
+          </select>
+        </div>
+
+        <div class="field-row">
+          <label for="battle-type">Battle Type</label>
+          <select id="battle-type">
+            <option value="">Select a battle type</option>
+            <option value="gym">Gym</option>
+            <option value="rival">Rival</option>
+            <option value="elite_four">Elite Four</option>
+            <option value="champion">Champion</option>
+          </select>
+        </div>
+
+        <div class="field-row">
+          <label for="battle-trainer">Trainer</label>
+          <select id="battle-trainer">
+            <option value="">Select a trainer</option>
+          </select>
+        </div>
+
+        <div class="field-row">
+          <label for="battle-result">Result</label>
+          <select id="battle-result">
+            <option value="win">Win</option>
+            <option value="loss">Loss</option>
+          </select>
+        </div>
+      `;
+
+      document.getElementById("action-type").addEventListener("change", renderActionFields);
+    }
+
     container.innerHTML = `
-      <div class="field-row">
-        <label for="battle-type">Battle Type</label>
-        <select id="battle-type">
-          <option value="">Select a battle type</option>
-          <option value="gym">Gym</option>
-          <option value="rival">Rival</option>
-          <option value="elite_four">Elite Four</option>
-          <option value="champion">Champion</option>
-        </select>
+      <div class="form-row form-row-3">
+        <div class="field-row">
+          <label for="battle-party-1">Party Slot 1</label>
+          <select id="battle-party-1">
+            <option value="">Empty</option>
+            ${partyOptions}
+          </select>
+        </div>
+
+        <div class="field-row">
+          <label for="battle-party-2">Party Slot 2</label>
+          <select id="battle-party-2">
+            <option value="">Empty</option>
+            ${partyOptions}
+          </select>
+        </div>
+
+        <div class="field-row">
+          <label for="battle-party-3">Party Slot 3</label>
+          <select id="battle-party-3">
+            <option value="">Empty</option>
+            ${partyOptions}
+          </select>
+        </div>
       </div>
 
-      <div class="field-row">
-        <label for="battle-trainer">Trainer</label>
-        <select id="battle-trainer">
-          <option value="">Select a trainer</option>
-        </select>
-      </div>
+      <div class="form-row form-row-3">
+        <div class="field-row">
+          <label for="battle-party-4">Party Slot 4</label>
+          <select id="battle-party-4">
+            <option value="">Empty</option>
+            ${partyOptions}
+          </select>
+        </div>
 
-      <div class="field-row">
-        <label for="battle-result">Result</label>
-        <select id="battle-result">
-          <option value="win">Win</option>
-          <option value="loss">Loss</option>
-        </select>
-      </div>
+        <div class="field-row">
+          <label for="battle-party-5">Party Slot 5</label>
+          <select id="battle-party-5">
+            <option value="">Empty</option>
+            ${partyOptions}
+          </select>
+        </div>
 
-      <div class="field-row">
-        <label for="battle-party-1">Party Slot 1</label>
-        <select id="battle-party-1">
-          <option value="">Empty</option>
-          ${partyOptions}
-        </select>
-      </div>
-
-      <div class="field-row">
-        <label for="battle-party-2">Party Slot 2</label>
-        <select id="battle-party-2">
-          <option value="">Empty</option>
-          ${partyOptions}
-        </select>
-      </div>
-
-      <div class="field-row">
-        <label for="battle-party-3">Party Slot 3</label>
-        <select id="battle-party-3">
-          <option value="">Empty</option>
-          ${partyOptions}
-        </select>
-      </div>
-
-      <div class="field-row">
-        <label for="battle-party-4">Party Slot 4</label>
-        <select id="battle-party-4">
-          <option value="">Empty</option>
-          ${partyOptions}
-        </select>
-      </div>
-
-      <div class="field-row">
-        <label for="battle-party-5">Party Slot 5</label>
-        <select id="battle-party-5">
-          <option value="">Empty</option>
-          ${partyOptions}
-        </select>
-      </div>
-
-      <div class="field-row">
-        <label for="battle-party-6">Party Slot 6</label>
-        <select id="battle-party-6">
-          <option value="">Empty</option>
-          ${partyOptions}
-        </select>
+        <div class="field-row">
+          <label for="battle-party-6">Party Slot 6</label>
+          <select id="battle-party-6">
+            <option value="">Empty</option>
+            ${partyOptions}
+          </select>
+        </div>
       </div>
     `;
 

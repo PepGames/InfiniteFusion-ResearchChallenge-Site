@@ -255,20 +255,24 @@
         <div class="action-log-scale-shell">
           <div class="action-log-scale-inner">
             <form id="action-form" class="pokemon-form">
-              <div class="field-row">
-                <label for="action-type">Action Type</label>
-                <select id="action-type">
-                  <option value="catch">Catch (-1 Catch Token)</option>
-                  <option value="death">Death</option>
-                  <option value="fusion">Fuse</option>
-                  <option value="split">Split (-1 Split Token)</option>
-                  <option value="battle">Battle</option>
-                </select>
+              <div id="action-form-top-row" class="form-row form-row-1">
+                <div class="field-row">
+                  <label for="action-type">Action Type</label>
+                  <select id="action-type">
+                    <option value="catch">Catch (-1 Catch Token)</option>
+                    <option value="death">Death</option>
+                    <option value="fusion">Fuse</option>
+                    <option value="split">Split (-1 Split Token)</option>
+                    <option value="battle">Battle</option>
+                  </select>
+                </div>
               </div>
 
               <div id="action-fields"></div>
 
-              <button type="submit">Log Action</button>
+              <div class="button-row">
+                <button type="submit">Log Action</button>
+              </div>
             </form>
 
             <div class="action-controls">
