@@ -104,6 +104,10 @@ function createNewRunState() {
       createdAt: now,
       updatedAt: now
     },
+    resources: {
+      catchesAvailable: 1,
+      splitsAvailable: 0
+    },
     actions: [startingAction]
   };
 }
