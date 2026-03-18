@@ -1087,9 +1087,9 @@ button:disabled {
   background-image:
     linear-gradient(180deg, rgba(10, 17, 32, 0.18), rgba(7, 13, 24, 0.28)),
     var(--achievement-log-bg);
-  background-size: 100% 100%;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-size: 100% 100%, 100% 100%;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
 }
 
 .achievement-log-badge-wrap {
