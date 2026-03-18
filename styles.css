@@ -186,6 +186,8 @@ button:hover,
 }
 
 .action-log-text {
+  display: flex;
+  width: 100%;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
