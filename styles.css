@@ -1289,22 +1289,42 @@ button:disabled {
   margin-top: 4px;
 }
 
-#action-form .field-row {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-#action-form .field-row label {
-  text-align: center;
+#action-form .field-row:not(.field-row-checkbox):not(.catch-fusion-toggle-row) > label,
+#action-form .field-row:not(.field-row-checkbox):not(.catch-fusion-toggle-row) label[for] {
+  display: block;
   width: 100%;
+  text-align: center;
+  margin-bottom: 4px;
 }
 
 #action-form select,
-#action-form input {
-  width: 100%;
-  max-width: 300px;
-  text-align: center;
+#action-form input[type="text"] {
+  text-align: left;
+}
+
+.catch-fusion-toggle-row {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.catch-fusion-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  line-height: 1.1;
+  text-align: left;
+}
+
+.catch-fusion-toggle input[type="checkbox"] {
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+.catch-fusion-toggle span {
+  display: inline-block;
 }
 
 /* =========================
