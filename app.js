@@ -27,7 +27,6 @@ const defaultRunState = {
   fusions: [],
   battles: [],
   achievementProgress: {},
-  purchases: []
 };
 
 const VALID_ACTION_TYPES = new Set([
@@ -131,7 +130,6 @@ function normalizeRunState(state) {
       state?.achievementProgress && !Array.isArray(state.achievementProgress)
         ? state.achievementProgress
         : {},
-    purchases: Array.isArray(state?.purchases) ? state.purchases : []
   };
 }
 
@@ -676,6 +674,7 @@ function getAvailableRP() {
 
 function updateAndSave() {
   rebuildDerivedStateFromActions();
+  syncSpentRPFromActions();
   const achievementChanges = evaluateAchievements();
 
   achievementChanges.newlyUnlocked.forEach((id) => {
@@ -698,6 +697,62 @@ function updateAndSave() {
   queueAchievementNotifications(achievementChanges);
 
   debugLog("Achievement changes:", achievementChanges);
+}
+
+function validateActionSequence(actions) {
+  let catchesAvailable = 0;
+  let splitsAvailable = 0;
+
+  for (const action of actions) {
+    if (action.actionType === "purchase") {
+      const lines = Array.isArray(action.lines) ? action.lines : [];
+
+      lines.forEach((line) => {
+        const itemId = line.itemId;
+        const quantity = Number(line.quantity || 0);
+
+        if (!Number.isFinite(quantity) || quantity <= 0) {
+          return;
+        }
+
+        if (itemId === "catch_token") {
+          catchesAvailable += quantity;
+        }
+
+        if (itemId === "split_token") {
+          splitsAvailable += quantity;
+        }
+      });
+
+      continue;
+    }
+
+    if (action.actionType === "catch") {
+      if (catchesAvailable <= 0) {
+        return {
+          valid: false,
+          reason: "This action history would become invalid because a later catch depends on a Catch Token from the deleted transaction."
+        };
+      }
+
+      catchesAvailable -= 1;
+      continue;
+    }
+
+    if (action.actionType === "split") {
+      if (splitsAvailable <= 0) {
+        return {
+          valid: false,
+          reason: "This action history would become invalid because a later split depends on a Split Token from the deleted transaction."
+        };
+      }
+
+      splitsAvailable -= 1;
+      continue;
+    }
+  }
+
+  return { valid: true };
 }
 
 // =========================
@@ -991,46 +1046,53 @@ function renderActionLog() {
   const list = document.getElementById("action-list");
   list.innerHTML = "";
 
-  if (runState.actions.length === 0) {
+  const timeline = buildDisplayTimeline();
+
+  if (timeline.length === 0) {
     const emptyItem = document.createElement("li");
     emptyItem.textContent = "No actions logged yet.";
     list.appendChild(emptyItem);
     return;
   }
 
-  [...runState.actions]
-    .slice()
-    .reverse()
-    .forEach((action) => {
-      const li = document.createElement("li");
-      li.className = "action-log-item";
+  timeline.forEach((entry) => {
+    const li = document.createElement("li");
+    li.className = "action-log-item";
 
-      const textSpan = document.createElement("span");
-      textSpan.className = "action-log-text";
-      textSpan.appendChild(renderActionCard(action));
+    const textSpan = document.createElement("span");
+    textSpan.className = "action-log-text";
 
-      const rightGroup = document.createElement("div");
-      rightGroup.className = "action-log-right";
+    const rightGroup = document.createElement("div");
+    rightGroup.className = "action-log-right";
 
-      const timeSpan = document.createElement("span");
-      timeSpan.className = "action-log-time";
-      timeSpan.textContent = formatActionTimestamp(action.actionAt);
+    const timeSpan = document.createElement("span");
+    timeSpan.className = "action-log-time";
+    timeSpan.textContent = formatActionTimestamp(entry.sortAt);
+
+    rightGroup.appendChild(timeSpan);
+
+    if (entry.entryType === "action") {
+      textSpan.appendChild(renderActionCard(entry.action));
 
       const deleteButton = document.createElement("button");
       deleteButton.className = "action-delete-btn";
       deleteButton.type = "button";
       deleteButton.textContent = "×";
       deleteButton.setAttribute("aria-label", "Delete action");
-      deleteButton.addEventListener("click", () => handleDeleteAction(action.actionId));
+      deleteButton.addEventListener("click", () => handleDeleteAction(entry.action.actionId));
 
-      rightGroup.appendChild(timeSpan);
       rightGroup.appendChild(deleteButton);
+    }
 
-      li.appendChild(textSpan);
-      li.appendChild(rightGroup);
+    if (entry.entryType === "achievement_unlocked") {
+      textSpan.appendChild(renderAchievementLogCard(entry.achievementId));
+    }
 
-      list.appendChild(li);
-    });
+    li.appendChild(textSpan);
+    li.appendChild(rightGroup);
+
+    list.appendChild(li);
+  });
 }
 
 function renderAchievements() {
@@ -1561,6 +1623,102 @@ function attachAnimationCleanup() {
 
 }
 
+function buildDisplayTimeline() {
+  const timeline = [];
+
+  runState.actions.forEach((action) => {
+    timeline.push({
+      entryType: "action",
+      sortAt: action.actionAt || "",
+      action
+    });
+  });
+
+  achievementCatalog.forEach((achievement) => {
+    const progress = runState.achievementProgress?.[achievement.id];
+
+    if (progress?.unlocked && progress.unlockedAt) {
+      timeline.push({
+        entryType: "achievement_unlocked",
+        sortAt: progress.unlockedAt,
+        achievementId: achievement.id
+      });
+    }
+  });
+
+  timeline.sort((a, b) => {
+    const timeA = a.sortAt || "";
+    const timeB = b.sortAt || "";
+
+    if (timeA !== timeB) {
+      return timeB.localeCompare(timeA);
+    }
+
+    if (a.entryType === b.entryType) {
+      return 0;
+    }
+
+    if (a.entryType === "action") return -1;
+    if (b.entryType === "action") return 1;
+
+    return 0;
+  });
+
+  return timeline;
+}
+
+function renderAchievementLogCard(achievementId) {
+  const achievement = achievementCatalog.find((a) => a.id === achievementId);
+
+  const container = document.createElement("span");
+  container.className = "action-card-content achievement-log-card";
+
+  if (!achievement) {
+    container.appendChild(createActionChip("ACHIEVEMENT", "chip-achievement"));
+    container.appendChild(createActionChip("Unknown Achievement", "chip-achievement-title"));
+    return container;
+  }
+
+  const badgeSrc = getAchievementToastBadgeImage(achievement);
+
+  const badgeWrap = document.createElement("span");
+  badgeWrap.className = "achievement-log-badge-wrap";
+
+  const badgeImg = document.createElement("img");
+  badgeImg.className = "achievement-log-badge";
+  badgeImg.src = badgeSrc;
+  badgeImg.alt = `${achievement.name} badge`;
+
+  badgeImg.addEventListener("error", () => {
+    badgeImg.src = "assets/achievements/badges/trophy_default_toast.png";
+  }, { once: true });
+
+  badgeWrap.appendChild(badgeImg);
+
+  const textWrap = document.createElement("span");
+  textWrap.className = "achievement-log-text-wrap";
+
+  const status = document.createElement("span");
+  status.className = "achievement-log-status";
+  status.textContent = "Achievement Unlocked";
+
+  const title = document.createElement("span");
+  title.className = "achievement-log-title";
+  title.textContent = achievement.name;
+
+  const desc = document.createElement("span");
+  desc.className = "achievement-log-desc";
+  desc.textContent = achievement.description || "";
+
+  textWrap.appendChild(status);
+  textWrap.appendChild(title);
+  textWrap.appendChild(desc);
+
+  container.appendChild(badgeWrap);
+  container.appendChild(textWrap);
+
+  return container;
+}
 
 // =========================
 // Helpers
@@ -1935,8 +2093,8 @@ function getFusionDisplayName(fusion) {
 
 function handleSplitAction() {
   if (runState.resources.splitsAvailable <= 0) {
-    alert("You do not have any splits available.");
-    return;
+    alert("You need a Split Token to perform this action.");
+    return false;
   }
 
   const splitFusionSelect = document.getElementById("split-fusion");
@@ -2359,19 +2517,8 @@ function commitPurchaseAction(cartLines) {
     totalCost
   });
 
-  runState.rp.spent += totalCost;
   updateAndSave();
   return true;
-}
-
-function clampShopQuantity(value) {
-  const parsed = Number(value);
-
-  if (!Number.isFinite(parsed)) return 0;
-  if (parsed < 0) return 0;
-  if (parsed > 99) return 99;
-
-  return Math.floor(parsed);
 }
 
 // =========================
@@ -2504,6 +2651,32 @@ function renderShop() {
   container.appendChild(summary);
 }
 
+function getPurchaseTotalCost(action) {
+  if (!action || action.actionType !== "purchase") {
+    return 0;
+  }
+
+  const lines = Array.isArray(action.lines) ? action.lines : [];
+
+  return lines.reduce((sum, line) => {
+    const quantity = Number(line.quantity || 0);
+    const unitCost = Number(line.unitCost || 0);
+    const lineTotal = Number(line.lineTotal);
+
+    if (Number.isFinite(lineTotal)) {
+      return sum + lineTotal;
+    }
+
+    return sum + (quantity * unitCost);
+  }, 0);
+}
+
+function syncSpentRPFromActions() {
+  runState.rp.spent = runState.actions.reduce((sum, action) => {
+    return sum + getPurchaseTotalCost(action);
+  }, 0);
+}
+
 function adjustShopQuantity(inputEl, delta) {
   if (!inputEl) return;
 
@@ -2584,22 +2757,6 @@ function handleAddEarnedRP() {
   updateAndSave();
 }
 
-function handleAddSpentRP() {
-  runState.rp.spent += 1;
-  updateAndSave();
-}
-
-function handleAddCatchToken() {
-  runState.resources.catchesAvailable += 1;
-  updateAndSave();
-  renderActionFields();
-}
-
-function handleAddSplitToken() {
-  runState.resources.splitsAvailable += 1;
-  updateAndSave();
-  renderActionFields();
-}
 
 function handleLogAction(event) {
   event.preventDefault();
@@ -2617,8 +2774,8 @@ function handleLogAction(event) {
 
 function handleCatchAction() {
   if (runState.resources.catchesAvailable <= 0) {
-    alert("You do not have any catches available.");
-    return;
+    alert("You need a Catch Token to perform this action.");
+    return false;
   }
 
   const catchTypeSelect = document.getElementById("catch-type");
@@ -2854,19 +3011,35 @@ function handleBattleAction() {
 function handleUndoAction() {
   if (runState.actions.length === 0) return;
 
-  const action = runState.actions.pop();
+  const action = runState.actions[runState.actions.length - 1];
+  const nextActions = runState.actions.slice(0, -1);
+  const validation = validateActionSequence(nextActions);
+
+  if (!validation.valid) {
+    alert(validation.reason);
+    return;
+  }
+
+  runState.actions.pop();
   runState.redoStack.push(action);
 
   updateAndSave();
   renderActionFields();
-  
 }
 
 function handleRedoAction() {
   if (runState.redoStack.length === 0) return;
 
-  const action = runState.redoStack.pop();
+  const action = runState.redoStack[runState.redoStack.length - 1];
+  const nextActions = [...runState.actions, action];
+  const validation = validateActionSequence(nextActions);
 
+  if (!validation.valid) {
+    alert(validation.reason);
+    return;
+  }
+
+  runState.redoStack.pop();
   runState.actions.push(action);
 
   updateAndSave();
@@ -2877,9 +3050,15 @@ function handleDeleteAction(actionId) {
   const confirmed = window.confirm("Delete this action?");
   if (!confirmed) return;
 
-  const actionToDelete = runState.actions.find((action) => action.actionId === actionId);
+  const nextActions = runState.actions.filter((action) => action.actionId !== actionId);
+  const validation = validateActionSequence(nextActions);
 
-  runState.actions = runState.actions.filter((action) => action.actionId !== actionId);
+  if (!validation.valid) {
+    alert(validation.reason);
+    return;
+  }
+
+  runState.actions = nextActions;
   runState.redoStack = [];
 
   updateAndSave();
@@ -2945,9 +3124,6 @@ function attachEventListeners() {
   document.getElementById("save-run-name-btn").addEventListener("click", handleSaveRunName);
   document.getElementById("new-run-btn").addEventListener("click", handleNewRun);
   document.getElementById("add-earned-rp-btn").addEventListener("click", handleAddEarnedRP);
-  document.getElementById("add-spent-rp-btn").addEventListener("click", handleAddSpentRP);
-  document.getElementById("add-catch-token-btn").addEventListener("click", handleAddCatchToken);
-  document.getElementById("add-split-token-btn").addEventListener("click", handleAddSplitToken);
   document.getElementById("action-form").addEventListener("submit", handleLogAction);
   document.getElementById("action-type").addEventListener("change", renderActionFields);
   document.getElementById("export-run-btn").addEventListener("click", exportRun);
