@@ -1196,12 +1196,16 @@ button:disabled {
 
 .form-row {
   display: grid;
-  gap: 12px;
+  gap: 10px;
   margin-bottom: 12px;
 }
 
 .form-row .field-row {
   margin-bottom: 0;
+  min-width: 0;
+}
+
+.form-row > .field-row {
   min-width: 0;
 }
 
@@ -1221,6 +1225,12 @@ button:disabled {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
+.form-row select,
+.form-row input {
+  width: 100%;
+  min-width: 0;
+}
+
 .field-row-checkbox {
   display: flex;
   align-items: center;
@@ -1237,17 +1247,45 @@ button:disabled {
   margin-bottom: 12px;
 }
 
-@media (max-width: 900px) {
+#action-form .field-row label {
+  font-size: 0.9rem;
+  line-height: 1.15;
+}
+
+#action-form select,
+#action-form input {
+  padding: 8px 10px;
+  font-size: 0.92rem;
+}
+
+@media (max-width: 720px) {
+  .form-row {
+    gap: 8px;
+  }
+
   .form-row-4 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .form-row-3 {
+  #action-form .field-row label {
+    font-size: 0.84rem;
+  }
+
+  #action-form select,
+  #action-form input {
+    padding: 7px 9px;
+    font-size: 0.86rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .form-row-3,
+  .form-row-4 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 420px) {
   .form-row-2,
   .form-row-3,
   .form-row-4 {
