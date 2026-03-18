@@ -238,6 +238,7 @@ button:disabled {
 .fusion-flower-panel {
   position: relative;
   overflow: visible;
+  padding-top: clamp(16px, 3vw, 28px);
 }
 
 .fusion-flower-stage {
