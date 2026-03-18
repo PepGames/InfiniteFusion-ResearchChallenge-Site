@@ -1230,13 +1230,16 @@ function renderActionFields() {
 
   const type = document.getElementById("action-type").value;
   const container = document.getElementById("action-fields");
+  const topRow = document.getElementById("action-form-top-row");
 
   debugLog("action-fields container:", container);
   debugLog("action type:", type);
 
   if (!container) return;
+  if (!topRow) return;
 
   container.innerHTML = "";
+  topRow.className = "form-row form-row-1";
 
     if (type === "catch") {
       if (topRow) {
