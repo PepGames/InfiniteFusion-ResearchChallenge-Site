@@ -1096,3 +1096,72 @@ button:disabled {
   width: 1000px;
   transform-origin: top left;
 }
+
+@media (max-width: 700px) {
+  .action-log-scale-shell.is-mobile {
+    overflow: visible;
+  }
+
+  .action-log-scale-shell.is-mobile .action-log-scale-inner {
+    width: 100% !important;
+    transform: none !important;
+  }
+
+  .action-log-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .action-log-text {
+    width: 100%;
+  }
+
+  .action-log-right {
+    width: 100%;
+    margin-left: 0;
+    justify-content: space-between;
+  }
+
+  .action-log-time {
+    margin-left: 0;
+    white-space: normal;
+  }
+
+  .achievement-log-toast {
+    width: 100%;
+    min-width: 0;
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 10px;
+    padding: 9px 10px;
+  }
+
+  .achievement-toast-badge-wrap {
+    width: 50px;
+    height: 50px;
+  }
+
+  .achievement-toast-badge {
+    width: 46px;
+    height: 46px;
+  }
+
+  .achievement-toast-title {
+    font-size: 0.92rem;
+    line-height: 1.08;
+  }
+
+  .achievement-toast-desc {
+    font-size: 0.76rem;
+    line-height: 1.15;
+  }
+
+  .action-card-content {
+    flex-wrap: wrap;
+    white-space: normal;
+  }
+
+  .action-chip {
+    white-space: normal;
+  }
+}

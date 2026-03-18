@@ -2741,6 +2741,19 @@ function updateActionLogScale() {
 
   if (!shell || !inner) return;
 
+  const mobileBreakpoint = 700;
+  const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+
+  if (viewportWidth <= mobileBreakpoint) {
+    shell.classList.add("is-mobile");
+    inner.style.transform = "none";
+    inner.style.width = "100%";
+    shell.style.height = "auto";
+    return;
+  }
+
+  shell.classList.remove("is-mobile");
+
   const designWidth = 1000;
   const availableWidth = shell.clientWidth;
 
@@ -2748,10 +2761,10 @@ function updateActionLogScale() {
 
   const scale = Math.min(1, availableWidth / designWidth);
 
+  inner.style.width = `${designWidth}px`;
   inner.style.transform = `scale(${scale})`;
   shell.style.height = `${inner.offsetHeight * scale}px`;
 }
-
 // =========================
 // Event Handlers
 // =========================
