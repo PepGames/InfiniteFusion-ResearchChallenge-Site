@@ -1033,10 +1033,20 @@ function evaluateAchievements(updateTimestamp) {
 
 function renderRun() {
   document.getElementById("run-name").value = runState.meta.runName;
-  document.getElementById("rp-earned").textContent =
-    runState.rp.achievementEarned + runState.rp.bonusEarned;
-  document.getElementById("rp-spent").textContent = runState.rp.spent;
-  document.getElementById("rp-available").textContent = getAvailableRP();
+
+  const rpEarnedEl = document.getElementById("rp-earned");
+  const rpSpentEl = document.getElementById("rp-spent");
+  const rpAvailableEl = document.getElementById("rp-available");
+  const rpAvailableChipEl = document.getElementById("rp-available-chip");
+
+  const earnedValue = runState.rp.achievementEarned + runState.rp.bonusEarned;
+  const spentValue = runState.rp.spent;
+  const availableValue = getAvailableRP();
+
+  if (rpEarnedEl) rpEarnedEl.textContent = earnedValue;
+  if (rpSpentEl) rpSpentEl.textContent = spentValue;
+  if (rpAvailableEl) rpAvailableEl.textContent = availableValue;
+  if (rpAvailableChipEl) rpAvailableChipEl.textContent = availableValue;
 
   renderFusionFlowerWidget();
   renderActionLog();
