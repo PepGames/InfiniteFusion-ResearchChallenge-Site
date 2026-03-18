@@ -911,7 +911,7 @@ button:disabled {
 }
 
 .achievement-toast-leave.achievement-toast-unlocked {
-  animation: achievementToastOut 220ms ease forwards, achievementBorderFade 220ms ease forwards;
+  animation: achievementToastOut 220ms ease forwards;
 }
 
 @keyframes achievementToastOut {
@@ -922,17 +922,6 @@ button:disabled {
   to {
     opacity: 0;
     transform: translateY(-10px) scale(0.96);
-  }
-}
-
-@keyframes achievementBorderFade {
-  from {
-    border-color: rgba(255, 215, 120, 0.65);
-    box-shadow: 0 0 14px rgba(255, 215, 120, 0.35);
-  }
-  to {
-    border-color: rgba(255, 255, 255, 0.18);
-    box-shadow: 0 14px 36px rgba(0, 0, 0, 0);
   }
 }
 
