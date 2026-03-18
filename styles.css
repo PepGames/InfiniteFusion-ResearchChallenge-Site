@@ -1289,6 +1289,24 @@ button:disabled {
   margin-top: 4px;
 }
 
+#action-form .field-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#action-form .field-row label {
+  text-align: center;
+  width: 100%;
+}
+
+#action-form select,
+#action-form input {
+  width: 100%;
+  max-width: 300px;
+  text-align: center;
+}
+
 /* =========================
    Responsive
    ========================= */
