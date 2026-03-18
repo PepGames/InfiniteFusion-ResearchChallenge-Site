@@ -2741,23 +2741,21 @@ function updateActionLogScale() {
 
   if (!shell || !inner) return;
 
-  const mobileBreakpoint = 700;
-  const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+  const availableWidth = shell.clientWidth;
+  if (!availableWidth || availableWidth <= 0) return;
 
-  if (viewportWidth <= mobileBreakpoint) {
-    shell.classList.add("is-mobile");
-    inner.style.transform = "none";
-    inner.style.width = "100%";
-    shell.style.height = "auto";
+  const mobileBreakpoint = 760;
+  const designWidth = 1000;
+
+  if (availableWidth <= mobileBreakpoint) {
+    shell.classList.add("action-log-mobile");
+    inner.style.transform = "";
+    inner.style.width = "";
+    shell.style.height = "";
     return;
   }
 
-  shell.classList.remove("is-mobile");
-
-  const designWidth = 1000;
-  const availableWidth = shell.clientWidth;
-
-  if (!availableWidth || availableWidth <= 0) return;
+  shell.classList.remove("action-log-mobile");
 
   const scale = Math.min(1, availableWidth / designWidth);
 
@@ -2765,6 +2763,8 @@ function updateActionLogScale() {
   inner.style.transform = `scale(${scale})`;
   shell.style.height = `${inner.offsetHeight * scale}px`;
 }
+
+
 // =========================
 // Event Handlers
 // =========================
