@@ -35,7 +35,8 @@ const VALID_ACTION_TYPES = new Set([
   "death",
   "fusion",
   "split",
-  "battle"
+  "battle",
+  "purchase"
 ]);
 
 const actionHandlers = {
@@ -46,6 +47,23 @@ const actionHandlers = {
   battle: handleBattleAction
 };
 
+const SHOP_ITEMS = {
+  catch_token: {
+    itemId: "catch_token",
+    name: "Catch Token",
+    cost: 1
+  },
+  split_token: {
+    itemId: "split_token",
+    name: "Split Token",
+    cost: 1
+  }
+};
+
+let shopCart = {
+  catch_token: 0,
+  split_token: 0
+};
 
 let runState = loadRunState();
 let achievementCatalog = [];
@@ -432,10 +450,16 @@ function rebuildDerivedStateFromActions() {
   const pokemon = [];
   const fusions = [];
   const battles = [];
+  const resources = {
+    catchesAvailable: 0,
+    splitsAvailable: 0
+  };
 
   for (const action of runState.actions) {
     switch (action.actionType) {
       case "catch": {
+        if (resources.catchesAvailable <= 0) break;
+        resources.catchesAvailable -= 1;
         if (!action.isFusion) {
           const species = speciesById[action.speciesId];
           if (!species) break;
@@ -589,7 +613,10 @@ function rebuildDerivedStateFromActions() {
         });
         break;
       }
+
       case "split": {
+        if (resources.splitsAvailable <= 0) break;
+        resources.splitsAvailable -= 1;
         const fusion = fusions.find((f) => f.fusionId === action.fusionId);
         if (!fusion) break;
         if (fusion.status !== "active") break;
@@ -611,12 +638,36 @@ function rebuildDerivedStateFromActions() {
 
         break;
       }
+
+      case "purchase": {
+        const lines = Array.isArray(action.lines) ? action.lines : [];
+
+        lines.forEach((line) => {
+          const itemId = line.itemId;
+          const quantity = Number(line.quantity || 0);
+
+          if (!itemId || !Number.isFinite(quantity) || quantity <= 0) {
+            return;
+          }
+
+          if (itemId === "catch_token") {
+            resources.catchesAvailable += quantity;
+          }
+
+          if (itemId === "split_token") {
+            resources.splitsAvailable += quantity;
+          }
+        });
+
+        break;
+      }
     }
   }
 
   runState.pokemon = pokemon;
   runState.fusions = fusions;
   runState.battles = battles;
+  runState.resources = resources;
 }
 
 function getAvailableRP() {
@@ -926,6 +977,7 @@ function renderRun() {
   renderFusionFlowerWidget();
   renderActionLog();
   renderAchievements();
+  renderShop();
   requestAnimationFrame(updateAchievementCardScales);
 
   const undoBtn = document.getElementById("undo-action-btn");
@@ -1757,6 +1809,38 @@ function renderActionCard(action) {
     return container;
   }
 
+  if (action.actionType === "purchase") {
+    container.appendChild(createActionChip("PURCHASE", "chip-purchase"));
+    appendSpacer();
+
+    const lines = Array.isArray(action.lines) ? action.lines : [];
+    const totalCost = Number(action.totalCost || 0);
+
+    if (lines.length === 0) {
+      container.appendChild(createActionChip("Empty Cart", "chip-shop-item"));
+      return container;
+    }
+
+    lines.forEach((line, index) => {
+      const item = SHOP_ITEMS[line.itemId];
+      const itemName = item?.name || line.itemId || "Unknown Item";
+      const quantity = Number(line.quantity || 0);
+
+      if (index > 0) {
+        appendText(", ", "action-inline-separator");
+      }
+
+      container.appendChild(
+        createActionChip(`${itemName} x${quantity}`, "chip-shop-item")
+      );
+    });
+
+    appendSpacer();
+    container.appendChild(createActionChip(`${totalCost} RP`, "chip-cost"));
+
+    return container;
+  }
+
   if (action.actionType === "battle") {
     container.appendChild(createActionChip("BATTLE", "chip-battle"));
     appendSpacer();
@@ -1879,8 +1963,6 @@ function handleSplitAction() {
     fusionId
   });
 
-  runState.resources.splitsAvailable -= 1;
-
   updateAndSave();
   renderActionFields();
 }
@@ -1893,36 +1975,6 @@ function commitAction(actionType, payload) {
 
   updateAndSave();
   renderActionFields();
-}
-
-function restoreResourcesForUndoneAction(action) {
-  if (!action) return;
-
-  if (action.actionType === "catch") {
-    runState.resources.catchesAvailable += 1;
-  }
-
-  if (action.actionType === "split") {
-    runState.resources.splitsAvailable += 1;
-  }
-}
-
-function spendResourcesForRedoneAction(action) {
-  if (!action) return;
-
-  if (action.actionType === "catch") {
-    runState.resources.catchesAvailable = Math.max(
-      0,
-      runState.resources.catchesAvailable - 1
-    );
-  }
-
-  if (action.actionType === "split") {
-    runState.resources.splitsAvailable = Math.max(
-      0,
-      runState.resources.splitsAvailable - 1
-    );
-  }
 }
 
 function isPokemonAlive(pokemon) {
@@ -2266,6 +2318,248 @@ async function preloadAchievementAssets() {
   await Promise.all(preloadPromises);
 }
 
+function commitPurchaseAction(cartLines) {
+  if (!Array.isArray(cartLines) || cartLines.length === 0) {
+    alert("Your cart is empty.");
+    return false;
+  }
+
+  const normalizedLines = cartLines
+    .map((line) => {
+      const item = SHOP_ITEMS[line.itemId];
+      const quantity = Number(line.quantity);
+
+      if (!item) return null;
+      if (!Number.isInteger(quantity) || quantity <= 0) return null;
+
+      return {
+        itemId: item.itemId,
+        quantity,
+        unitCost: item.cost,
+        lineTotal: item.cost * quantity
+      };
+    })
+    .filter(Boolean);
+
+  if (normalizedLines.length === 0) {
+    alert("Your cart is empty.");
+    return false;
+  }
+
+  const totalCost = normalizedLines.reduce((sum, line) => sum + line.lineTotal, 0);
+
+  if (getAvailableRP() < totalCost) {
+    alert(`Not enough RP to complete this purchase (${totalCost} RP needed).`);
+    return false;
+  }
+
+  addAction({
+    ...createBaseAction("purchase"),
+    lines: normalizedLines,
+    totalCost
+  });
+
+  runState.rp.spent += totalCost;
+  updateAndSave();
+  return true;
+}
+
+function clampShopQuantity(value) {
+  const parsed = Number(value);
+
+  if (!Number.isFinite(parsed)) return 0;
+  if (parsed < 0) return 0;
+  if (parsed > 99) return 99;
+
+  return Math.floor(parsed);
+}
+
+// =========================
+// Shop Code
+// =========================
+
+function renderShop() {
+  const container = document.getElementById("shop-items");
+  if (!container) return;
+
+  const availableRP = getAvailableRP();
+  const items = Object.values(SHOP_ITEMS);
+  const cartLines = getShopCartLines();
+  const totalCost = getShopCartTotal();
+  const canCheckout = cartLines.length > 0 && totalCost <= availableRP;
+
+  container.innerHTML = "";
+
+  items.forEach((item) => {
+    const quantity = clampShopQuantity(shopCart[item.itemId] || 0);
+
+    const card = document.createElement("div");
+    card.className = "shop-item-card";
+
+    card.innerHTML = `
+      <div class="shop-item-info">
+        <div class="shop-item-name">${item.name}</div>
+        <div class="shop-item-cost">${item.cost} RP each</div>
+      </div>
+
+      <div class="shop-item-controls">
+        <button type="button" class="shop-qty-btn shop-qty-minus">−</button>
+        <input
+          type="number"
+          min="0"
+          max="99"
+          step="1"
+          value="${quantity}"
+          class="shop-qty-input"
+          aria-label="${item.name} quantity"
+        />
+        <button type="button" class="shop-qty-btn shop-qty-plus">+</button>
+      </div>
+    `;
+
+    const qtyInput = card.querySelector(".shop-qty-input");
+    const minusBtn = card.querySelector(".shop-qty-minus");
+    const plusBtn = card.querySelector(".shop-qty-plus");
+
+    minusBtn.addEventListener("click", () => {
+      adjustShopCartQuantity(item.itemId, -1);
+      renderShop();
+    });
+
+    plusBtn.addEventListener("click", () => {
+      adjustShopCartQuantity(item.itemId, 1);
+      renderShop();
+    });
+
+    qtyInput.addEventListener("input", () => {
+      setShopCartQuantity(item.itemId, qtyInput.value);
+      renderShop();
+    });
+
+    qtyInput.addEventListener("blur", () => {
+      setShopCartQuantity(item.itemId, qtyInput.value);
+      renderShop();
+    });
+
+    container.appendChild(card);
+  });
+
+  const summary = document.createElement("div");
+  summary.className = "shop-cart-summary";
+
+  const summaryLinesHtml =
+    cartLines.length > 0
+      ? cartLines
+          .map((line) => {
+            const item = SHOP_ITEMS[line.itemId];
+            const itemName = item?.name || line.itemId;
+            return `
+              <div class="shop-cart-line">
+                <span>${itemName} × ${line.quantity}</span>
+                <span>${line.lineTotal} RP</span>
+              </div>
+            `;
+          })
+          .join("")
+      : `<div class="shop-cart-empty">Cart is empty.</div>`;
+
+  summary.innerHTML = `
+    <div class="shop-cart-title">Cart</div>
+    <div class="shop-cart-lines">
+      ${summaryLinesHtml}
+    </div>
+    <div class="shop-cart-total">
+      <span>Total</span>
+      <span>${totalCost} RP</span>
+    </div>
+    <div class="shop-cart-actions">
+      <button type="button" class="shop-clear-btn" ${cartLines.length === 0 ? "disabled" : ""}>
+        Clear
+      </button>
+      <button type="button" class="shop-checkout-btn" ${canCheckout ? "" : "disabled"}>
+        Checkout
+      </button>
+    </div>
+  `;
+
+  const clearBtn = summary.querySelector(".shop-clear-btn");
+  const checkoutBtn = summary.querySelector(".shop-checkout-btn");
+
+  clearBtn.addEventListener("click", () => {
+    clearShopCart();
+    renderShop();
+  });
+
+  checkoutBtn.addEventListener("click", () => {
+    const lines = getShopCartLines();
+    const purchased = commitPurchaseAction(lines);
+
+    if (purchased) {
+      clearShopCart();
+      renderShop();
+      renderActionFields();
+    }
+  });
+
+  container.appendChild(summary);
+}
+
+function adjustShopQuantity(inputEl, delta) {
+  if (!inputEl) return;
+
+  const current = clampShopQuantity(inputEl.value);
+  const next = clampShopQuantity(current + delta);
+  inputEl.value = next;
+}
+
+function clampShopQuantity(value) {
+  const parsed = Number(value);
+
+  if (!Number.isFinite(parsed)) return 0;
+  if (parsed < 0) return 0;
+  if (parsed > 99) return 99;
+
+  return Math.floor(parsed);
+}
+
+function setShopCartQuantity(itemId, value) {
+  if (!SHOP_ITEMS[itemId]) return;
+  shopCart[itemId] = clampShopQuantity(value);
+}
+
+function adjustShopCartQuantity(itemId, delta) {
+  if (!SHOP_ITEMS[itemId]) return;
+  const current = clampShopQuantity(shopCart[itemId] || 0);
+  shopCart[itemId] = clampShopQuantity(current + delta);
+}
+
+function getShopCartLines() {
+  return Object.values(SHOP_ITEMS)
+    .map((item) => {
+      const quantity = clampShopQuantity(shopCart[item.itemId] || 0);
+
+      if (quantity <= 0) return null;
+
+      return {
+        itemId: item.itemId,
+        quantity,
+        unitCost: item.cost,
+        lineTotal: item.cost * quantity
+      };
+    })
+    .filter(Boolean);
+}
+
+function getShopCartTotal() {
+  return getShopCartLines().reduce((sum, line) => sum + line.lineTotal, 0);
+}
+
+function clearShopCart() {
+  Object.keys(SHOP_ITEMS).forEach((itemId) => {
+    shopCart[itemId] = 0;
+  });
+}
+
 // =========================
 // Event Handlers
 // =========================
@@ -2281,6 +2575,7 @@ function handleNewRun() {
   if (!confirmed) return;
 
   runState = createNewRunState();
+  clearShopCart();
   updateAndSave();
 }
 
@@ -2411,7 +2706,6 @@ function handleCatchAction() {
     });
   }
 
-  runState.resources.catchesAvailable -= 1;
   updateAndSave();
   renderActionFields();
 }
@@ -2563,8 +2857,6 @@ function handleUndoAction() {
   const action = runState.actions.pop();
   runState.redoStack.push(action);
 
-  restoreResourcesForUndoneAction(action);
-
   updateAndSave();
   renderActionFields();
   
@@ -2575,7 +2867,6 @@ function handleRedoAction() {
 
   const action = runState.redoStack.pop();
 
-  spendResourcesForRedoneAction(action);
   runState.actions.push(action);
 
   updateAndSave();
@@ -2587,9 +2878,6 @@ function handleDeleteAction(actionId) {
   if (!confirmed) return;
 
   const actionToDelete = runState.actions.find((action) => action.actionId === actionId);
-  if (actionToDelete) {
-    restoreResourcesForUndoneAction(actionToDelete);
-  }
 
   runState.actions = runState.actions.filter((action) => action.actionId !== actionId);
   runState.redoStack = [];
@@ -2632,6 +2920,7 @@ function importRun(event) {
       }
       
       runState = normalizeRunState(parsed);
+      clearShopCart();
       updateAndSave();
       alert("Run imported successfully.");
     } catch (error) {

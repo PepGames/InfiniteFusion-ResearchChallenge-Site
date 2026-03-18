@@ -942,3 +942,130 @@ button:disabled {
     filter: brightness(1) drop-shadow(0 0 0 rgba(255, 220, 120, 0));
   }
 }
+
+.chip-purchase {
+  background: rgba(59, 130, 246, 0.18);
+}
+
+.chip-shop-item {
+  background: rgba(16, 185, 129, 0.14);
+}
+
+.chip-quantity {
+  background: rgba(255,255,255,0.08);
+}
+
+.chip-cost {
+  background: rgba(234, 179, 8, 0.14);
+}
+
+.shop-item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.shop-item-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #374151;
+  background: #111827;
+  flex-wrap: wrap;
+}
+
+.shop-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.shop-item-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f3f4f6;
+}
+
+.shop-item-cost {
+  font-size: 0.92rem;
+  color: #9ca3af;
+}
+
+.shop-item-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.shop-qty-btn {
+  min-width: 36px;
+  padding: 8px 10px;
+}
+
+.shop-qty-input {
+  width: 72px;
+  text-align: center;
+}
+
+.shop-cart-summary {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #374151;
+  background: #0f172a;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.shop-cart-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f3f4f6;
+}
+
+.shop-cart-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.shop-cart-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #e5e7eb;
+  font-size: 0.95rem;
+}
+
+.shop-cart-empty {
+  color: #9ca3af;
+  font-size: 0.95rem;
+}
+
+.shop-cart-total {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-weight: 700;
+  color: #f9fafb;
+}
+
+.shop-cart-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.shop-clear-btn,
+.shop-checkout-btn {
+  flex-shrink: 0;
+}
