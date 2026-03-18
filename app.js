@@ -673,6 +673,7 @@ function getAvailableRP() {
 }
 
 function updateAndSave() {
+  const updateTimestamp = new Date().toISOString();
   rebuildDerivedStateFromActions();
   syncSpentRPFromActions();
   const achievementChanges = evaluateAchievements();
@@ -948,7 +949,7 @@ function evaluateAchievements() {
   const previousProgress = structuredClone(runState.achievementProgress);
   let nextProgress = {};
 
-  const now = new Date().toISOString();
+  const now = updateTimestamp || new Date().toISOString();
   let changed = true;
   let safetyCounter = 0;
   const maxPasses = achievementCatalog.length + 5;
