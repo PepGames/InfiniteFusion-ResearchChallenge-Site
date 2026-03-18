@@ -1093,8 +1093,8 @@ button:disabled {
 }
 
 .action-log-scale-inner {
-  width: 1000px;
   transform-origin: top left;
+  will-change: transform;
 }
 
 .action-log-scale-shell.action-log-mobile {
