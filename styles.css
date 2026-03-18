@@ -1166,6 +1166,26 @@ button:disabled {
   outline-offset: 2px;
 }
 
+.catch-fusion-toggle-row {
+  margin-top: 4px;
+}
+
+.catch-fusion-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  line-height: 1.1;
+}
+
+.catch-fusion-toggle input[type="checkbox"] {
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+.catch-fusion-toggle span {
+  display: inline-block;
+}
 
 /* =========================
    Action Log Achievement Cards
@@ -1231,7 +1251,7 @@ button:disabled {
 .field-row-checkbox {
   display: flex;
   align-items: center;
-  padding-top: 6px; /* optional tweak */
+  padding-top: 6px; 
 }
 
 .field-row-checkbox label {
