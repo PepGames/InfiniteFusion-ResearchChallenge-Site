@@ -678,9 +678,13 @@ function updateAndSave() {
       ? runState.actions[runState.actions.length - 1].actionAt
       : new Date().toISOString();
 
+  const achievementTimestamp = new Date(
+    new Date(latestActionTimestamp).getTime() - 1
+  ).toISOString();
+
   rebuildDerivedStateFromActions();
   syncSpentRPFromActions();
-  const achievementChanges = evaluateAchievements(latestActionTimestamp);
+  const achievementChanges = evaluateAchievements(achievementTimestamp);
 
   achievementChanges.newlyUnlocked.forEach((id) => {
     const achievement = achievementCatalog.find((a) => a.id === id);
