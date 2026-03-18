@@ -674,11 +674,21 @@ button:disabled {
   margin-bottom: 16px;
 }
 
+.shop-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
 .shop-rp-chip {
   position: static;
   top: auto;
   right: auto;
   z-index: auto;
+  flex-shrink: 0;
 }
 
 /* =========================
