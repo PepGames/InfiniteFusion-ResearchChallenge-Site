@@ -1996,12 +1996,14 @@ function populateLocationSelect(selectId) {
 
   select.innerHTML = `<option value="">${firstOptionText}</option>`;
 
-  locationCatalog.forEach((location) => {
-    const option = document.createElement("option");
-    option.value = location.locationId;
-    option.textContent = location.name;
-    select.appendChild(option);
-  });
+  [...locationCatalog]
+    .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }))
+    .forEach((location) => {
+      const option = document.createElement("option");
+      option.value = location.locationId;
+      option.textContent = location.name;
+      select.appendChild(option);
+    });
 
   debugLog(`Populated select "${selectId}" with ${locationCatalog.length} locations.`);
 }
@@ -3673,7 +3675,7 @@ function attachAchievementControlListeners() {
   const filterMenu = document.getElementById("achievement-filter-menu");
   const selectAllBtn = document.getElementById("achievement-filter-all");
   const selectNoneBtn = document.getElementById("achievement-filter-none");
-  
+
   document.addEventListener("click", handleClickOutsideFilters);
 
   if (sortSelect) {
