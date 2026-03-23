@@ -505,8 +505,8 @@ button:disabled {
 
   .achievement-progress-placeholder {
     width: 100%;
-    margin-top: 8px;
-    margin-bottom: 12px;
+    margin-top: -100px;
+    margin-bottom: 0px;
     margin-left: auto;
     margin-right: auto;
     padding: 18px 12px 16px;
