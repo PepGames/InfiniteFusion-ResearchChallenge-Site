@@ -11,22 +11,10 @@
 </head>
 <body>
   <main class="app">
-    <header class="app-header">
-      <h1>Fusion Research Tool</h1>
-      <p class="subtitle">Local-first tracker for custom Pokémon Infinite Fusion challenge runs.</p>
-    </header>
-
-    <nav class="tab-bar" aria-label="Main sections">
-      <button class="tab-button active" data-tab="dashboard">Dashboard</button>
-      <button class="tab-button" data-tab="achievements">Achievements</button>
-      <button class="tab-button" data-tab="shop">Shop</button>
-    </nav>
-
-    <section class="tab-panel active" id="tab-dashboard">
-      <section class="panel">
+    <section class="panel">
         <h2>Run Info</h2>
         <div class="field-row">
-          <label for="run-name">Run Name</label>
+          <label for="run-name">Fusion Researcher Challenge</label>
           <input id="run-name" type="text" placeholder="Enter run name" />
         </div>
         <div class="button-row">
@@ -36,7 +24,16 @@
           <label class="import-label" for="import-run-input">Import Run</label>
           <input id="import-run-input" type="file" accept=".json" />
         </div>
-      </section>
+    </section>
+
+    <nav class="tab-bar" aria-label="Main sections">
+      <button class="tab-button active" data-tab="dashboard">Dashboard</button>
+      <button class="tab-button" data-tab="achievements">Achievements</button>
+      <button class="tab-button" data-tab="shop">Shop</button>
+    </nav>
+
+    <section class="tab-panel active" id="tab-dashboard">
+      
 
       <section class="panel fusion-flower-panel">
         <div class="fusion-flower-rp-chip" aria-label="Available research points">

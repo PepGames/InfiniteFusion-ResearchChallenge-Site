@@ -1347,7 +1347,7 @@ function renderActionFields() {
       <div class="catch-fusion-toggle-row">
         <label class="catch-fusion-toggle" for="catch-is-fusion">
           <input type="checkbox" id="catch-is-fusion" />
-          <span>Wild / caught fusion</span>
+          <span>pokemon is a fusion</span>
         </label>
       </div>
     `;
