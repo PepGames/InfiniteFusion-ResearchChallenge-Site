@@ -638,6 +638,26 @@
   "hidden": false
 },
 {
+  "id": "viridian-city",
+  "name": "Encounter - Cerulean City",
+  "description": "Catch 1 Pokemon in Cerulean City",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "viridian_city"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
   "id": "cerulean-city",
   "name": "Encounter - Cerulean City",
   "description": "Catch 1 Pokemon in Cerulean City",
@@ -5594,22 +5614,3 @@
   "hidden": false
 }
 ]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
