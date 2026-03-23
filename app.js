@@ -112,12 +112,7 @@ let lastRenderedFusionFlowerValues = {
   splits: null
 };
 
-let sortMode = "alphabetical";
-// options:
-// "alphabetical"
-// "tier"
-// "recent"
-// "progress"
+
 
 document.fonts.load("1em 'Permanent Marker'").then(() => {
   document.body.classList.add("marker-font");
@@ -1100,6 +1095,7 @@ function renderRun() {
 
   renderFusionFlowerWidget();
   renderActionLog();
+  renderAchievementFilterControls();
   renderAchievements();
   renderShop();
   requestAnimationFrame(updateAchievementCardScales);
@@ -1850,6 +1846,80 @@ function renderAchievementLogCard(achievementId) {
   applyAchievementToastBadgeImage(badgeImg, badgeSrc);
 
   return container;
+}
+
+function renderAchievementFilterControls() {
+  renderAchievementSortControl();
+  renderAchievementTagFilters();
+  syncAchievementFilterCheckboxes();
+}
+
+function renderAchievementSortControl() {
+  const sortSelect = document.getElementById("achievement-sort");
+  if (!sortSelect) return;
+
+  sortSelect.value = sortMode;
+}
+
+function renderAchievementTagFilters() {
+  const container = document.getElementById("achievement-tag-filters");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  allAchievementTags.forEach((tag) => {
+    const label = document.createElement("label");
+
+    label.innerHTML = `
+      <input
+        type="checkbox"
+        data-filter-group="tag"
+        data-filter-value="${tag}"
+        ${filterState?.tags?.[tag] ? "checked" : ""}
+      />
+      ${formatAchievementTagLabel(tag)}
+    `;
+
+    container.appendChild(label);
+  });
+}
+
+function syncAchievementFilterCheckboxes() {
+  const completedBox = document.querySelector(
+    'input[data-filter-group="status"][data-filter-value="completed"]'
+  );
+  const incompleteBox = document.querySelector(
+    'input[data-filter-group="status"][data-filter-value="incomplete"]'
+  );
+
+  if (completedBox) completedBox.checked = !!filterState?.completed;
+  if (incompleteBox) incompleteBox.checked = !!filterState?.incomplete;
+
+  Object.entries(filterState?.tiers || {}).forEach(([tier, enabled]) => {
+    const checkbox = document.querySelector(
+      `input[data-filter-group="tier"][data-filter-value="${tier}"]`
+    );
+
+    if (checkbox) {
+      checkbox.checked = !!enabled;
+    }
+  });
+
+  Object.entries(filterState?.tags || {}).forEach(([tag, enabled]) => {
+    const checkbox = document.querySelector(
+      `input[data-filter-group="tag"][data-filter-value="${tag}"]`
+    );
+
+    if (checkbox) {
+      checkbox.checked = !!enabled;
+    }
+  });
+}
+
+function formatAchievementTagLabel(tag) {
+  return String(tag || "")
+    .replace(/[-_]/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
 // =========================
@@ -3482,12 +3552,131 @@ function importRun(event) {
   reader.readAsText(file);
 }
 
+function handleAchievementSortChange(event) {
+  sortMode = event.target.value || "alphabetical";
+  renderAchievements();
+  requestAnimationFrame(updateAchievementCardScales);
+}
 
+function handleAchievementFilterToggle() {
+  const menu = document.getElementById("achievement-filter-menu");
+  const button = document.getElementById("achievement-filter-toggle");
+
+  if (!menu || !button) return;
+
+  const isHidden = menu.hasAttribute("hidden");
+
+  if (isHidden) {
+    menu.removeAttribute("hidden");
+    button.setAttribute("aria-expanded", "true");
+  } else {
+    menu.setAttribute("hidden", "");
+    button.setAttribute("aria-expanded", "false");
+  }
+}
+
+function handleAchievementFilterCheckboxChange(event) {
+  const checkbox = event.target;
+  if (!(checkbox instanceof HTMLInputElement)) return;
+
+  const group = checkbox.dataset.filterGroup;
+  const value = checkbox.dataset.filterValue;
+  const checked = checkbox.checked;
+
+  if (!group || !value || !filterState) return;
+
+  if (group === "status") {
+    if (value === "completed") {
+      filterState.completed = checked;
+    }
+
+    if (value === "incomplete") {
+      filterState.incomplete = checked;
+    }
+  }
+
+  if (group === "tier") {
+    filterState.tiers[value] = checked;
+  }
+
+  if (group === "tag") {
+    filterState.tags[value] = checked;
+  }
+
+  renderAchievements();
+  requestAnimationFrame(updateAchievementCardScales);
+}
+
+function handleAchievementFilterSelectAll() {
+  if (!filterState) return;
+
+  filterState.completed = true;
+  filterState.incomplete = true;
+
+  Object.keys(filterState.tiers).forEach((tier) => {
+    filterState.tiers[tier] = true;
+  });
+
+  Object.keys(filterState.tags).forEach((tag) => {
+    filterState.tags[tag] = true;
+  });
+
+  syncAchievementFilterCheckboxes();
+  renderAchievements();
+  requestAnimationFrame(updateAchievementCardScales);
+}
+
+function handleAchievementFilterSelectNone() {
+  if (!filterState) return;
+
+  filterState.completed = false;
+  filterState.incomplete = false;
+
+  Object.keys(filterState.tiers).forEach((tier) => {
+    filterState.tiers[tier] = false;
+  });
+
+  Object.keys(filterState.tags).forEach((tag) => {
+    filterState.tags[tag] = false;
+  });
+
+  syncAchievementFilterCheckboxes();
+  renderAchievements();
+  requestAnimationFrame(updateAchievementCardScales);
+}
 
 
 // =========================
 // Event Listener Wiring
 // =========================
+
+function attachAchievementControlListeners() {
+  const sortSelect = document.getElementById("achievement-sort");
+  const filterToggleBtn = document.getElementById("achievement-filter-toggle");
+  const filterMenu = document.getElementById("achievement-filter-menu");
+  const selectAllBtn = document.getElementById("achievement-filter-all");
+  const selectNoneBtn = document.getElementById("achievement-filter-none");
+
+  if (sortSelect) {
+    sortSelect.addEventListener("change", handleAchievementSortChange);
+  }
+
+  if (filterToggleBtn) {
+    filterToggleBtn.addEventListener("click", handleAchievementFilterToggle);
+  }
+
+  if (filterMenu) {
+    filterMenu.addEventListener("change", handleAchievementFilterCheckboxChange);
+  }
+
+  if (selectAllBtn) {
+    selectAllBtn.addEventListener("click", handleAchievementFilterSelectAll);
+  }
+
+  if (selectNoneBtn) {
+    selectNoneBtn.addEventListener("click", handleAchievementFilterSelectNone);
+  }
+}
 
 function attachEventListeners() {
   document.getElementById("save-run-name-btn").addEventListener("click", handleSaveRunName);
@@ -3533,6 +3722,7 @@ async function init() {
   await preloadAchievementAssets();
   attachEventListeners();
   attachTabEventListeners();
+  attachAchievementControlListeners();
   attachAnimationCleanup();
   initializeDebugMode();
   renderActionFields();

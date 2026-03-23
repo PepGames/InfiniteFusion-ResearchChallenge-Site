@@ -281,6 +281,135 @@
     <section class="tab-panel" id="tab-achievements">
       <section class="panel">
         <h2>Achievements</h2>
+
+        <div class="achievements-toolbar">
+          <div class="achievements-toolbar-left">
+            <label for="achievement-sort">Sort By</label>
+            <select id="achievement-sort">
+              <option value="alphabetical">Alphabetical</option>
+              <option value="tier">Rank</option>
+              <option value="recent">Most Recent</option>
+              <option value="progress">Progress Achieved</option>
+            </select>
+          </div>
+
+          <div class="achievements-toolbar-right">
+            <button
+              type="button"
+              id="achievement-filter-toggle"
+              class="achievement-filter-toggle-btn"
+              aria-expanded="false"
+              aria-controls="achievement-filter-menu"
+            >
+              Filters
+            </button>
+          </div>
+        </div>
+
+        <div
+          id="achievement-filter-menu"
+          class="achievement-filter-menu"
+          hidden
+        >
+          <div class="achievement-filter-actions">
+            <button type="button" id="achievement-filter-all">Select All</button>
+            <button type="button" id="achievement-filter-none">Select None</button>
+          </div>
+
+          <div class="achievement-filter-section">
+            <div class="achievement-filter-heading">Completion</div>
+
+            <label>
+              <input
+                type="checkbox"
+                data-filter-group="status"
+                data-filter-value="completed"
+                checked
+              />
+              Completed
+            </label>
+
+            <label>
+              <input
+                type="checkbox"
+                data-filter-group="status"
+                data-filter-value="incomplete"
+                checked
+              />
+              Incomplete
+            </label>
+          </div>
+
+          <div class="achievement-filter-section">
+            <div class="achievement-filter-heading">Rank</div>
+
+            <label>
+              <input
+                type="checkbox"
+                data-filter-group="tier"
+                data-filter-value="bronze"
+                checked
+              />
+              Bronze
+            </label>
+
+            <label>
+              <input
+                type="checkbox"
+                data-filter-group="tier"
+                data-filter-value="silver"
+                checked
+              />
+              Silver
+            </label>
+
+            <label>
+              <input
+                type="checkbox"
+                data-filter-group="tier"
+                data-filter-value="gold"
+                checked
+              />
+              Gold
+            </label>
+
+            <label>
+              <input
+                type="checkbox"
+                data-filter-group="tier"
+                data-filter-value="platinum"
+                checked
+              />
+              Platinum
+            </label>
+
+            <label>
+              <input
+                type="checkbox"
+                data-filter-group="tier"
+                data-filter-value="diamond"
+                checked
+              />
+              Diamond
+            </label>
+
+            <label>
+              <input
+                type="checkbox"
+                data-filter-group="tier"
+                data-filter-value="master"
+                checked
+              />
+              Master
+            </label>
+          </div>
+
+          <div class="achievement-filter-section">
+            <div class="achievement-filter-heading">Tags</div>
+            <div id="achievement-tag-filters"></div>
+          </div>
+        </div>
+
         <div id="achievements-list" class="achievement-list"></div>
       </section>
     </section>
@@ -300,7 +429,6 @@
         </div>
 
         <div id="shop-items" class="shop-item-list"></div>
-        </div>
       </section>
     </section>
   </main>
