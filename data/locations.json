@@ -89,5 +89,6 @@
   { "locationId": "ruby_chamber", "name": "Ruby Chamber" },
   { "locationId": "navel_rock", "name": "Navel Rock" },
   { "locationId": "old_shipwreck", "name": "Old Shipwreck" },
-  { "locationId": "rocket_warehouse", "name": "Rocket Warehouse" }
+  { "locationId": "rocket_warehouse", "name": "Rocket Warehouse" },
+  { "locationId": "viridian_city", "name": "Viridian City" }
 ]
