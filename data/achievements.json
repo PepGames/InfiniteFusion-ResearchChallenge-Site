@@ -639,8 +639,8 @@
 },
 {
   "id": "viridian-city",
-  "name": "Encounter - Cerulean City",
-  "description": "Catch 1 Pokemon in Cerulean City",
+  "name": "Encounter - Viridian City",
+  "description": "Catch 1 Pokemon in Viridian City",
   "rpReward": 1,
   "rule": {
     "type": "action_count",
