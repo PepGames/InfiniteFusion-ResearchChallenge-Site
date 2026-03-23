@@ -22,6 +22,6 @@
   { "trainerId": "agatha", "name": "Agatha", "battleType": "elite_four" },
   { "trainerId": "lance", "name": "Lance", "battleType": "elite_four" },
 
-  { "trainerId": "blue-rival", "name": "Blue", "battleType": "rival" },
-  { "trainerId": "blue-champion", "name": "Blue", "battleType": "champion" }
+  { "trainerId": "blue_rival", "name": "Blue", "battleType": "rival" },
+  { "trainerId": "blue_champion", "name": "Blue", "battleType": "champion" }
 ]
