@@ -2210,7 +2210,7 @@
 {
   "id": "grass-1",
   "name": "Sprout Shaper",
-  "description": "Perform 5 Fusions involving Fire Type Pokemon",
+  "description": "Perform 5 Fusions involving Grass Type Pokemon",
   "rpReward": 1,
   "rule": {
     "type": "fusion_dex_count",
@@ -2235,7 +2235,7 @@
 {
   "id": "grass-2",
   "name": "Garden Guardian",
-  "description": "Perform 10 Fusions involving Fire Type Pokemon",
+  "description": "Perform 10 Fusions involving Grass Type Pokemon",
   "rpReward": 1,
   "rule": {
     "type": "fusion_dex_count",
@@ -2261,7 +2261,7 @@
 {
   "id": "grass-3",
   "name": "Bush Builder",
-  "description": "Perform 20 Fusions involving Fire Type Pokemon",
+  "description": "Perform 20 Fusions involving Grass Type Pokemon",
   "rpReward": 1,
   "rule": {
     "type": "fusion_dex_count",
@@ -2287,7 +2287,7 @@
 {
   "id": "grass-4",
   "name": "Root Researcher",
-  "description": "Perform 35 Fusions involving Fire Type Pokemon",
+  "description": "Perform 35 Fusions involving Grass Type Pokemon",
   "rpReward": 1,
   "rule": {
     "type": "fusion_dex_count",
@@ -2313,7 +2313,7 @@
 {
   "id": "grass-5",
   "name": "Vine Visionary",
-  "description": "Perform 50 Fusions involving Fire Type Pokemon",
+  "description": "Perform 50 Fusions involving Grass Type Pokemon",
   "rpReward": 1,
   "rule": {
     "type": "fusion_dex_count",
@@ -2339,7 +2339,7 @@
 {
   "id": "grass-6",
   "name": "Grass Guru",
-  "description": "Perform 100 Fusions involving Fire Type Pokemon",
+  "description": "Perform 100 Fusions involving Grass Type Pokemon",
   "rpReward": 1,
   "rule": {
     "type": "fusion_dex_count",
