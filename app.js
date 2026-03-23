@@ -59,6 +59,35 @@ const SHOP_ITEMS = {
   }
 };
 
+const TIER_ORDER = {
+  bronze: 1,
+  silver: 2,
+  gold: 3,
+  platinum: 4,
+  diamond: 5,
+  master: 6
+};
+
+const defaultFilterState = {
+  completed: true,
+  incomplete: true,
+
+  tiers: {
+    bronze: true,
+    silver: true,
+    gold: true,
+    platinum: true,
+    diamond: true,
+    master: true
+  },
+
+  tags: {}
+};
+
+let filterState = null;
+let sortMode = "alphabetical";
+let allAchievementTags = [];
+
 let shopCart = {
   catch_token: 0,
   split_token: 0
@@ -83,9 +112,17 @@ let lastRenderedFusionFlowerValues = {
   splits: null
 };
 
+let sortMode = "alphabetical";
+// options:
+// "alphabetical"
+// "tier"
+// "recent"
+// "progress"
+
 document.fonts.load("1em 'Permanent Marker'").then(() => {
   document.body.classList.add("marker-font");
 });
+
 
 // =========================
 // Persistence / Save State
@@ -1133,52 +1170,23 @@ function renderActionLog() {
 
 function renderAchievements() {
   const container = document.getElementById("achievements-list");
+  if (!container) return;
+
   container.innerHTML = "";
 
-  const visibleAchievements = achievementCatalog.filter((achievement) => {
-    const progress = runState.achievementProgress[achievement.id];
-    const unlocked = !!progress?.unlocked;
+  const visibleAchievements = getVisibleAchievements();
 
-    if (achievement.hidden && !unlocked) {
-      return false;
+  visibleAchievements.forEach((achievement) => {
+    if (achievement.hidden && !achievement.completed) {
+      return;
     }
 
-    return true;
-  });
-
-  const sortedAchievements = [...visibleAchievements].sort((a, b) => {
-    const progressA = runState.achievementProgress[a.id];
-    const progressB = runState.achievementProgress[b.id];
-
-    const unlockedA = !!progressA?.unlocked;
-    const unlockedB = !!progressB?.unlocked;
-
-    if (unlockedA && unlockedB) {
-      const timeA = progressA.unlockedAt || "";
-      const timeB = progressB.unlockedAt || "";
-      return timeB.localeCompare(timeA);
-    }
-
-    if (unlockedA) return -1;
-    if (unlockedB) return 1;
-
-    return a.name.localeCompare(b.name);
-  });
-
-  sortedAchievements.forEach((achievement) => {
-    const progress = runState.achievementProgress[achievement.id] || {
-      unlocked: false,
-      unlockedAt: null,
-      current: 0,
-      target: getRuleTarget(achievement.rule)
-    };
-
-    const unlocked = !!progress.unlocked;
+    const unlocked = achievement.completed;
     const description = achievement.description || "";
-    const current = Number(progress.current || 0);
-    const target = Number(progress.target || 1);
+    const current = achievement.current;
+    const target = achievement.target;
     const clampedCurrent = Math.min(current, target);
-    const percent = Math.max(0, Math.min(100, (current / target) * 100));
+    const percent = achievement.percent * 100;
 
     const badgeSrc = getAchievementBadgeImage(achievement);
     const backgroundSrc = getAchievementTierBackground(achievement);
@@ -1200,7 +1208,7 @@ function renderAchievements() {
     }
 
     const metaText = unlocked
-      ? `Completed • ${formatActionTimestamp(progress.unlockedAt)}`
+      ? `Completed • ${formatActionTimestamp(achievement.completedAt)}`
       : `Progress: ${clampedCurrent} / ${target}`;
 
     card.innerHTML = `
@@ -2943,6 +2951,133 @@ function getCatchTypeOptionsHtml() {
 }
 
 // =========================
+// Achievement System
+// =========================
+
+function buildAchievementViewModel(achievements, runState) {
+  return achievements.map((achievement) => {
+    const progress = runState.achievementProgress[achievement.id] || {
+      unlocked: false,
+      unlockedAt: null,
+      current: 0,
+      target: getRuleTarget(achievement.rule)
+    };
+
+    const current = Number(progress.current || 0);
+    const target = Number(progress.target || getRuleTarget(achievement.rule));
+    const safeTarget = target > 0 ? target : 1;
+    const percent = Math.max(0, Math.min(current / safeTarget, 1));
+    const unlocked = !!progress.unlocked;
+
+    return {
+      ...achievement,
+      current,
+      target: safeTarget,
+      percent,
+      completed: unlocked || percent >= 1,
+      completedAt: progress.unlockedAt || null,
+      tierOrder: getTierOrder(achievement.tier),
+      nameLower: String(achievement.name || "").toLowerCase()
+    };
+  });
+}
+
+function getTierOrder(tier) {
+  return TIER_ORDER[tier?.toLowerCase()] || 0;
+}
+
+function extractAllTags(achievements) {
+  const tagSet = new Set();
+
+  achievements.forEach(a => {
+    (a.tags || []).forEach(tag => {
+      tagSet.add(tag);
+    });
+  });
+
+  return Array.from(tagSet).sort();
+}
+
+function createDefaultFilterState(tags = []) {
+  const state = structuredClone(defaultFilterState);
+
+  tags.forEach((tag) => {
+    state.tags[tag] = true;
+  });
+
+  return state;
+}
+
+function initializeAchievementFilters() {
+  allAchievementTags = extractAllTags(achievementCatalog);
+  filterState = createDefaultFilterState(allAchievementTags);
+}
+
+function applyFilters(list, filters) {
+  return list.filter((achievement) => {
+    if (!filters.completed && achievement.completed) return false;
+    if (!filters.incomplete && !achievement.completed) return false;
+
+    const tierKey = String(achievement.tier || "").toLowerCase();
+    if (!filters.tiers[tierKey]) return false;
+
+    if (Array.isArray(achievement.tags) && achievement.tags.length > 0) {
+      const hasEnabledTag = achievement.tags.some((tag) => filters.tags[tag]);
+      if (!hasEnabledTag) return false;
+    }
+
+    return true;
+  });
+}
+
+function applySort(list, mode) {
+  return [...list].sort((a, b) => {
+
+    switch (mode) {
+      case "tier":
+        if (a.tierOrder !== b.tierOrder) {
+          return a.tierOrder - b.tierOrder;
+        }
+        break;
+
+      case "recent":
+        const aDate = a.completedAt ? new Date(a.completedAt).getTime() : 0;
+        const bDate = b.completedAt ? new Date(b.completedAt).getTime() : 0;
+
+        if (aDate !== bDate) {
+          return bDate - aDate; // most recent first
+        }
+        break;
+
+      case "progress":
+        if (a.percent !== b.percent) {
+          return b.percent - a.percent;
+        }
+        break;
+
+      case "alphabetical":
+      default:
+        break;
+    }
+
+    // fallback
+    return a.nameLower.localeCompare(b.nameLower);
+  });
+}
+
+function getVisibleAchievements() {
+  if (!Array.isArray(achievementCatalog) || !filterState) {
+    return [];
+  }
+
+  const base = buildAchievementViewModel(achievementCatalog, runState);
+  const filtered = applyFilters(base, filterState);
+  const sorted = applySort(filtered, sortMode);
+
+  return sorted;
+}
+
+// =========================
 // Event Handlers
 // =========================
 
@@ -3391,6 +3526,7 @@ function initializeDebugMode() {
 
 async function init() {
   await loadAchievementCatalog();
+  initializeAchievementFilters();
   await loadSpeciesCatalog();
   await loadLocationCatalog();
   await loadTrainerCatalog();
