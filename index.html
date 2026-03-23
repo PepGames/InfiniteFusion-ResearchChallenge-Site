@@ -295,122 +295,123 @@
 
           <div class="achievements-toolbar-right">
             <div class="achievement-filter-anchor">
-            <button
-              type="button"
-              id="achievement-filter-toggle"
-              class="achievement-filter-toggle-btn"
-              aria-expanded="false"
-              aria-controls="achievement-filter-menu"
-            >
-              Filters
-            </button></div>
-          </div>
-        </div>
+              <button
+                type="button"
+                id="achievement-filter-toggle"
+                class="achievement-filter-toggle-btn"
+                aria-expanded="false"
+                aria-controls="achievement-filter-menu"
+              >
+                Filters
+              </button>
 
-        <div
-          id="achievement-filter-menu"
-          class="achievement-filter-menu"
-          hidden
-        >
-          <div class="achievement-filter-actions">
-            <button type="button" id="achievement-filter-all">Select All</button>
-            <button type="button" id="achievement-filter-none">Select None</button>
-          </div>
+              <div
+                id="achievement-filter-menu"
+                class="achievement-filter-menu"
+                hidden
+              >
+                <div class="achievement-filter-actions">
+                  <button type="button" id="achievement-filter-all">Select All</button>
+                  <button type="button" id="achievement-filter-none">Select None</button>
+                </div>
 
-          <div class="achievement-filter-grid">
-            <div class="achievement-filter-section">
-              <div class="achievement-filter-heading">Completion</div>
-              <div class="achievement-filter-options">
-                <label class="achievement-filter-chip">
-                  <input
-                    type="checkbox"
-                    data-filter-group="status"
-                    data-filter-value="completed"
-                    checked
-                  />
-                  <span>Completed</span>
-                </label>
+                <div class="achievement-filter-grid">
+                  <div class="achievement-filter-section">
+                    <div class="achievement-filter-heading">Completion</div>
+                    <div class="achievement-filter-options">
+                      <label class="achievement-filter-chip">
+                        <input
+                          type="checkbox"
+                          data-filter-group="status"
+                          data-filter-value="completed"
+                          checked
+                        />
+                        <span>Completed</span>
+                      </label>
 
-                <label class="achievement-filter-chip">
-                  <input
-                    type="checkbox"
-                    data-filter-group="status"
-                    data-filter-value="incomplete"
-                    checked
-                  />
-                  <span>Incomplete</span>
-                </label>
+                      <label class="achievement-filter-chip">
+                        <input
+                          type="checkbox"
+                          data-filter-group="status"
+                          data-filter-value="incomplete"
+                          checked
+                        />
+                        <span>Incomplete</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="achievement-filter-section">
+                    <div class="achievement-filter-heading">Rank</div>
+                    <div class="achievement-filter-options">
+                      <label class="achievement-filter-chip">
+                        <input
+                          type="checkbox"
+                          data-filter-group="tier"
+                          data-filter-value="bronze"
+                          checked
+                        />
+                        <span>Bronze</span>
+                      </label>
+
+                      <label class="achievement-filter-chip">
+                        <input
+                          type="checkbox"
+                          data-filter-group="tier"
+                          data-filter-value="silver"
+                          checked
+                        />
+                        <span>Silver</span>
+                      </label>
+
+                      <label class="achievement-filter-chip">
+                        <input
+                          type="checkbox"
+                          data-filter-group="tier"
+                          data-filter-value="gold"
+                          checked
+                        />
+                        <span>Gold</span>
+                      </label>
+
+                      <label class="achievement-filter-chip">
+                        <input
+                          type="checkbox"
+                          data-filter-group="tier"
+                          data-filter-value="platinum"
+                          checked
+                        />
+                        <span>Platinum</span>
+                      </label>
+
+                      <label class="achievement-filter-chip">
+                        <input
+                          type="checkbox"
+                          data-filter-group="tier"
+                          data-filter-value="diamond"
+                          checked
+                        />
+                        <span>Diamond</span>
+                      </label>
+
+                      <label class="achievement-filter-chip">
+                        <input
+                          type="checkbox"
+                          data-filter-group="tier"
+                          data-filter-value="master"
+                          checked
+                        />
+                        <span>Master</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="achievement-filter-section achievement-filter-section-tags">
+                    <div class="achievement-filter-heading">Tags</div>
+                    <div id="achievement-tag-filters" class="achievement-filter-options"></div>
+                  </div>
+                </div>
               </div>
-            </div>
-
-            <div class="achievement-filter-section">
-              <div class="achievement-filter-heading">Rank</div>
-              <div class="achievement-filter-options">
-                <label class="achievement-filter-chip">
-                  <input
-                    type="checkbox"
-                    data-filter-group="tier"
-                    data-filter-value="bronze"
-                    checked
-                  />
-                  <span>Bronze</span>
-                </label>
-
-                <label class="achievement-filter-chip">
-                  <input
-                    type="checkbox"
-                    data-filter-group="tier"
-                    data-filter-value="silver"
-                    checked
-                  />
-                  <span>Silver</span>
-                </label>
-
-                <label class="achievement-filter-chip">
-                  <input
-                    type="checkbox"
-                    data-filter-group="tier"
-                    data-filter-value="gold"
-                    checked
-                  />
-                  <span>Gold</span>
-                </label>
-
-                <label class="achievement-filter-chip">
-                  <input
-                    type="checkbox"
-                    data-filter-group="tier"
-                    data-filter-value="platinum"
-                    checked
-                  />
-                  <span>Platinum</span>
-                </label>
-
-                <label class="achievement-filter-chip">
-                  <input
-                    type="checkbox"
-                    data-filter-group="tier"
-                    data-filter-value="diamond"
-                    checked
-                  />
-                  <span>Diamond</span>
-                </label>
-
-                <label class="achievement-filter-chip">
-                  <input
-                    type="checkbox"
-                    data-filter-group="tier"
-                    data-filter-value="master"
-                    checked
-                  />
-                  <span>Master</span>
-                </label>
-              </div>
-            </div>
-
-            <div class="achievement-filter-section achievement-filter-section-tags">
-              <div class="achievement-filter-heading">Tags</div>
-              <div id="achievement-tag-filters" class="achievement-filter-options"></div>
             </div>
           </div>
         </div>
