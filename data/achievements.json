@@ -58,6 +58,4636 @@
   "hidden": false
 },
 {
+  "id": "route-1",
+  "name": "Encounter - Route 1",
+  "description": "Catch 1 Pokemon on Route 1",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_1"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "secret-garden",
+  "name": "Encounter - Secret Garden",
+  "description": "Catch 1 Pokemon in Secret Garden",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "secret_garden"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-2",
+  "name": "Encounter - Route 2",
+  "description": "Catch 1 Pokemon on Route 2",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_2"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "hidden-forest",
+  "name": "Encounter - Hidden Forest",
+  "description": "Catch 1 Pokemon in Hidden Forest",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "hidden_forest"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "viridian-river",
+  "name": "Encounter - Viridian River",
+  "description": "Catch 1 Pokemon in Viridian River",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "viridian_river"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-3",
+  "name": "Encounter - Route 3",
+  "description": "Catch 1 Pokemon on Route 3",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_3"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-4",
+  "name": "Encounter - Route 4",
+  "description": "Catch 1 Pokemon on Route 4",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_4"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-5",
+  "name": "Encounter - Route 5",
+  "description": "Catch 1 Pokemon on Route 5",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_5"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-6",
+  "name": "Encounter - Route 6",
+  "description": "Catch 1 Pokemon on Route 6",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_6"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-7",
+  "name": "Encounter - Route 7",
+  "description": "Catch 1 Pokemon on Route 7",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_7"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-8",
+  "name": "Encounter - Route 8",
+  "description": "Catch 1 Pokemon on Route 8",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_8"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-9",
+  "name": "Encounter - Route 9",
+  "description": "Catch 1 Pokemon on Route 9",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_9"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-10",
+  "name": "Encounter - Route 10",
+  "description": "Catch 1 Pokemon on Route 10",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_10"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-11",
+  "name": "Encounter - Route 11",
+  "description": "Catch 1 Pokemon on Route 11",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_11"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-12",
+  "name": "Encounter - Route 12",
+  "description": "Catch 1 Pokemon on Route 12",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_12"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "flooded-cave",
+  "name": "Encounter - Flooded Cave",
+  "description": "Catch 1 Pokemon in Flooded Cave",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "flooded_cave"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "underwater",
+  "name": "Encounter - Underwater",
+  "description": "Catch 1 Pokemon Underwater",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "underwater"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-13",
+  "name": "Encounter - Route 13",
+  "description": "Catch 1 Pokemon on Route 13",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_13"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-14",
+  "name": "Encounter - Route 14",
+  "description": "Catch 1 Pokemon on Route 14",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_14"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-15",
+  "name": "Encounter - Route 15",
+  "description": "Catch 1 Pokemon on Route 15",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_15"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "creepy-house",
+  "name": "Encounter - Creepy House",
+  "description": "Catch 1 Pokemon in Creepy House",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "creepy_house"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-16",
+  "name": "Encounter - Route 16",
+  "description": "Catch 1 Pokemon on Route 16",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_16"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-17",
+  "name": "Encounter - Route 17",
+  "description": "Catch 1 Pokemon on Route 17",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_17"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-18",
+  "name": "Encounter - Route 18",
+  "description": "Catch 1 Pokemon on Route 18",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_18"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-19",
+  "name": "Encounter - Route 19",
+  "description": "Catch 1 Pokemon on Route 19",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_19"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-20",
+  "name": "Encounter - Route 20",
+  "description": "Catch 1 Pokemon on Route 20",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_20"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-22",
+  "name": "Encounter - Route 22",
+  "description": "Catch 1 Pokemon on Route 22",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_22"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-24",
+  "name": "Encounter - Route 24",
+  "description": "Catch 1 Pokemon on Route 24",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_24"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "bills-garden",
+  "name": "Encounter - Bill's Garden",
+  "description": "Catch 1 Pokemon in Bill's Garden",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "bills_garden"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "pallet-town",
+  "name": "Encounter - Pallet Town",
+  "description": "Catch 1 Pokemon in Pallet Town",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "pallet_town"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "cerulean-city",
+  "name": "Encounter - Cerulean City",
+  "description": "Catch 1 Pokemon in Cerulean City",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "cerulean_city"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "vermilion-city",
+  "name": "Encounter - Vermillion City",
+  "description": "Catch 1 Pokemon in Vermillion City",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "vermilion_city"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "celadon-city",
+  "name": "Encounter - Celadon City",
+  "description": "Catch 1 Pokemon in Celadon City",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "celadon_city"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "pokemon-tower",
+  "name": "Encounter - Pokemon Tower",
+  "description": "Catch 1 Pokemon in Pokemon Tower",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "pokemon_tower"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "hidden-tomb",
+  "name": "Encounter - Hidden Tomb",
+  "description": "Catch 1 Pokemon in Hidden Tomb",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "hidden_tomb"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "crimson-city",
+  "name": "Encounter - Crimson City",
+  "description": "Catch 1 Pokemon in Crimson City",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "crimson_city"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "mt-moon",
+  "name": "Encounter - Mt. Moon",
+  "description": "Catch 1 Pokemon in Mt. Moon",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "mt_moon"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "mt-moon-summit",
+  "name": "Encounter - Mt. Moon Summit",
+  "description": "Catch 1 Pokemon in Mt. Moon Summit",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "mt_moon_summit"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "rock-tunnel",
+  "name": "Encounter - Rock Tunnel",
+  "description": "Catch 1 Pokemon in Rock Tunnel",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "rock_tunnel"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "safari-zone",
+  "name": "Encounter - Safari Zone",
+  "description": "Catch 1 Pokemon in the Safari Zone",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "safari_zone"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "victory-road",
+  "name": "Encounter - Victory Road",
+  "description": "Catch 1 Pokemon in Victory Road",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "victory_road"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "viridian-forest",
+  "name": "Encounter - Viridian Forest",
+  "description": "Catch 1 Pokemon in Viridian Forest",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "viridian_forest"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "cerulean-cave",
+  "name": "Encounter - Cerulean Cave",
+  "description": "Catch 1 Pokemon in Cerulean Cave",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "cerulean_cave"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "mt-silver",
+  "name": "Encounter - Mt. Silver",
+  "description": "Catch 1 Pokemon in Mt. Silver",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "mt_silver"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "pokemon-mansion",
+  "name": "Encounter - Pokemon Mansion",
+  "description": "Catch 1 Pokemon in Pokemon Mansion",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "pokemon_mansion"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "blackthorn-city",
+  "name": "Encounter - Blackthorn City",
+  "description": "Catch 1 Pokemon in Blackthorn City",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "blackthorn_city"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "dragons-den",
+  "name": "Encounter - Dragon's Den",
+  "description": "Catch 1 Pokemon in Dragon's Den",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "dragons_den"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "burned-tower",
+  "name": "Encounter - Burned Tower",
+  "description": "Catch 1 Pokemon in Burned Tower",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "burned_tower"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "lake-of-rage",
+  "name": "Encounter - Lake of Rage",
+  "description": "Catch 1 Pokemon in Lake of Rage",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "lake_of_rage"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "ilex-forest",
+  "name": "Encounter - Ilex Forest",
+  "description": "Catch 1 Pokemon in Ilex Forest",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "ilex_forest"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "union-cave",
+  "name": "Encounter - Union Cave",
+  "description": "Catch 1 Pokemon in Union Cave",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "union_cave"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-29",
+  "name": "Encounter - Route 29",
+  "description": "Catch 1 Pokemon on Route 29",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_29"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-30",
+  "name": "Encounter - Route 30",
+  "description": "Catch 1 Pokemon on Route 30",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_30"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-31",
+  "name": "Encounter - Route 31",
+  "description": "Catch 1 Pokemon on Route 31",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_31"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-32",
+  "name": "Encounter - Route 32",
+  "description": "Catch 1 Pokemon on Route 32",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_32"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-33",
+  "name": "Encounter - Route 33",
+  "description": "Catch 1 Pokemon on Route 33",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_33"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-34",
+  "name": "Encounter - Route 34",
+  "description": "Catch 1 Pokemon on Route 34",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_34"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-35",
+  "name": "Encounter - Route 35",
+  "description": "Catch 1 Pokemon on Route 35",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_35"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-36",
+  "name": "Encounter - Route 36",
+  "description": "Catch 1 Pokemon on Route 36",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_36"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-37",
+  "name": "Encounter - Route 37",
+  "description": "Catch 1 Pokemon on Route 37",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_37"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-42",
+  "name": "Encounter - Route 42",
+  "description": "Catch 1 Pokemon on Route 42",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_42"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-43",
+  "name": "Encounter - Route 43",
+  "description": "Catch 1 Pokemon on Route 43",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_43"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-44",
+  "name": "Encounter - Route 44",
+  "description": "Catch 1 Pokemon on Route 44",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_44"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "ruins-of-alph",
+  "name": "Encounter - Ruins of Alph",
+  "description": "Catch 1 Pokemon in Ruins of Alph",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "ruins_of_alph"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "national-park",
+  "name": "Encounter - National Park",
+  "description": "Catch 1 Pokemon in National Park",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "national_park"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "kindle-road",
+  "name": "Encounter - Kindle Road",
+  "description": "Catch 1 Pokemon on Kindle Road",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "kindle_road"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "brine-road",
+  "name": "Encounter - Brine Road",
+  "description": "Catch 1 Pokemon on Brine Road",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "brine_road"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "deep-sea",
+  "name": "Encounter - Deep Sea",
+  "description": "Catch 1 Pokemon in Deep Sea",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "deep_sea"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "water-labyrinth",
+  "name": "Encounter - Water Labyrinth",
+  "description": "Catch 1 Pokemon in Water Labyrinth",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "water_labyrinth"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "boon-island",
+  "name": "Encounter - Boon Island",
+  "description": "Catch 1 Pokemon on Boon Island",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "boon_island"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "kin-island",
+  "name": "Encounter - Kin Island",
+  "description": "Catch 1 Pokemon on Kin Island",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "kin_island"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "knot-island",
+  "name": "Encounter - Knot Island",
+  "description": "Catch 1 Pokemon on Knot Island",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "knot_island"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "chrono-island",
+  "name": "Encounter - Chrono Island",
+  "description": "Catch 1 Pokemon on Chrono Island",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "chrono_island"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "offshore-road",
+  "name": "Encounter - Offshore Road",
+  "description": "Catch 1 Pokemon on Offshore Road",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "offshore_road"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "berry-forest",
+  "name": "Encounter - Berry Forest",
+  "description": "Catch 1 Pokemon in Berry Forest",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "berry_forest"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "pinkan-hollow",
+  "name": "Encounter - Pinkan Hollow",
+  "description": "Catch 1 Pokemon in Pinkan Hollow",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "pinkan_hollow"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "pinkan-forest",
+  "name": "Encounter - Pinkan Forest",
+  "description": "Catch 1 Pokemon in Pinkan Forest",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "pinkan_forest"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "cerulean-team-rocket-hq",
+  "name": "Encounter - Cerulean Team Rocket HQ",
+  "description": "Catch 1 Pokemon in Cerulean Team Rocket HQ",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "cerulean_team_rocket_hq"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "saffron-city",
+  "name": "Encounter - Saffron City House",
+  "description": "Catch 1 Pokemon in Saffron City",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "saffron_city"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "cinnabar-island",
+  "name": "Encounter - Cinnabar Island",
+  "description": "Catch 1 Pokemon on Cinnabar Island",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "cinnabar_island"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "seafoam-islands",
+  "name": "Encounter - Seafoam Islands",
+  "description": "Catch 1 Pokemon in Seafoam Islands",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "seafoam_islands"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "power-plant",
+  "name": "Encounter - Power Plant",
+  "description": "Catch 1 Pokemon in Power Plant",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "power_plant"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "goldenrod-city",
+  "name": "Encounter - Goldenrod City",
+  "description": "Catch 1 Pokemon in Goldenrod City",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "goldenrod_city"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "mt-mortar",
+  "name": "Encounter - Mt. Mortar",
+  "description": "Catch 1 Pokemon in Mt. Mortar",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "mt_mortar"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "route-46",
+  "name": "Encounter - Route 46",
+  "description": "Catch 1 Pokemon on Route 46",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "route_46"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "ice-cavern",
+  "name": "Encounter - Ice Cavern",
+  "description": "Catch 1 Pokemon in Ice Cavern",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "ice_cavern"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "sevii-islands",
+  "name": "Encounter - Sevii Islands",
+  "description": "Catch 1 Pokemon in Sevii Islands",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "sevii_islands"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "treasure-beach",
+  "name": "Encounter - Treasure Beach",
+  "description": "Catch 1 Pokemon in Treasure Beach",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "treasure_beach"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "ruby-chamber",
+  "name": "Encounter - Ruby Chamber",
+  "description": "Catch 1 Pokemon in Ruby Chamber",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "ruby_chamber"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "navel-rock",
+  "name": "Encounter - Navel Rock",
+  "description": "Catch 1 Pokemon on Navel Rock",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "navel_rock"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "old-shipwreck",
+  "name": "Encounter - Old Shipwreck",
+  "description": "Catch 1 Pokemon in Old Shipwreck",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "old_shipwreck"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "rocket-warehouse",
+  "name": "Encounter - Rocket Warehouse",
+  "description": "Catch 1 Pokemon in Rocket Warehouse",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "rocket_warehouse"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "water-1",
+  "name": "Splash Specialist",
+  "description": "Perform 5 Fusions involving Water Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 5,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "water"
+      ]
+    }
+  },
+  "tags": [
+    "fusion",
+    "water"
+  ],
+  "symbol": "water_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "water-2",
+  "name": "River Runner",
+  "description": "Perform 10 Fusions involving Water Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 10,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "water"
+      ]
+    }
+  },
+  "previousAchievement": "water-1",
+  "tags": [
+    "fusion",
+    "water"
+  ],
+  "symbol": "water_symbol",
+  "tier": "silver",
+  "hidden": false
+},
+{
+  "id": "water-3",
+  "name": "Current Controller",
+  "description": "Perform 20 Fusions involving Water Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 20,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "water"
+      ]
+    }
+  },
+  "previousAchievement": "water-2",
+  "tags": [
+    "fusion",
+    "water"
+  ],
+  "symbol": "water_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "water-4",
+  "name": "Tide Tinkerer",
+  "description": "Perform 35 Fusions involving Water Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 35,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "water"
+      ]
+    }
+  },
+  "previousAchievement": "water-3",
+  "tags": [
+    "fusion",
+    "water"
+  ],
+  "symbol": "water_symbol",
+  "tier": "platinum",
+  "hidden": false
+},
+{
+  "id": "water-5",
+  "name": "Ocean Obsessive",
+  "description": "Perform 50 Fusions involving Water Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 50,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "water"
+      ]
+    }
+  },
+  "previousAchievement": "water-4",
+  "tags": [
+    "fusion",
+    "water"
+  ],
+  "symbol": "water_symbol",
+  "tier": "diamond",
+  "hidden": false
+},
+{
+  "id": "water-6",
+  "name": "Water Weaver",
+  "description": "Perform 100 Fusions involving Water Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 100,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "water"
+      ]
+    }
+  },
+  "previousAchievement": "water-5",
+  "tags": [
+    "fusion",
+    "water"
+  ],
+  "symbol": "water_symbol",
+  "tier": "master",
+  "hidden": false
+},
+{
+  "id": "fire-1",
+  "name": "Ember Enthusiast",
+  "description": "Perform 5 Fusions involving Fire Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 5,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "fire"
+      ]
+    }
+  },
+  "tags": [
+    "fusion",
+    "fire"
+  ],
+  "symbol": "fire_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "fire-2",
+  "name": "Inferno Implementer",
+  "description": "Perform 10 Fusions involving Fire Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 10,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "fire"
+      ]
+    }
+  },
+  "previousAchievement": "fire-1",
+  "tags": [
+    "fusion",
+    "fire"
+  ],
+  "symbol": "fire_symbol",
+  "tier": "silver",
+  "hidden": false
+},
+{
+  "id": "fire-3",
+  "name": "Scorch Smith",
+  "description": "Perform 20 Fusions involving Fire Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 20,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "fire"
+      ]
+    }
+  },
+  "previousAchievement": "fire-2",
+  "tags": [
+    "fusion",
+    "fire"
+  ],
+  "symbol": "fire_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "fire-4",
+  "name": "Ash Augmenter",
+  "description": "Perform 35 Fusions involving Fire Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 35,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "fire"
+      ]
+    }
+  },
+  "previousAchievement": "fire-3",
+  "tags": [
+    "fusion",
+    "fire"
+  ],
+  "symbol": "fire_symbol",
+  "tier": "platinum",
+  "hidden": false
+},
+{
+  "id": "fire-5",
+  "name": "Blaze Boss",
+  "description": "Perform 50 Fusions involving Fire Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 50,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "fire"
+      ]
+    }
+  },
+  "previousAchievement": "fire-4",
+  "tags": [
+    "fusion",
+    "fire"
+  ],
+  "symbol": "fire_symbol",
+  "tier": "diamond",
+  "hidden": false
+},
+{
+  "id": "fire-6",
+  "name": "Fire Forger",
+  "description": "Perform 100 Fusions involving Fire Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 100,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "fire"
+      ]
+    }
+  },
+  "previousAchievement": "fire-5",
+  "tags": [
+    "fusion",
+    "fire"
+  ],
+  "symbol": "fire_symbol",
+  "tier": "master",
+  "hidden": false
+},
+{
+  "id": "grass-1",
+  "name": "Sprout Shaper",
+  "description": "Perform 5 Fusions involving Fire Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 5,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "grass"
+      ]
+    }
+  },
+  "tags": [
+    "fusion",
+    "grass"
+  ],
+  "symbol": "grass_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "grass-2",
+  "name": "Garden Guardian",
+  "description": "Perform 10 Fusions involving Fire Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 10,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "grass"
+      ]
+    }
+  },
+  "previousAchievement": "grass-1",
+  "tags": [
+    "fusion",
+    "grass"
+  ],
+  "symbol": "grass_symbol",
+  "tier": "silver",
+  "hidden": false
+},
+{
+  "id": "grass-3",
+  "name": "Bush Builder",
+  "description": "Perform 20 Fusions involving Fire Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 20,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "grass"
+      ]
+    }
+  },
+  "previousAchievement": "grass-2",
+  "tags": [
+    "fusion",
+    "grass"
+  ],
+  "symbol": "grass_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "grass-4",
+  "name": "Root Researcher",
+  "description": "Perform 35 Fusions involving Fire Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 35,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "grass"
+      ]
+    }
+  },
+  "previousAchievement": "grass-3",
+  "tags": [
+    "fusion",
+    "grass"
+  ],
+  "symbol": "grass_symbol",
+  "tier": "platinum",
+  "hidden": false
+},
+{
+  "id": "grass-5",
+  "name": "Vine Visionary",
+  "description": "Perform 50 Fusions involving Fire Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 50,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "grass"
+      ]
+    }
+  },
+  "previousAchievement": "grass-4",
+  "tags": [
+    "fusion",
+    "grass"
+  ],
+  "symbol": "grass_symbol",
+  "tier": "diamond",
+  "hidden": false
+},
+{
+  "id": "grass-6",
+  "name": "Grass Guru",
+  "description": "Perform 100 Fusions involving Fire Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 100,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "grass"
+      ]
+    }
+  },
+  "previousAchievement": "grass-5",
+  "tags": [
+    "fusion",
+    "grass"
+  ],
+  "symbol": "grass_symbol",
+  "tier": "master",
+  "hidden": false
+},
+{
+  "id": "electric-1",
+  "name": "Spark Seeker",
+  "description": "Perform 5 Fusions involving Electric Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 5,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "electric"
+      ]
+    }
+  },
+  "tags": [
+    "fusion",
+    "electric"
+  ],
+  "symbol": "electric_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "electric-2",
+  "name": "Power Producer",
+  "description": "Perform 10 Fusions involving Electric Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 10,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "electric"
+      ]
+    }
+  },
+  "previousAchievement": "electric-1",
+  "tags": [
+    "fusion",
+    "electric"
+  ],
+  "symbol": "electric_symbol",
+  "tier": "silver",
+  "hidden": false
+},
+{
+  "id": "electric-3",
+  "name": "Circuit Crafter",
+  "description": "Perform 20 Fusions involving Electric Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 20,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "electric"
+      ]
+    }
+  },
+  "previousAchievement": "electric-2",
+  "tags": [
+    "fusion",
+    "electric"
+  ],
+  "symbol": "electric_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "electric-4",
+  "name": "Arc Assembler",
+  "description": "Perform 35 Fusions involving Electric Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 35,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "electric"
+      ]
+    }
+  },
+  "previousAchievement": "electric-3",
+  "tags": [
+    "fusion",
+    "electric"
+  ],
+  "symbol": "electric_symbol",
+  "tier": "platinum",
+  "hidden": false
+},
+{
+  "id": "electric-5",
+  "name": "Watt Warden",
+  "description": "Perform 50 Fusions involving Electric Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 50,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "electric"
+      ]
+    }
+  },
+  "previousAchievement": "electric-4",
+  "tags": [
+    "fusion",
+    "electric"
+  ],
+  "symbol": "electric_symbol",
+  "tier": "diamond",
+  "hidden": false
+},
+{
+  "id": "electric-6",
+  "name": "Electric Engineer",
+  "description": "Perform 100 Fusions involving Electric Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 100,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "electric"
+      ]
+    }
+  },
+  "previousAchievement": "electric-5",
+  "tags": [
+    "fusion",
+    "electric"
+  ],
+  "symbol": "electric_symbol",
+  "tier": "master",
+  "hidden": false
+},
+{
+  "id": "ice-1",
+  "name": "Snow Scout",
+  "description": "Perform 5 Fusions involving Ice Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 5,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "ice"
+      ]
+    }
+  },
+  "tags": [
+    "fusion",
+    "ice"
+  ],
+  "symbol": "ice_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "ice-2",
+  "name": "Polar Pioneer",
+  "description": "Perform 10 Fusions involving Ice Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 10,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "ice"
+      ]
+    }
+  },
+  "previousAchievement": "ice-1",
+  "tags": [
+    "fusion",
+    "ice"
+  ],
+  "symbol": "ice_symbol",
+  "tier": "silver",
+  "hidden": false
+},
+{
+  "id": "ice-3",
+  "name": "Tundra Technician",
+  "description": "Perform 20 Fusions involving Ice Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 20,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "ice"
+      ]
+    }
+  },
+  "previousAchievement": "ice-2",
+  "tags": [
+    "fusion",
+    "ice"
+  ],
+  "symbol": "ice_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "ice-4",
+  "name": "Frost Facilitator",
+  "description": "Perform 35 Fusions involving Ice Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 35,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "ice"
+      ]
+    }
+  },
+  "previousAchievement": "ice-3",
+  "tags": [
+    "fusion",
+    "ice"
+  ],
+  "symbol": "ice_symbol",
+  "tier": "platinum",
+  "hidden": false
+},
+{
+  "id": "ice-5",
+  "name": "Winter Whisperer",
+  "description": "Perform 50 Fusions involving Ice Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 50,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "ice"
+      ]
+    }
+  },
+  "previousAchievement": "ice-4",
+  "tags": [
+    "fusion",
+    "ice"
+  ],
+  "symbol": "ice_symbol",
+  "tier": "diamond",
+  "hidden": false
+},
+{
+  "id": "ice-6",
+  "name": "Ice Innovator",
+  "description": "Perform 100 Fusions involving Ice Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 100,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "ice"
+      ]
+    }
+  },
+  "previousAchievement": "ice-5",
+  "tags": [
+    "fusion",
+    "ice"
+  ],
+  "symbol": "ice_symbol",
+  "tier": "master",
+  "hidden": false
+},
+{
+  "id": "rock-1",
+  "name": "Pebble Polisher",
+  "description": "Perform 5 Fusions involving Rock Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 5,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "rock"
+      ]
+    }
+  },
+  "tags": [
+    "fusion",
+    "rock"
+  ],
+  "symbol": "rock_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "rock-2",
+  "name": "Cavern Carver",
+  "description": "Perform 10 Fusions involving Rock Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 10,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "rock"
+      ]
+    }
+  },
+  "previousAchievement": "rock-1",
+  "tags": [
+    "fusion",
+    "rock"
+  ],
+  "symbol": "rock_symbol",
+  "tier": "silver",
+  "hidden": false
+},
+{
+  "id": "rock-3",
+  "name": "Stone Sculpter",
+  "description": "Perform 20 Fusions involving Rock Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 20,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "rock"
+      ]
+    }
+  },
+  "previousAchievement": "rock-2",
+  "tags": [
+    "fusion",
+    "rock"
+  ],
+  "symbol": "rock_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "rock-4",
+  "name": "Gravel Gatherer",
+  "description": "Perform 35 Fusions involving Rock Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 35,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "rock"
+      ]
+    }
+  },
+  "previousAchievement": "rock-3",
+  "tags": [
+    "fusion",
+    "rock"
+  ],
+  "symbol": "rock_symbol",
+  "tier": "platinum",
+  "hidden": false
+},
+{
+  "id": "rock-5",
+  "name": "Mineral Manipulator",
+  "description": "Perform 50 Fusions involving Rock Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 50,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "rock"
+      ]
+    }
+  },
+  "previousAchievement": "rock-4",
+  "tags": [
+    "fusion",
+    "rock"
+  ],
+  "symbol": "rock_symbol",
+  "tier": "diamond",
+  "hidden": false
+},
+{
+  "id": "rock-6",
+  "name": "Rock Ruler",
+  "description": "Perform 100 Fusions involving Rock Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 100,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "rock"
+      ]
+    }
+  },
+  "previousAchievement": "rock-5",
+  "tags": [
+    "fusion",
+    "rock"
+  ],
+  "symbol": "rock_symbol",
+  "tier": "master",
+  "hidden": false
+},
+{
+  "id": "ghost-1",
+  "name": "Echo Examiner",
+  "description": "Perform 5 Fusions involving Ghost Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 5,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "ghost"
+      ]
+    }
+  },
+  "tags": [
+    "fusion",
+    "ghost"
+  ],
+  "symbol": "ghost_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "ghost-2",
+  "name": "Wraith Watcher",
+  "description": "Perform 10 Fusions involving Ghost Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 10,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "ghost"
+      ]
+    }
+  },
+  "previousAchievement": "ghost-1",
+  "tags": [
+    "fusion",
+    "ghost"
+  ],
+  "symbol": "ghost_symbol",
+  "tier": "silver",
+  "hidden": false
+},
+{
+  "id": "ghost-3",
+  "name": "Soul Shepherd",
+  "description": "Perform 20 Fusions involving Ghost Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 20,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "ghost"
+      ]
+    }
+  },
+  "previousAchievement": "ghost-2",
+  "tags": [
+    "fusion",
+    "ghost"
+  ],
+  "symbol": "ghost_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "ghost-4",
+  "name": "Shadow Stabilizer",
+  "description": "Perform 35 Fusions involving Ghost Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 35,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "ghost"
+      ]
+    }
+  },
+  "previousAchievement": "ghost-3",
+  "tags": [
+    "fusion",
+    "ghost"
+  ],
+  "symbol": "ghost_symbol",
+  "tier": "platinum",
+  "hidden": false
+},
+{
+  "id": "ghost-5",
+  "name": "Spirit Seer",
+  "description": "Perform 50 Fusions involving Ghost Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 50,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "ghost"
+      ]
+    }
+  },
+  "previousAchievement": "ghost-4",
+  "tags": [
+    "fusion",
+    "ghost"
+  ],
+  "symbol": "ghost_symbol",
+  "tier": "diamond",
+  "hidden": false
+},
+{
+  "id": "ghost-6",
+  "name": "Ghost Guide",
+  "description": "Perform 100 Fusions involving Ghost Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 100,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "ghost"
+      ]
+    }
+  },
+  "previousAchievement": "ghost-5",
+  "tags": [
+    "fusion",
+    "ghost"
+  ],
+  "symbol": "ghost_symbol",
+  "tier": "master",
+  "hidden": false
+},
+{
+  "id": "psychic-1",
+  "name": "Brain Booster",
+  "description": "Perform 5 Fusions involving Psychic Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 5,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "psychic"
+      ]
+    }
+  },
+  "tags": [
+    "fusion",
+    "psychic"
+  ],
+  "symbol": "psychic_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "psychic-2",
+  "name": "Neural Networker",
+  "description": "Perform 10 Fusions involving Psychic Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 10,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "psychic"
+      ]
+    }
+  },
+  "previousAchievement": "psychic-1",
+  "tags": [
+    "fusion",
+    "psychic"
+  ],
+  "symbol": "psychic_symbol",
+  "tier": "silver",
+  "hidden": false
+},
+{
+  "id": "psychic-3",
+  "name": "Logic Loader",
+  "description": "Perform 20 Fusions involving Psychic Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 20,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "psychic"
+      ]
+    }
+  },
+  "previousAchievement": "psychic-2",
+  "tags": [
+    "fusion",
+    "psychic"
+  ],
+  "symbol": "psychic_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "psychic-4",
+  "name": "Mind Mapper",
+  "description": "Perform 35 Fusions involving Psychic Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 35,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "psychic"
+      ]
+    }
+  },
+  "previousAchievement": "psychic-3",
+  "tags": [
+    "fusion",
+    "psychic"
+  ],
+  "symbol": "psychic_symbol",
+  "tier": "platinum",
+  "hidden": false
+},
+{
+  "id": "psychic-5",
+  "name": "Aura Analyst",
+  "description": "Perform 50 Fusions involving Psychic Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 50,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "psychic"
+      ]
+    }
+  },
+  "previousAchievement": "psychic-4",
+  "tags": [
+    "fusion",
+    "psychic"
+  ],
+  "symbol": "psychic_symbol",
+  "tier": "diamond",
+  "hidden": false
+},
+{
+  "id": "psychic-6",
+  "name": "Psychic Prodigy",
+  "description": "Perform 100 Fusions involving Psychic Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 100,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "psychic"
+      ]
+    }
+  },
+  "previousAchievement": "psychic-5",
+  "tags": [
+    "fusion",
+    "psychic"
+  ],
+  "symbol": "psychic_symbol",
+  "tier": "master",
+  "hidden": false
+},
+{
+  "id": "ground-1",
+  "name": "Dirt Digger",
+  "description": "Perform 5 Fusions involving Ground Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 5,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "ground"
+      ]
+    }
+  },
+  "tags": [
+    "fusion",
+    "ground"
+  ],
+  "symbol": "ground_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "ground-2",
+  "name": "Sand Slinger",
+  "description": "Perform 10 Fusions involving Ground Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 10,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "ground"
+      ]
+    }
+  },
+  "previousAchievement": "ground-1",
+  "tags": [
+    "fusion",
+    "ground"
+  ],
+  "symbol": "ground_symbol",
+  "tier": "silver",
+  "hidden": false
+},
+{
+  "id": "ground-3",
+  "name": "Dust Distributor",
+  "description": "Perform 20 Fusions involving Ground Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 20,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "ground"
+      ]
+    }
+  },
+  "previousAchievement": "ground-2",
+  "tags": [
+    "fusion",
+    "ground"
+  ],
+  "symbol": "ground_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "ground-4",
+  "name": "Earth Enjoyer",
+  "description": "Perform 35 Fusions involving Ground Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 35,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "ground"
+      ]
+    }
+  },
+  "previousAchievement": "ground-3",
+  "tags": [
+    "fusion",
+    "ground"
+  ],
+  "symbol": "ground_symbol",
+  "tier": "platinum",
+  "hidden": false
+},
+{
+  "id": "ground-5",
+  "name": "Mud Maker",
+  "description": "Perform 50 Fusions involving Ground Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 50,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "ground"
+      ]
+    }
+  },
+  "previousAchievement": "ground-4",
+  "tags": [
+    "fusion",
+    "ground"
+  ],
+  "symbol": "ground_symbol",
+  "tier": "diamond",
+  "hidden": false
+},
+{
+  "id": "ground-6",
+  "name": "Ground Gravitator",
+  "description": "Perform 100 Fusions involving Ground Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 100,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "ground"
+      ]
+    }
+  },
+  "previousAchievement": "ground-5",
+  "tags": [
+    "fusion",
+    "ground"
+  ],
+  "symbol": "ground_symbol",
+  "tier": "master",
+  "hidden": false
+},
+{
+  "id": "flying-1",
+  "name": "Feather Flinger",
+  "description": "Perform 5 Fusions involving Flying Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 5,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "flying"
+      ]
+    }
+  },
+  "tags": [
+    "fusion",
+    "flying"
+  ],
+  "symbol": "flying_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "flying-2",
+  "name": "Wind Walker",
+  "description": "Perform 10 Fusions involving Flying Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 10,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "flying"
+      ]
+    }
+  },
+  "previousAchievement": "flying-1",
+  "tags": [
+    "fusion",
+    "flying"
+  ],
+  "symbol": "flying_symbol",
+  "tier": "silver",
+  "hidden": false
+},
+{
+  "id": "flying-3",
+  "name": "Aeronautical Architect",
+  "description": "Perform 20 Fusions involving Flying Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 20,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "flying"
+      ]
+    }
+  },
+  "previousAchievement": "flying-2",
+  "tags": [
+    "fusion",
+    "flying"
+  ],
+  "symbol": "flying_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "flying-4",
+  "name": "Sky Surfer",
+  "description": "Perform 35 Fusions involving Flying Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 35,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "flying"
+      ]
+    }
+  },
+  "previousAchievement": "flying-3",
+  "tags": [
+    "fusion",
+    "flying"
+  ],
+  "symbol": "flying_symbol",
+  "tier": "platinum",
+  "hidden": false
+},
+{
+  "id": "flying-5",
+  "name": "Cloud Climber",
+  "description": "Perform 50 Fusions involving Flying Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 50,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "flying"
+      ]
+    }
+  },
+  "previousAchievement": "flying-4",
+  "tags": [
+    "fusion",
+    "flying"
+  ],
+  "symbol": "flying_symbol",
+  "tier": "diamond",
+  "hidden": false
+},
+{
+  "id": "flying-6",
+  "name": "Flying Forerunner",
+  "description": "Perform 100 Fusions involving Flying Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 100,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "flying"
+      ]
+    }
+  },
+  "previousAchievement": "flying-5",
+  "tags": [
+    "fusion",
+    "flying"
+  ],
+  "symbol": "flying_symbol",
+  "tier": "master",
+  "hidden": false
+},
+{
+  "id": "bug-1",
+  "name": "Ant Attendant",
+  "description": "Perform 5 Fusions involving Bug Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 5,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "bug"
+      ]
+    }
+  },
+  "tags": [
+    "fusion",
+    "bug"
+  ],
+  "symbol": "bug_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "bug-2",
+  "name": "Worm Wrangler",
+  "description": "Perform 10 Fusions involving Bug Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 10,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "bug"
+      ]
+    }
+  },
+  "previousAchievement": "bug-1",
+  "tags": [
+    "fusion",
+    "bug"
+  ],
+  "symbol": "bug_symbol",
+  "tier": "silver",
+  "hidden": false
+},
+{
+  "id": "bug-3",
+  "name": "Colony Cultivator",
+  "description": "Perform 20 Fusions involving Bug Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 20,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "bug"
+      ]
+    }
+  },
+  "previousAchievement": "bug-2",
+  "tags": [
+    "fusion",
+    "bug"
+  ],
+  "symbol": "bug_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "bug-4",
+  "name": "Hive Handler",
+  "description": "Perform 35 Fusions involving Bug Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 35,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "bug"
+      ]
+    }
+  },
+  "previousAchievement": "bug-3",
+  "tags": [
+    "fusion",
+    "bug"
+  ],
+  "symbol": "bug_symbol",
+  "tier": "platinum",
+  "hidden": false
+},
+{
+  "id": "bug-5",
+  "name": "Insect Infuser",
+  "description": "Perform 50 Fusions involving Bug Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 50,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "bug"
+      ]
+    }
+  },
+  "previousAchievement": "bug-4",
+  "tags": [
+    "fusion",
+    "bug"
+  ],
+  "symbol": "bug_symbol",
+  "tier": "diamond",
+  "hidden": false
+},
+{
+  "id": "bug-6",
+  "name": "Bug Bender",
+  "description": "Perform 100 Fusions involving Bug Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 100,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "bug"
+      ]
+    }
+  },
+  "previousAchievement": "bug-5",
+  "tags": [
+    "fusion",
+    "bug"
+  ],
+  "symbol": "bug_symbol",
+  "tier": "master",
+  "hidden": false
+},
+{
+  "id": "poison-1",
+  "name": "Gas Guzzler",
+  "description": "Perform 5 Fusions involving Poison Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 5,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "poison"
+      ]
+    }
+  },
+  "tags": [
+    "fusion",
+    "poison"
+  ],
+  "symbol": "poison_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "poison-2",
+  "name": "Acid Accumulator",
+  "description": "Perform 10 Fusions involving Poison Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 10,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "poison"
+      ]
+    }
+  },
+  "previousAchievement": "poison-1",
+  "tags": [
+    "fusion",
+    "poison"
+  ],
+  "symbol": "poison_symbol",
+  "tier": "silver",
+  "hidden": false
+},
+{
+  "id": "poison-3",
+  "name": "Venom Vender",
+  "description": "Perform 20 Fusions involving Poison Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 20,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "poison"
+      ]
+    }
+  },
+  "previousAchievement": "poison-2",
+  "tags": [
+    "fusion",
+    "poison"
+  ],
+  "symbol": "poison_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "poison-4",
+  "name": "Ooze Operator",
+  "description": "Perform 35 Fusions involving Poison Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 35,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "poison"
+      ]
+    }
+  },
+  "previousAchievement": "poison-3",
+  "tags": [
+    "fusion",
+    "poison"
+  ],
+  "symbol": "poison_symbol",
+  "tier": "platinum",
+  "hidden": false
+},
+{
+  "id": "poison-5",
+  "name": "Blight Bringer",
+  "description": "Perform 50 Fusions involving Poison Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 50,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "poison"
+      ]
+    }
+  },
+  "previousAchievement": "poison-4",
+  "tags": [
+    "fusion",
+    "poison"
+  ],
+  "symbol": "poison_symbol",
+  "tier": "diamond",
+  "hidden": false
+},
+{
+  "id": "poison-6",
+  "name": "Poison Purveyor",
+  "description": "Perform 100 Fusions involving Poison Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 100,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "poison"
+      ]
+    }
+  },
+  "previousAchievement": "poison-5",
+  "tags": [
+    "fusion",
+    "poison"
+  ],
+  "symbol": "poison_symbol",
+  "tier": "master",
+  "hidden": false
+},
+{
+  "id": "fighting-1",
+  "name": "Fist Forcer",
+  "description": "Perform 5 Fusions involving Fighting Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 5,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "fighting"
+      ]
+    }
+  },
+  "tags": [
+    "fusion",
+    "fighting"
+  ],
+  "symbol": "fighting_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "fighting-2",
+  "name": "Duel Dominator",
+  "description": "Perform 10 Fusions involving Fighting Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 10,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "fighting"
+      ]
+    }
+  },
+  "previousAchievement": "fighting-1",
+  "tags": [
+    "fusion",
+    "fighting"
+  ],
+  "symbol": "fighting_symbol",
+  "tier": "silver",
+  "hidden": false
+},
+{
+  "id": "fighting-3",
+  "name": "Combat Coordinator",
+  "description": "Perform 20 Fusions involving Fighting Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 20,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "fighting"
+      ]
+    }
+  },
+  "previousAchievement": "fighting-2",
+  "tags": [
+    "fusion",
+    "fighting"
+  ],
+  "symbol": "fighting_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "fighting-4",
+  "name": "Melee Mobilizer",
+  "description": "Perform 35 Fusions involving Fighting Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 35,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "fighting"
+      ]
+    }
+  },
+  "previousAchievement": "fighting-3",
+  "tags": [
+    "fusion",
+    "fighting"
+  ],
+  "symbol": "fighting_symbol",
+  "tier": "platinum",
+  "hidden": false
+},
+{
+  "id": "fighting-5",
+  "name": "Clash Commander",
+  "description": "Perform 50 Fusions involving Fighting Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 50,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "fighting"
+      ]
+    }
+  },
+  "previousAchievement": "fighting-4",
+  "tags": [
+    "fusion",
+    "fighting"
+  ],
+  "symbol": "fighting_symbol",
+  "tier": "diamond",
+  "hidden": false
+},
+{
+  "id": "fighting-6",
+  "name": "Fighting Formulator",
+  "description": "Perform 100 Fusions involving Fighting Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 100,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "fighting"
+      ]
+    }
+  },
+  "previousAchievement": "fighting-5",
+  "tags": [
+    "fusion",
+    "fighting"
+  ],
+  "symbol": "fighting_symbol",
+  "tier": "master",
+  "hidden": false
+},
+{
+  "id": "dark-1",
+  "name": "Night Nomad",
+  "description": "Perform 5 Fusions involving Dark Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 5,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "dark"
+      ]
+    }
+  },
+  "tags": [
+    "fusion",
+    "dark"
+  ],
+  "symbol": "dark_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "dark-2",
+  "name": "Dusk Divider",
+  "description": "Perform 10 Fusions involving Dark Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 10,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "dark"
+      ]
+    }
+  },
+  "previousAchievement": "dark-1",
+  "tags": [
+    "fusion",
+    "dark"
+  ],
+  "symbol": "dark_symbol",
+  "tier": "silver",
+  "hidden": false
+},
+{
+  "id": "dark-3",
+  "name": "Void Veiler",
+  "description": "Perform 20 Fusions involving Dark Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 20,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "dark"
+      ]
+    }
+  },
+  "previousAchievement": "dark-2",
+  "tags": [
+    "fusion",
+    "dark"
+  ],
+  "symbol": "dark_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "dark-4",
+  "name": "Umbra Upkeeper",
+  "description": "Perform 35 Fusions involving Dark Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 35,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "dark"
+      ]
+    }
+  },
+  "previousAchievement": "dark-3",
+  "tags": [
+    "fusion",
+    "dark"
+  ],
+  "symbol": "dark_symbol",
+  "tier": "platinum",
+  "hidden": false
+},
+{
+  "id": "dark-5",
+  "name": "Gloom Gazer",
+  "description": "Perform 50 Fusions involving Dark Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 50,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "dark"
+      ]
+    }
+  },
+  "previousAchievement": "dark-4",
+  "tags": [
+    "fusion",
+    "dark"
+  ],
+  "symbol": "dark_symbol",
+  "tier": "diamond",
+  "hidden": false
+},
+{
+  "id": "dark-6",
+  "name": "Dark Dealer",
+  "description": "Perform 100 Fusions involving Dark Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 100,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "dark"
+      ]
+    }
+  },
+  "previousAchievement": "dark-5",
+  "tags": [
+    "fusion",
+    "dark"
+  ],
+  "symbol": "dark_symbol",
+  "tier": "master",
+  "hidden": false
+},
+{
+  "id": "fairy-1",
+  "name": "Sprite Soother",
+  "description": "Perform 5 Fusions involving Fairy Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 5,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "fairy"
+      ]
+    }
+  },
+  "tags": [
+    "fusion",
+    "fairy"
+  ],
+  "symbol": "fairy_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "fairy-2",
+  "name": "Fae Finder",
+  "description": "Perform 10 Fusions involving Fairy Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 10,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "fairy"
+      ]
+    }
+  },
+  "previousAchievement": "fairy-1",
+  "tags": [
+    "fusion",
+    "fairy"
+  ],
+  "symbol": "fairy_symbol",
+  "tier": "silver",
+  "hidden": false
+},
+{
+  "id": "fairy-3",
+  "name": "Glitter Giver",
+  "description": "Perform 20 Fusions involving Fairy Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 20,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "fairy"
+      ]
+    }
+  },
+  "previousAchievement": "fairy-2",
+  "tags": [
+    "fusion",
+    "fairy"
+  ],
+  "symbol": "fairy_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "fairy-4",
+  "name": "Pixie Playmaker",
+  "description": "Perform 35 Fusions involving Fairy Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 35,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "fairy"
+      ]
+    }
+  },
+  "previousAchievement": "fairy-3",
+  "tags": [
+    "fusion",
+    "fairy"
+  ],
+  "symbol": "fairy_symbol",
+  "tier": "platinum",
+  "hidden": false
+},
+{
+  "id": "fairy-5",
+  "name": "Wonder Worker",
+  "description": "Perform 50 Fusions involving Fairy Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 50,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "fairy"
+      ]
+    }
+  },
+  "previousAchievement": "fairy-4",
+  "tags": [
+    "fusion",
+    "fairy"
+  ],
+  "symbol": "fairy_symbol",
+  "tier": "diamond",
+  "hidden": false
+},
+{
+  "id": "fairy-6",
+  "name": "Fairy Focuser",
+  "description": "Perform 100 Fusions involving Fairy Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 100,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "fairy"
+      ]
+    }
+  },
+  "previousAchievement": "fairy-5",
+  "tags": [
+    "fusion",
+    "fairy"
+  ],
+  "symbol": "fairy_symbol",
+  "tier": "master",
+  "hidden": false
+},
+{
+  "id": "steel-1",
+  "name": "Gear Grinder",
+  "description": "Perform 5 Fusions involving Steel Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 5,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "steel"
+      ]
+    }
+  },
+  "tags": [
+    "fusion",
+    "steel"
+  ],
+  "symbol": "steel_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "steel-2",
+  "name": "Iron Improver",
+  "description": "Perform 10 Fusions involving Steel Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 10,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "steel"
+      ]
+    }
+  },
+  "previousAchievement": "steel-1",
+  "tags": [
+    "fusion",
+    "steel"
+  ],
+  "symbol": "steel_symbol",
+  "tier": "silver",
+  "hidden": false
+},
+{
+  "id": "steel-3",
+  "name": "Metal Multiplier",
+  "description": "Perform 20 Fusions involving Steel Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 20,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "steel"
+      ]
+    }
+  },
+  "previousAchievement": "steel-2",
+  "tags": [
+    "fusion",
+    "steel"
+  ],
+  "symbol": "steel_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "steel-4",
+  "name": "Ferrous Former",
+  "description": "Perform 35 Fusions involving Steel Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 35,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "steel"
+      ]
+    }
+  },
+  "previousAchievement": "steel-3",
+  "tags": [
+    "fusion",
+    "steel"
+  ],
+  "symbol": "steel_symbol",
+  "tier": "platinum",
+  "hidden": false
+},
+{
+  "id": "steel-5",
+  "name": "Ingot Imprinter",
+  "description": "Perform 50 Fusions involving Steel Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 50,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "steel"
+      ]
+    }
+  },
+  "previousAchievement": "steel-4",
+  "tags": [
+    "fusion",
+    "steel"
+  ],
+  "symbol": "steel_symbol",
+  "tier": "diamond",
+  "hidden": false
+},
+{
+  "id": "steel-6",
+  "name": "Steel Supplier",
+  "description": "Perform 100 Fusions involving Steel Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 100,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "steel"
+      ]
+    }
+  },
+  "previousAchievement": "steel-5",
+  "tags": [
+    "fusion",
+    "steel"
+  ],
+  "symbol": "steel_symbol",
+  "tier": "master",
+  "hidden": false
+},
+{
+  "id": "dragon-1",
+  "name": "Wyrm Waker",
+  "description": "Perform 5 Fusions involving Dragon Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 5,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "dragon"
+      ]
+    }
+  },
+  "tags": [
+    "fusion",
+    "dragon"
+  ],
+  "symbol": "dragon_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "dragon-2",
+  "name": "Drake Dabbler",
+  "description": "Perform 10 Fusions involving Dragon Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 10,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "dragon"
+      ]
+    }
+  },
+  "previousAchievement": "dragon-1",
+  "tags": [
+    "fusion",
+    "dragon"
+  ],
+  "symbol": "dragon_symbol",
+  "tier": "silver",
+  "hidden": false
+},
+{
+  "id": "dragon-3",
+  "name": "Hydra Hauler",
+  "description": "Perform 20 Fusions involving Dragon Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 20,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "dragon"
+      ]
+    }
+  },
+  "previousAchievement": "dragon-2",
+  "tags": [
+    "fusion",
+    "dragon"
+  ],
+  "symbol": "dragon_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "dragon-4",
+  "name": "Serpent Saboteur",
+  "description": "Perform 35 Fusions involving Dragon Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 35,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "dragon"
+      ]
+    }
+  },
+  "previousAchievement": "dragon-3",
+  "tags": [
+    "fusion",
+    "dragon"
+  ],
+  "symbol": "dragon_symbol",
+  "tier": "platinum",
+  "hidden": false
+},
+{
+  "id": "dragon-5",
+  "name": "Wyvern Weaponizer",
+  "description": "Perform 50 Fusions involving Dragon Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 50,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "dragon"
+      ]
+    }
+  },
+  "previousAchievement": "dragon-4",
+  "tags": [
+    "fusion",
+    "dragon"
+  ],
+  "symbol": "dragon_symbol",
+  "tier": "diamond",
+  "hidden": false
+},
+{
+  "id": "dragon-6",
+  "name": "Dragon Dancer",
+  "description": "Perform 100 Fusions involving Dragon Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 100,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "dragon"
+      ]
+    }
+  },
+  "previousAchievement": "dragon-5",
+  "tags": [
+    "fusion",
+    "dragon"
+  ],
+  "symbol": "dragon_symbol",
+  "tier": "master",
+  "hidden": false
+},
+{
+  "id": "normal-1",
+  "name": "Plain Pusher",
+  "description": "Perform 5 Fusions involving Normal Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 5,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "normal"
+      ]
+    }
+  },
+  "tags": [
+    "fusion",
+    "normal"
+  ],
+  "symbol": "normal_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "normal-2",
+  "name": "Simple Scanner",
+  "description": "Perform 10 Fusions involving Normal Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 10,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "normal"
+      ]
+    }
+  },
+  "previousAchievement": "normal-1",
+  "tags": [
+    "fusion",
+    "normal"
+  ],
+  "symbol": "normal_symbol",
+  "tier": "silver",
+  "hidden": false
+},
+{
+  "id": "normal-3",
+  "name": "Average Allocator",
+  "description": "Perform 20 Fusions involving Normal Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 20,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "normal"
+      ]
+    }
+  },
+  "previousAchievement": "normal-2",
+  "tags": [
+    "fusion",
+    "normal"
+  ],
+  "symbol": "normal_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "normal-4",
+  "name": "Neutral Negotiator",
+  "description": "Perform 35 Fusions involving Normal Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 35,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "normal"
+      ]
+    }
+  },
+  "previousAchievement": "normal-3",
+  "tags": [
+    "fusion",
+    "normal"
+  ],
+  "symbol": "normal_symbol",
+  "tier": "platinum",
+  "hidden": false
+},
+{
+  "id": "normal-5",
+  "name": "Vanilla Validator",
+  "description": "Perform 50 Fusions involving Normal Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 50,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "normal"
+      ]
+    }
+  },
+  "previousAchievement": "normal-4",
+  "tags": [
+    "fusion",
+    "normal"
+  ],
+  "symbol": "normal_symbol",
+  "tier": "diamond",
+  "hidden": false
+},
+{
+  "id": "normal-6",
+  "name": "Normal Nurturer",
+  "description": "Perform 100 Fusions involving Normal Type Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "fusion_dex_count",
+    "filters": {},
+    "target": 100,
+    "actionType": "fusion",
+    "options": {
+      "match": "either_component",
+      "speciesTypesIncludes": [
+        "normal"
+      ]
+    }
+  },
+  "previousAchievement": "normal-5",
+  "tags": [
+    "fusion",
+    "normal"
+  ],
+  "symbol": "normal_symbol",
+  "tier": "master",
+  "hidden": false
+},
+{
   "id": "defeat-brock",
   "name": "Boulderbadge",
   "description": "Defeat Brock in a Gym Battle",
@@ -72,7 +4702,8 @@
     "actionType": "battle"
   },
   "tags": [
-    "gym"
+    "gym",
+    "battle"
   ],
   "symbol": "rock_symbol",
   "tier": "bronze",
@@ -97,92 +4728,853 @@
   },
   "previousAchievement": "defeat-brock",
   "tags": [
-    "gym"
+    "gym",
+    "battle"
   ],
   "symbol": "rock_symbol",
   "tier": "gold",
   "hidden": false
 },
 {
-  "id": "route-1",
-  "name": "Encounter - Route 1",
-  "description": "Catch 1 Pokemon on Route 1",
+  "id": "defeat-misty",
+  "name": "Cascadebadge",
+  "description": "Defeat Misty in a Gym Battle",
   "rpReward": 1,
   "rule": {
     "type": "action_count",
     "filters": {
-      "locationId": "route_1"
+      "trainerId": "misty",
+      "result": "win"
     },
     "target": 1,
-    "actionType": "catch"
+    "actionType": "battle"
   },
   "tags": [
-    "catching"
+    "gym",
+    "battle"
+  ],
+  "symbol": "water_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "defeat-misty-gold",
+  "name": "Golden Cascadebadge",
+  "description": "Defeat Misty in a Gym Battle with a Fusion Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "party_battle_count",
+    "filters": {
+      "trainerId": "misty",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle",
+    "options": {
+      "minFusionPartyMembers": 1
+    }
+  },
+  "previousAchievement": "defeat-misty",
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "water_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "defeat-surge",
+  "name": "Thunderbadge",
+  "description": "Defeat Surge in a Gym Battle",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "trainerId": "surge",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle"
+  },
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "electric_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "defeat-surge-gold",
+  "name": "Golden Thunderbadge",
+  "description": "Defeat Surge in a Gym Battle with a Fusion Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "party_battle_count",
+    "filters": {
+      "trainerId": "surge",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle",
+    "options": {
+      "minFusionPartyMembers": 1
+    }
+  },
+  "previousAchievement": "defeat-surge",
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "electric_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "defeat-erika",
+  "name": "Rainbowbadge",
+  "description": "Defeat Erika in a Gym Battle",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "trainerId": "erika",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle"
+  },
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "grass_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "defeat-erika-gold",
+  "name": "Golden Rainbowbadge",
+  "description": "Defeat Erika in a Gym Battle with a Fusion Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "party_battle_count",
+    "filters": {
+      "trainerId": "erika",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle",
+    "options": {
+      "minFusionPartyMembers": 1
+    }
+  },
+  "previousAchievement": "defeat-erika",
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "grass_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "defeat-koga",
+  "name": "Soulbadge",
+  "description": "Defeat Koga in a Gym Battle",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "trainerId": "koga",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle"
+  },
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "poison_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "defeat-koga-gold",
+  "name": "Golden Soulbadge",
+  "description": "Defeat Koga in a Gym Battle with a Fusion Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "party_battle_count",
+    "filters": {
+      "trainerId": "koga",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle",
+    "options": {
+      "minFusionPartyMembers": 1
+    }
+  },
+  "previousAchievement": "defeat-koga",
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "poison_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "defeat-sabrina",
+  "name": "Marshbadge",
+  "description": "Defeat Sabrina in a Gym Battle",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "trainerId": "sabrina",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle"
+  },
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "psychic_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "defeat-sabrina-gold",
+  "name": "Golden Marshbadge",
+  "description": "Defeat Sabrina in a Gym Battle with a Fusion Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "party_battle_count",
+    "filters": {
+      "trainerId": "sabrina",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle",
+    "options": {
+      "minFusionPartyMembers": 1
+    }
+  },
+  "previousAchievement": "defeat-sabrina",
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "psychic_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "defeat-blaine",
+  "name": "Volcanobadge",
+  "description": "Defeat Blaine in a Gym Battle",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "trainerId": "blaine",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle"
+  },
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "fire_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "defeat-blaine-gold",
+  "name": "Golden Volcanobadge",
+  "description": "Defeat Blaine in a Gym Battle with a Fusion Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "party_battle_count",
+    "filters": {
+      "trainerId": "blaine",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle",
+    "options": {
+      "minFusionPartyMembers": 1
+    }
+  },
+  "previousAchievement": "defeat-blaine",
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "fire_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "defeat-giovanni",
+  "name": "Earthbadge",
+  "description": "Defeat Giovanni in a Gym Battle",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "trainerId": "giovanni",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle"
+  },
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "ground_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "defeat-giovanni-gold",
+  "name": "Golden Earthbadge",
+  "description": "Defeat Giovanni in a Gym Battle with a Fusion Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "party_battle_count",
+    "filters": {
+      "trainerId": "giovanni",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle",
+    "options": {
+      "minFusionPartyMembers": 1
+    }
+  },
+  "previousAchievement": "defeat-giovanni",
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "ground_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "defeat-falkner",
+  "name": "Zephyrbadge",
+  "description": "Defeat Falkner in a Gym Battle",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "trainerId": "falkner",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle"
+  },
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "flying_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "defeat-falkner-gold",
+  "name": "Golden Zephyrbadge",
+  "description": "Defeat Falkner in a Gym Battle with a Fusion Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "party_battle_count",
+    "filters": {
+      "trainerId": "falkner",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle",
+    "options": {
+      "minFusionPartyMembers": 1
+    }
+  },
+  "previousAchievement": "defeat-falkner",
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "flying_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "defeat-kurt",
+  "name": "Hivebadge",
+  "description": "Defeat Kurt in a Gym Battle",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "trainerId": "kurt",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle"
+  },
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "bug_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "defeat-kurt-gold",
+  "name": "Golden Hivebadge",
+  "description": "Defeat Kurt in a Gym Battle with a Fusion Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "party_battle_count",
+    "filters": {
+      "trainerId": "kurt",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle",
+    "options": {
+      "minFusionPartyMembers": 1
+    }
+  },
+  "previousAchievement": "defeat-kurt",
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "bug_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "defeat-whitney",
+  "name": "Plainbadge",
+  "description": "Defeat Whitney in a Gym Battle",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "trainerId": "whitney",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle"
+  },
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "normal_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "defeat-whitney-gold",
+  "name": "Golden Plainbadge",
+  "description": "Defeat Whitney in a Gym Battle with a Fusion Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "party_battle_count",
+    "filters": {
+      "trainerId": "whitney",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle",
+    "options": {
+      "minFusionPartyMembers": 1
+    }
+  },
+  "previousAchievement": "defeat-whitney",
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "normal_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "defeat-morty",
+  "name": "Fogbadge",
+  "description": "Defeat Morty in a Gym Battle",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "trainerId": "morty",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle"
+  },
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "ghost_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "defeat-morty-gold",
+  "name": "Golden Fogbadge",
+  "description": "Defeat Morty in a Gym Battle with a Fusion Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "party_battle_count",
+    "filters": {
+      "trainerId": "morty",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle",
+    "options": {
+      "minFusionPartyMembers": 1
+    }
+  },
+  "previousAchievement": "defeat-morty",
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "ghost_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "defeat-chuck",
+  "name": "Stormbadge",
+  "description": "Defeat Chuck in a Gym Battle",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "trainerId": "chuck",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle"
+  },
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "fighting_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "defeat-chuck-gold",
+  "name": "Golden Stormbadge",
+  "description": "Defeat Chuck in a Gym Battle with a Fusion Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "party_battle_count",
+    "filters": {
+      "trainerId": "chuck",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle",
+    "options": {
+      "minFusionPartyMembers": 1
+    }
+  },
+  "previousAchievement": "defeat-chuck",
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "fighting_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "defeat-jasmine",
+  "name": "Mineralbadge",
+  "description": "Defeat Jasmine in a Gym Battle",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "trainerId": "jasmine",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle"
+  },
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "steel_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "defeat-jasmine-gold",
+  "name": "Golden Mineralbadge",
+  "description": "Defeat Jasmine in a Gym Battle with a Fusion Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "party_battle_count",
+    "filters": {
+      "trainerId": "jasmine",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle",
+    "options": {
+      "minFusionPartyMembers": 1
+    }
+  },
+  "previousAchievement": "defeat-jasmine",
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "steel_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "defeat-pryce",
+  "name": "Glacierbadge",
+  "description": "Defeat Pryce in a Gym Battle",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "trainerId": "pryce",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle"
+  },
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "ice_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "defeat-pryce-gold",
+  "name": "Golden Glacierbadge",
+  "description": "Defeat Pryce in a Gym Battle with a Fusion Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "party_battle_count",
+    "filters": {
+      "trainerId": "pryce",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle",
+    "options": {
+      "minFusionPartyMembers": 1
+    }
+  },
+  "previousAchievement": "defeat-pryce",
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "ice_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "defeat-clair",
+  "name": "Risingbadge",
+  "description": "Defeat Clair in a Gym Battle",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "trainerId": "clair",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle"
+  },
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "dragon_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "defeat-clair-gold",
+  "name": "Golden Risingbadge",
+  "description": "Defeat Clair in a Gym Battle with a Fusion Pokemon",
+  "rpReward": 1,
+  "rule": {
+    "type": "party_battle_count",
+    "filters": {
+      "trainerId": "clair",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle",
+    "options": {
+      "minFusionPartyMembers": 1
+    }
+  },
+  "previousAchievement": "defeat-clair",
+  "tags": [
+    "gym",
+    "battle"
+  ],
+  "symbol": "dragon_symbol",
+  "tier": "gold",
+  "hidden": false
+},
+{
+  "id": "defeat-lorelei",
+  "name": "Elite Four - Lorelei",
+  "description": "Defeat Lorelei in a Battle",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "trainerId": "lorelei",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle"
+  },
+  "tags": [
+    "elite-four",
+    "battle"
+  ],
+  "symbol": "ice_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "defeat-bruno",
+  "name": "Elite Four - Bruno",
+  "description": "Defeat Bruno in a Battle",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "trainerId": "bruno",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle"
+  },
+  "tags": [
+    "elite-four",
+    "battle"
+  ],
+  "symbol": "fighting_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "defeat-agatha",
+  "name": "Elite Four - Agatha",
+  "description": "Defeat Agatha in a Battle",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "trainerId": "agatha",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle"
+  },
+  "tags": [
+    "elite-four",
+    "battle"
+  ],
+  "symbol": "ghost_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "defeat-lance",
+  "name": "Elite Four - Lance",
+  "description": "Defeat Lance in a Battle",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "trainerId": "lance",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle"
+  },
+  "tags": [
+    "elite-four",
+    "battle"
+  ],
+  "symbol": "dragon_symbol",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "defeat-blue",
+  "name": "Champion - Blue",
+  "description": "Defeat Champion Blue in a Battle",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "trainerId": "blue_champion",
+      "result": "win"
+    },
+    "target": 1,
+    "actionType": "battle"
+  },
+  "tags": [
+    "elite-four",
+    "champion",
+    "battle"
   ],
   "symbol": "trophy",
   "tier": "bronze",
   "hidden": false
 },
 {
-  "id": "water-1",
-  "name": "Splash Enjoyer",
-  "description": "Perform 1 Fusion involving Water Type Pokemon",
-  "rpReward": 1,
-  "rule": {
-    "type": "fusion_dex_count",
-    "filters": {},
-    "target": 1,
-    "actionType": "fusion",
-    "options": {
-      "match": "either_component",
-      "speciesTypesIncludes": [
-        "water"
-      ]
-    }
-  },
-  "tags": [
-    "fusion",
-    "water"
-  ],
-  "symbol": "water_symbol",
-  "tier": "bronze",
-  "hidden": false
-},
-{
-  "id": "water-2",
-  "name": "River Runner",
-  "description": "Perform 3 Fusions involving Water Type Pokemon",
-  "rpReward": 1,
-  "rule": {
-    "type": "fusion_dex_count",
-    "filters": {},
-    "target": 3,
-    "actionType": "fusion",
-    "options": {
-      "match": "either_component",
-      "speciesTypesIncludes": [
-        "water"
-      ]
-    }
-  },
-  "previousAchievement": "water-1",
-  "tags": [
-    "fusion",
-    "water"
-  ],
-  "symbol": "water_symbol",
-  "tier": "bronze",
-  "hidden": false
-},
-{
-  "id": "defeat-lance-master",
+  "id": "defeat-blue-master",
   "name": "Ultimate Showdown of Ultimate Destiny",
-  "description": "Defeat Lance in a Battle with a team of 6 Fusion Pokemon",
+  "description": "Defeat Champion Blue in a Battle with a team of 6 Fusion Pokemon",
   "rpReward": 1,
   "rule": {
     "type": "party_battle_count",
     "filters": {
-      "trainerId": "brock",
+      "trainerId": "blue_champion",
       "result": "win"
     },
     "target": 6,
@@ -191,7 +5583,34 @@
       "minFusionPartyMembers": 6
     }
   },
+  "tags": [
+    "champion",
+    "battle",
+    "elite-four"
+  ],
+  "symbol": "trophy",
   "tier": "master",
+  "hidden": false
+},
+{
+  "id": "defeat-rival-1",
+  "name": "Smell Ya Later",
+  "description": "Fight your Rival for the first time",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "trainerId": "blue_rival"
+    },
+    "target": 1,
+    "actionType": "battle"
+  },
+  "tags": [
+    "battle",
+    "rival"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
   "hidden": false
 }
 ]

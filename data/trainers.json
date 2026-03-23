@@ -1,22 +1,27 @@
 [
-  {
-    "trainerId": "brock",
-    "name": "Brock",
-    "battleType": "gym"
-  },
-  {
-    "trainerId": "blue",
-    "name": "Blue",
-    "battleType": "rival"
-  },
-  {
-    "trainerId": "lorelei",
-    "name": "Lorelei",
-    "battleType": "elite_four"
-  },
-  {
-    "trainerId": "lance",
-    "name": "Lance",
-    "battleType": "champion"
-  }
+  { "trainerId": "brock", "name": "Brock", "battleType": "gym" },
+  { "trainerId": "misty", "name": "Misty", "battleType": "gym" },
+  { "trainerId": "surge", "name": "Lt. Surge", "battleType": "gym" },
+  { "trainerId": "erika", "name": "Erika", "battleType": "gym" },
+  { "trainerId": "koga", "name": "Koga", "battleType": "gym" },
+  { "trainerId": "sabrina", "name": "Sabrina", "battleType": "gym" },
+  { "trainerId": "blaine", "name": "Blaine", "battleType": "gym" },
+  { "trainerId": "giovanni", "name": "Giovanni", "battleType": "gym" },
+
+  { "trainerId": "falkner", "name": "Falkner", "battleType": "gym" },
+  { "trainerId": "kurt", "name": "Kurt", "battleType": "gym" },
+  { "trainerId": "whitney", "name": "Whitney", "battleType": "gym" },
+  { "trainerId": "morty", "name": "Morty", "battleType": "gym" },
+  { "trainerId": "chuck", "name": "Chuck", "battleType": "gym" },
+  { "trainerId": "jasmine", "name": "Jasmine", "battleType": "gym" },
+  { "trainerId": "pryce", "name": "Pryce", "battleType": "gym" },
+  { "trainerId": "clair", "name": "Clair", "battleType": "gym" },
+
+  { "trainerId": "lorelei", "name": "Lorelei", "battleType": "elite_four" },
+  { "trainerId": "bruno", "name": "Bruno", "battleType": "elite_four" },
+  { "trainerId": "agatha", "name": "Agatha", "battleType": "elite_four" },
+  { "trainerId": "lance", "name": "Lance", "battleType": "elite_four" },
+
+  { "trainerId": "blue-rival", "name": "Blue", "battleType": "rival" },
+  { "trainerId": "blue-champion", "name": "Blue", "battleType": "champion" }
 ]
