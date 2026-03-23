@@ -1626,6 +1626,28 @@ button:disabled {
   background: rgba(30, 41, 59, 0.55);
 }
 
+.achievement-filter-section-tags .achievement-filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.achievement-filter-section-tags .achievement-filter-chip {
+  flex: 0 0 auto;
+  width: auto;
+  min-width: max-content;
+  max-width: 100%;
+  min-height: 38px;
+  padding: 7px 10px;
+}
+
+.achievement-filter-section-tags .achievement-filter-chip span {
+  flex: 0 1 auto;
+  white-space: normal;
+  overflow-wrap: normal;
+  word-break: keep-all;
+}
+
 .achievement-filter-heading {
   font-size: 0.95rem;
   font-weight: 700;
