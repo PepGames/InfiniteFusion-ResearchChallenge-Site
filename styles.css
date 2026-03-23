@@ -1644,6 +1644,7 @@ button:disabled {
   align-items: center;
   gap: 8px;
   min-height: 42px;
+  min-width: 0;
   padding: 8px 10px;
   border: 1px solid #475569;
   border-radius: 10px;
@@ -1651,6 +1652,7 @@ button:disabled {
   color: #f3f4f6;
   cursor: pointer;
   user-select: none;
+  overflow: hidden;
 }
 
 .achievement-filter-chip:hover {
@@ -1660,12 +1662,27 @@ button:disabled {
 
 .achievement-filter-chip input {
   margin: 0;
-  flex-shrink: 0;
+  flex: 0 0 auto;
+}
+
+@media (max-width: 520px) {
+  .achievement-filter-section-tags .achievement-filter-chip {
+    padding: 7px 8px;
+  }
+
+  .achievement-filter-section-tags .achievement-filter-chip span {
+    font-size: 0.82rem;
+    line-height: 1.1;
+  }
 }
 
 .achievement-filter-chip span {
-  line-height: 1.2;
-  font-size: 0.95rem;
+  line-height: 1.15;
+  font-size: clamp(0.78rem, 1.2vw, 0.95rem);
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .achievement-filter-section-tags .achievement-filter-options {
