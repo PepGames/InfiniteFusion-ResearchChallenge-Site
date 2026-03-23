@@ -1554,12 +1554,26 @@ button:disabled {
 }
 
 .achievement-filter-menu {
-  margin-bottom: 20px;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 10px;
+
+  width: min(700px, 90vw);
+  max-height: 70vh;
+  overflow-y: auto;
+
   padding: 16px;
   border: 1px solid #374151;
   border-radius: 14px;
-  background: rgba(17, 24, 39, 0.92);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+  background: rgba(17, 24, 39, 0.98);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+
+  z-index: 50;
+}
+
+.achievement-filter-anchor {
+  position: relative;
 }
 
 .achievement-filter-actions {
@@ -1681,4 +1695,17 @@ button:disabled {
   .achievement-filter-options {
     grid-template-columns: 1fr;
   }
+}
+
+.achievement-filter-menu {
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: all 0.18s ease;
+  pointer-events: none;
+}
+
+.achievement-filter-menu:not([hidden]) {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }

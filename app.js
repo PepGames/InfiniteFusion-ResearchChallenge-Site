@@ -3148,6 +3148,22 @@ function getVisibleAchievements() {
   return sorted;
 }
 
+function handleClickOutsideFilters(event) {
+  const menu = document.getElementById("achievement-filter-menu");
+  const button = document.getElementById("achievement-filter-toggle");
+
+  if (!menu || !button) return;
+
+  const clickedInside =
+    menu.contains(event.target) ||
+    button.contains(event.target);
+
+  if (!clickedInside) {
+    menu.setAttribute("hidden", "");
+    button.setAttribute("aria-expanded", "false");
+  }
+}
+
 // =========================
 // Event Handlers
 // =========================
@@ -3657,6 +3673,8 @@ function attachAchievementControlListeners() {
   const filterMenu = document.getElementById("achievement-filter-menu");
   const selectAllBtn = document.getElementById("achievement-filter-all");
   const selectNoneBtn = document.getElementById("achievement-filter-none");
+  
+  document.addEventListener("click", handleClickOutsideFilters);
 
   if (sortSelect) {
     sortSelect.addEventListener("change", handleAchievementSortChange);
