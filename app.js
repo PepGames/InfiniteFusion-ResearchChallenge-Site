@@ -1869,6 +1869,7 @@ function renderAchievementTagFilters() {
 
   allAchievementTags.forEach((tag) => {
     const label = document.createElement("label");
+    label.className = "achievement-filter-chip";
 
     label.innerHTML = `
       <input
@@ -1877,7 +1878,7 @@ function renderAchievementTagFilters() {
         data-filter-value="${tag}"
         ${filterState?.tags?.[tag] ? "checked" : ""}
       />
-      ${formatAchievementTagLabel(tag)}
+      <span>${formatAchievementTagLabel(tag)}</span>
     `;
 
     container.appendChild(label);
