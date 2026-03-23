@@ -828,11 +828,34 @@ function getRuleTarget(rule) {
   return Number.isFinite(target) && target > 0 ? target : 1;
 }
 
+function doesActionMatchFilters(action, filters = {}) {
+  return Object.entries(filters).every(([key, value]) => {
+    const actionValue = action[key];
+
+    // null / undefined filter means "don't care"
+    if (value === undefined || value === null || value === "") {
+      return true;
+    }
+
+    // explicit wildcard
+    if (value === "any") {
+      return true;
+    }
+
+    // allow arrays like result: ["win", "loss"]
+    if (Array.isArray(value)) {
+      return value.includes(actionValue);
+    }
+
+    // normal exact match
+    return actionValue === value;
+  });
+}
+
 function countFilteredActions(actionType, filters = {}) {
   return runState.actions.filter((action) => {
     if (action.actionType !== actionType) return false;
-
-    return Object.entries(filters).every(([key, value]) => action[key] === value);
+    return doesActionMatchFilters(action, filters);
   }).length;
 }
 
@@ -840,7 +863,7 @@ function countPartyBattleMatches(filters = {}, options = {}) {
   return runState.actions.filter((action) => {
     if (action.actionType !== "battle") return false;
 
-    const basicMatch = Object.entries(filters).every(([key, value]) => action[key] === value);
+    const basicMatch = doesActionMatchFilters(action, filters);
     if (!basicMatch) return false;
 
     const party = Array.isArray(action.party) ? action.party : [];
@@ -901,6 +924,23 @@ function getSpeciesTypes(species) {
   }
 
   return [...new Set(types)];
+}
+
+function getSpeciesOptionLabel(species) {
+  if (!species) return "";
+  return `${species.name}${species.variant ? ` (${species.variant})` : ""}`;
+}
+
+function getSpeciesIdFromInputValue(value) {
+  const normalized = String(value || "").trim().toLowerCase();
+
+  if (!normalized) return "";
+
+  const exactMatch = speciesCatalog.find((species) => {
+    return getSpeciesOptionLabel(species).toLowerCase() === normalized;
+  });
+
+  return exactMatch?.speciesId || "";
 }
 
 function fusionActionMatchesDexOptions(action, options = {}) {
@@ -1302,9 +1342,15 @@ function renderActionFields() {
         <div class="form-row form-row-2">
           <div class="field-row">
             <label for="catch-species">Species</label>
-            <select id="catch-species" required>
-              <option value="">Select a species</option>
-            </select>
+            <input
+              id="catch-species"
+              list="catch-species-list"
+              type="text"
+              placeholder="Type to search species..."
+              autocomplete="off"
+              required
+            />
+            <datalist id="catch-species-list"></datalist>
           </div>
 
           <div class="field-row">
@@ -1318,9 +1364,14 @@ function renderActionFields() {
         <div class="form-row form-row-2">
           <div class="field-row">
             <label for="catch-head-species">Head Species</label>
-            <select id="catch-head-species">
-              <option value="">Select head species</option>
-            </select>
+            <input
+              id="catch-head-species"
+              list="catch-head-species-list"
+              type="text"
+              placeholder="Type to search head species..."
+              autocomplete="off"
+            />
+            <datalist id="catch-head-species-list"></datalist>
           </div>
 
           <div class="field-row">
@@ -1329,13 +1380,17 @@ function renderActionFields() {
           </div>
         </div>
 
-        <div class="form-row form-row-2">
-          <div class="field-row">
-            <label for="catch-body-species">Body Species</label>
-            <select id="catch-body-species">
-              <option value="">Select body species</option>
-            </select>
-          </div>
+        <div class="field-row">
+          <label for="catch-body-species">Body Species</label>
+          <input
+            id="catch-body-species"
+            list="catch-body-species-list"
+            type="text"
+            placeholder="Type to search body species..."
+            autocomplete="off"
+          />
+          <datalist id="catch-body-species-list"></datalist>
+        </div>
 
           <div class="field-row">
             <label for="catch-body-nickname">Body Nickname (optional)</label>
@@ -1359,9 +1414,9 @@ function renderActionFields() {
       catchTypeSelect.value = "starter";
     }
 
-    populateSpeciesSelect("catch-species");
-    populateSpeciesSelect("catch-head-species");
-    populateSpeciesSelect("catch-body-species");
+    populateSpeciesDatalist("catch-species", "catch-species-list");
+    populateSpeciesDatalist("catch-head-species", "catch-head-species-list");
+    populateSpeciesDatalist("catch-body-species", "catch-body-species-list");
     populateLocationSelect("catch-location");
 
     const fusionCheckbox = document.getElementById("catch-is-fusion");
@@ -1648,6 +1703,23 @@ function populateSpeciesSelect(selectId) {
   });
 
   debugLog(`Populated select "${selectId}" with ${speciesCatalog.length} species.`);
+}
+
+function populateSpeciesDatalist(inputId, datalistId) {
+  const input = document.getElementById(inputId);
+  const datalist = document.getElementById(datalistId);
+
+  if (!input || !datalist) return;
+
+  datalist.innerHTML = "";
+
+  speciesCatalog.forEach((species) => {
+    const option = document.createElement("option");
+    option.value = getSpeciesOptionLabel(species);
+    datalist.appendChild(option);
+  });
+
+  debugLog(`Populated datalist "${datalistId}" with ${speciesCatalog.length} species.`);
 }
 
 function switchTab(tabName) {
@@ -3238,14 +3310,15 @@ function handleCatchAction() {
   }
 
   if (!isFusion) {
-    const speciesSelect = document.getElementById("catch-species");
+    const speciesInput = document.getElementById("catch-species");
     const nicknameInput = document.getElementById("catch-nickname");
 
-    const speciesId = speciesSelect?.value || "";
+    const speciesInputValue = speciesInput?.value || "";
     const nickname = nicknameInput?.value.trim() || "";
+    const speciesId = getSpeciesIdFromInputValue(speciesInputValue);
 
     if (!speciesId) {
-      alert("Please choose a species.");
+      alert("Please choose a valid species from the list.");
       return;
     }
 
@@ -3267,15 +3340,18 @@ function handleCatchAction() {
       nickname
     });
   } else {
-    const headSpeciesSelect = document.getElementById("catch-head-species");
-    const bodySpeciesSelect = document.getElementById("catch-body-species");
+    const headSpeciesInput = document.getElementById("catch-head-species");
+    const bodySpeciesInput = document.getElementById("catch-body-species");
     const headNicknameInput = document.getElementById("catch-head-nickname");
     const bodyNicknameInput = document.getElementById("catch-body-nickname");
 
-    const headSpeciesId = headSpeciesSelect?.value || "";
-    const bodySpeciesId = bodySpeciesSelect?.value || "";
+    const headSpeciesValue = headSpeciesInput?.value || "";
+    const bodySpeciesValue = bodySpeciesInput?.value || "";
     const headNickname = headNicknameInput?.value.trim() || "";
     const bodyNickname = bodyNicknameInput?.value.trim() || "";
+
+    const headSpeciesId = getSpeciesIdFromInputValue(headSpeciesValue);
+    const bodySpeciesId = getSpeciesIdFromInputValue(bodySpeciesValue);
 
     if (!headSpeciesId || !bodySpeciesId) {
       alert("Please choose both fusion species.");
