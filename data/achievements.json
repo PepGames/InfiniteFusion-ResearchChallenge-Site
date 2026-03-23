@@ -638,26 +638,6 @@
   "hidden": false
 },
 {
-  "id": "pallet-town",
-  "name": "Encounter - Pallet Town",
-  "description": "Catch 1 Pokemon in Pallet Town",
-  "rpReward": 1,
-  "rule": {
-    "type": "action_count",
-    "filters": {
-      "locationId": "pallet_town"
-    },
-    "target": 1,
-    "actionType": "catch"
-  },
-  "tags": [
-    "catching"
-  ],
-  "symbol": "trophy",
-  "tier": "bronze",
-  "hidden": false
-},
-{
   "id": "cerulean-city",
   "name": "Encounter - Cerulean City",
   "description": "Catch 1 Pokemon in Cerulean City",
