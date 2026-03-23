@@ -1626,13 +1626,6 @@ button:disabled {
   background: rgba(30, 41, 59, 0.55);
 }
 
-.achievement-filter-section-tags .achievement-filter-chip span {
-  flex: 0 1 auto;
-  white-space: normal;
-  overflow-wrap: normal;
-  word-break: keep-all;
-}
-
 .achievement-filter-heading {
   font-size: 0.95rem;
   font-weight: 700;
@@ -1644,15 +1637,15 @@ button:disabled {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  align-items: flex-start;
 }
 
 .achievement-filter-chip {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   flex: 0 0 auto;
-  width: auto;
-  min-width: max-content;
+  width: fit-content;
   max-width: 100%;
   min-height: 42px;
   padding: 8px 12px;
@@ -1675,15 +1668,12 @@ button:disabled {
   flex: 0 0 auto;
 }
 
-@media (max-width: 520px) {
-  .achievement-filter-section-tags .achievement-filter-chip {
-    padding: 7px 8px;
-  }
-
-  .achievement-filter-section-tags .achievement-filter-chip span {
-    font-size: 0.82rem;
-    line-height: 1.1;
-  }
+.achievement-filter-chip span {
+  display: block;
+  flex: 0 1 auto;
+  line-height: 1.15;
+  font-size: clamp(0.82rem, 1.1vw, 0.95rem);
+  white-space: nowrap;
 }
 
 .achievement-filter-chip span {
@@ -1696,10 +1686,6 @@ button:disabled {
   word-break: keep-all;
 }
 
-.achievement-filter-options {
-  display: grid;
-  gap: 10px;
-}
 
 .achievement-filter-menu {
   opacity: 0;
