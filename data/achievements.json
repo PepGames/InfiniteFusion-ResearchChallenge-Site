@@ -5612,5 +5612,26 @@
   "symbol": "trophy",
   "tier": "bronze",
   "hidden": false
+},
+{
+  "id": "defeat-rival-2",
+  "name": "Forget About It!",
+  "description": "Fight your Rival for the second time",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "trainerId": "blue_rival"
+    },
+    "target": 2,
+    "actionType": "battle"
+  },
+  "tags": [
+    "battle",
+    "rival"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
 }
 ]
