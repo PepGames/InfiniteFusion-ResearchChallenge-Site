@@ -30,6 +30,8 @@
       <button class="tab-button active" data-tab="dashboard">Dashboard</button>
       <button class="tab-button" data-tab="achievements">Research Assignments</button>
       <button class="tab-button" data-tab="shop">Shop</button>
+      <button class="tab-button" data-tab="stats">Stats</button>
+      <button class="tab-button" data-tab="how-to-play">How-to-Play</button>
     </nav>
 
     <section class="tab-panel active" id="tab-dashboard">
@@ -431,6 +433,141 @@
         </div>
 
         <div id="shop-items" class="shop-item-list"></div>
+      </section>
+    </section>
+
+    <section class="tab-panel" id="tab-stats">
+      <section class="panel">
+        <h2>Stats</h2>
+        <p class="subtitle">A breakdown of your current run will appear here.</p>
+
+        <div class="field-row">
+          <label>Total Actions Logged</label>
+          <div id="stats-total-actions">Coming Soon</div>
+        </div>
+
+        <div class="field-row">
+          <label>Total Pokémon Caught</label>
+          <div id="stats-total-catches">Coming Soon</div>
+        </div>
+
+        <div class="field-row">
+          <label>Total Fusions Created</label>
+          <div id="stats-total-fusions">Coming Soon</div>
+        </div>
+
+        <div class="field-row">
+          <label>Total Battles Logged</label>
+          <div id="stats-total-battles">Coming Soon</div>
+        </div>
+
+        <div class="field-row">
+          <label>Total Deaths Logged</label>
+          <div id="stats-total-deaths">Coming Soon</div>
+        </div>
+      </section>
+    </section>
+
+    <section class="tab-panel" id="tab-how-to-play">
+      <section class="panel">
+        <h2>How to Play</h2>
+        <p class="subtitle">Learn the rules of the Fusion Research Challenge.</p>
+
+        <div class="rules-container">
+
+          <!-- BASIC RULES -->
+          <div class="rules-box"><div class="rules-box-title">Basic Rules</div>
+            <p class="rules-text">
+              You are a Researcher studying Fusion Technology.
+              <strong>Your goal is to acquire as much data on Fusion Pokémon as possible.</strong>
+              You can achieve this goal by completing <strong>Research Assignments</strong> for the Research Lab.
+            </p>
+            <ul class="rules-list">
+              <li>
+                Start by logging your <strong>Starter Pokémon</strong> as your first catch.
+              </li>
+              <li>
+                Keep track of each of your actions using the <strong>Action Log</strong> in order to receive credit towards <strong>Research Assignments</strong>.
+                <p class="rules-sub">
+                  Actions you can keep track of include:
+                </p>
+                <ul class="rules-sub-list">
+                  <li>
+                    Catching
+                    <p class="rules-sub">
+                     A "Catch" Includes Wild, Starter, Gift, or Trade Pokémon. Adding a Catch to your Action Log requires 1 Catch Token.
+                    </p>
+                  </li>
+
+                  <li>
+                    Deaths
+                    <p class="rules-sub">
+                      A "Death" occurs anytime a Pokémon faints. Logging a Death will remove that Pokémon from your lists, so skip Death Logging if you'd like an easier Challenge.
+                    </p>
+                  </li>
+
+                  <li>Fusions
+                    <p class="rules-sub">
+                      A "Fusion" combines 2 Pokémon you own together.
+                    </p>
+                  </li>
+                  <li>Splits
+                    <p class="rules-sub">
+                      A "Split" seperates 2 Pokémon you have fused currently. Splitting a Fusion Pokémon you own requires 1 Split Token.
+                    </p>
+                  </li>
+                  <li>Battles
+                    <p class="rules-sub">
+                      A "Battle" occurs at major story beats. This includes Rival Fights, Gym Battles, and the Elite Four + Champion.
+                    </p>
+                  </li>
+                </ul>
+              </li>
+              <p>Completing <strong>Research Assignments</strong> will reward you with <strong>Research Points</strong> which you can spend at the <strong>Shop</strong> to buy <strong>Catch Tokens</strong> or <strong>Split Tokens</strong>.</p>
+              <li>If you run out of <strong>Research Points</strong> and can't gain any more then your run is over.
+                <p class="rules-sub">
+                  How many fusions can you discover before you run out of Research Points?
+                </p>
+              </li>
+
+            </ul>
+          </div>
+
+          <!-- ADVANCED RULES -->
+          <div class="rules-box">
+            <div class="rules-box-title">Advanced Rules</div>
+
+            <p class="rules-text">
+              The <strong>Fusion Researcher Challenge</strong> was created with the intention to be played as a <strong>Nuzlocke Style</strong> run. Below you will find an Official Ruleset for this kind of Advanced Challenge.
+            </p>
+
+            <ul class="rules-list">
+              <li>Pokémon are considered 'Dead' when they faint.
+                <p class="rules-sub">
+                      Keep track of Pokémon Deaths using the Action Log.
+                    </p>
+              </li>
+              <li>Only catch a Pokémon if you have a <strong>Catch Token.</strong>
+                 <p class="rules-sub">
+                      The first Pokémon caught on a route/area always rewards 1 Research Point, which can be used to buy more Catch Tokens.
+                    </p>
+              </li>
+              <li>Give Nicknames to every Pokémon you catch.</li>
+              <li>(Optional) Use the built-in Level Caps.</li>
+              <li>(Optional) Don't use Items in Battle.</li>
+              <li>(Optional) Play on "set" mode.</li>
+              <li>(Optional) Losing in a battle resets the run.</li>
+              </li>
+              <p>These rules are all strictly self-imposed. The website will keep track of your progress based on your actions in the <strong>Action Log</strong>. Run progress is stored in your browser cache temporarily, for a more permanent save Export and Import your saves using the export/import run buttons. </p>
+              <li>If you run out of <strong>Research Points</strong> and can't gain any more, or you run out of Pokémon, then your run is over.
+                <p class="rules-sub">
+                  How many fusions can you discover before you run out of Research Points or Pokémon?
+                </p>
+              </li>
+            </ul>
+          </div>
+
+        </div>
       </section>
     </section>
   </main>

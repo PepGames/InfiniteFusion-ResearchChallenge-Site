@@ -1733,3 +1733,66 @@ button:disabled {
   transform: translateY(0);
   pointer-events: auto;
 }
+
+/* =========================
+   How-To-Play Section
+   ========================= */
+
+.rules-container {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.rules-box {
+  background: linear-gradient(180deg, rgba(20, 28, 45, 0.85), rgba(10, 15, 28, 0.85));
+  border: 1px solid rgba(255, 215, 120, 0.25);
+  border-radius: 14px;
+  padding: 18px 20px;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.03),
+    0 8px 20px rgba(0,0,0,0.25);
+}
+
+.rules-box-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #ffd878;
+  letter-spacing: 0.5px;
+}
+
+.rules-list {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rules-list li {
+  color: #e5e7eb;
+  line-height: 1.4;
+}
+
+.rules-text {
+  color: #cbd5e1;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.rules-sub {
+  margin: 6px 0 8px 16px;
+  color: #9ca3af;
+  font-size: 0.95em;
+}
+
+.rules-sub-list {
+  margin-left: 16px;
+  margin-top: 6px;
+}
+
+.rules-box strong {
+  color: #facc15; /* gold/yellow */
+}

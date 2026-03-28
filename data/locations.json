@@ -90,5 +90,14 @@
   { "locationId": "navel_rock", "name": "Navel Rock" },
   { "locationId": "old_shipwreck", "name": "Old Shipwreck" },
   { "locationId": "rocket_warehouse", "name": "Rocket Warehouse" },
-  { "locationId": "viridian_city", "name": "Viridian City" }
+  { "locationId": "viridian_city", "name": "Viridian City" },
+  { "locationId": "azalea_town", "name": "Azalea Town" },
+  { "locationId": "cherrygrove_city", "name": "Cherrygrove City" },
+  { "locationId": "ecruteak_city", "name": "Ecruteak City" },
+  { "locationId": "fuchsia_city", "name": "Fuchsia City" },
+  { "locationId": "lavender_town", "name": "Lavender Town" },
+  { "locationId": "mahogany_town", "name": "Mahogany Town" },
+  { "locationId": "new_bark_town", "name": "New Bark Town" },
+  { "locationId": "pewter_city", "name": "Pewter City" },
+  { "locationId": "violet_city", "name": "Violet City" }
 ]

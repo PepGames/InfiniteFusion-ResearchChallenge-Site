@@ -658,6 +658,186 @@
   "hidden": false
 },
 {
+  "id": "azalea-town",
+  "name": "Encounter - Azalea Town",
+  "description": "Catch 1 Pokemon in Azalea Town",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "azalea_town"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "cherrygrove-city",
+  "name": "Encounter - Cherrygrove City",
+  "description": "Catch 1 Pokemon in Cherrygrove City",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "cherrygrove_city"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "ecruteak-city",
+  "name": "Encounter - Ecruteak City",
+  "description": "Catch 1 Pokemon in Ecruteak City",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "ecruteak_city"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "fuchsia-city",
+  "name": "Encounter - Fuchsia City",
+  "description": "Catch 1 Pokemon in Fuchsia City",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "fuchsia_city"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "lavender-town",
+  "name": "Encounter - Lavender Town",
+  "description": "Catch 1 Pokemon in Lavender Town",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "lavender_town"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "mahogany-town",
+  "name": "Encounter - Mahogany Town",
+  "description": "Catch 1 Pokemon in Mahogany Town",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "mahogany_town"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "new-bark-town",
+  "name": "Encounter - New Bark Town",
+  "description": "Catch 1 Pokemon in New Bark Town",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "new_bark_town"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "pewter-city",
+  "name": "Encounter - Pewter City",
+  "description": "Catch 1 Pokemon in Pewter City",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "pewter_city"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
+  "id": "violet-city",
+  "name": "Encounter - Violet City",
+  "description": "Catch 1 Pokemon in Violet City",
+  "rpReward": 1,
+  "rule": {
+    "type": "action_count",
+    "filters": {
+      "locationId": "violet_city"
+    },
+    "target": 1,
+    "actionType": "catch"
+  },
+  "tags": [
+    "catching"
+  ],
+  "symbol": "trophy",
+  "tier": "bronze",
+  "hidden": false
+},
+{
   "id": "cerulean-city",
   "name": "Encounter - Cerulean City",
   "description": "Catch 1 Pokemon in Cerulean City",
@@ -5631,7 +5811,7 @@
     "rival"
   ],
   "symbol": "trophy",
-  "tier": "bronze",
+  "tier": "silver",
   "hidden": false
 }
 ]
